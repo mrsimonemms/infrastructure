@@ -85,3 +85,7 @@ jobs:
           echo "${{ secrets.SSH_KEY_PUBLIC }}" >> ~/.ssh/key.pub
 
           chmod 600 ~/.ssh/key
+
+      - name: Deploy
+        if: github.ref == 'refs/heads/main'
+        run: hetzner-k3s create --config ${{ env.CONFIG_FILE }}
