@@ -7,7 +7,22 @@
       "settings": {}
     }
   },
-  "features": {},
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/gh-release:1": {
+      "repo": "vitobotta/hetzner-k3s",
+      "binaryNames": "hetzner-k3s"
+    }
+  },
   "image": "ghcr.io/mrsimonemms/devcontainers/full",
-  "name": "devcontainer"
+  "name": "devcontainer",
+  "initializeCommand": {
+    "ensure-ssh": "mkdir -p ${localEnv:HOME}/.ssh"
+  },
+  "mounts": [
+    {
+      "source": "${localEnv:HOME}/.ssh",
+      "target": "/home/vscode/.ssh",
+      "type": "bind"
+    }
+  ]
 }
