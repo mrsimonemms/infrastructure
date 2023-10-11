@@ -1,0 +1,91 @@
+name: Test and deploy
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # fetch-depth is required
+
+      - uses: wagoid/commitlint-github-action@v5
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '>=1.20.0'
+
+      - uses: pre-commit/action@v3.0.0
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    strategy:
+      fail-fast: true
+      matrix:
+        environment:
+          - prod
+      max-parallel: 1
+    environment: ${{ matrix.environment }}
+    env:
+      CONFIG_FILE: config.yaml
+    needs:
+      - commitlint
+      - pre-commit
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install hetzner-key
+        uses: jaxxstorm/action-install-gh-release@v1.10.0
+        with:
+          repo: vitobotta/hetzner-k3s
+          chmod: 0755
+          platform: linux
+          extension-matching: disable
+          rename-to: hetzner-k3s
+
+      - run: hetzner-k3s --version
+
+      - name: Merge the base config with the environment config
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq eval-all '. as $item ireduce ({}; . * $item)' ./kubernetes/config.yaml ./kubernetes/${{ matrix.environment }}/config.yaml  > ${{ env.CONFIG_FILE }}
+
+      - name: Add the Hetzner token
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq e -i '.hetzner_token = "${{ secrets.HCLOUD_TOKEN }}"' ${{ env.CONFIG_FILE }}
+
+      - name: Set the env name
+        uses: mikefarah/yq@master
+        with:
+          cmd: yq e -i '.cluster_name = "${{ matrix.environment }}"' ${{ env.CONFIG_FILE }}
+
+      - name: Save the SSH keys
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY_PRIVATE }}" >> ~/.ssh/key
+          echo "${{ secrets.SSH_KEY_PUBLIC }}" >> ~/.ssh/key.pub
+
+          chmod 600 ~/.ssh/key
+
+      - name: Deploy
+        run: hetzner-k3s create --config ${{ env.CONFIG_FILE }}
