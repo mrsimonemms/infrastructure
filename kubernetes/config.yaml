@@ -1,5 +1,3 @@
-hetzner_token: ${HCLOUD_TOKEN}
-cluster_name: ${CLUSTER_NAME}
 kubeconfig_path: ./kubeconfig
 public_ssh_key_path: ~/.ssh/key.pub
 private_ssh_key_path: ~/.ssh/key

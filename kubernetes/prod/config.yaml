@@ -1,0 +1,9 @@
+k3s_version: v1.28.2+k3s1
+worker_node_pools:
+  - name: small-scaling
+    instance_type: cx21
+    location: nbg1
+    autoscaling:
+      enabled: true
+      min_instances: 1
+      max_instances: 3
