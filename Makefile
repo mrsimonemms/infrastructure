@@ -12,6 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+CONFIG = config.yaml
+ENVIRONMENT ?= dev
+
+create-config:
+	@yq eval-all '. as $$item ireduce ({}; . * $$item)' ./kubernetes/config.yaml ./kubernetes/${ENVIRONMENT}/config.yaml > ${CONFIG}
+	@yq e -i '.hetzner_token = "${HCLOUD_TOKEN}"' ${CONFIG}
+	@yq e -i '.cluster_name = "${ENVIRONMENT}"' ${CONFIG}
+	@yq e -i '.public_ssh_key_path = "${PWD}/ssh/key.pub"' ${CONFIG}
+	@yq e -i '.private_ssh_key_path = "${PWD}/ssh/key"' ${CONFIG}
+.PHONY: create-config
+
 cruft-update:
 ifeq (,$(wildcard .cruft.json))
 	@echo "Cruft not configured"
@@ -19,3 +30,11 @@ else
 	@cruft check || cruft update --skip-apply-ask --refresh-private-variables
 endif
 .PHONY: cruft-update
+
+deploy:
+	@hetzner-k3s create --config ${CONFIG}
+.PHONY: deploy
+
+destroy:
+	@hetzner-k3s delete --config ${CONFIG}
+.PHONY: destroy

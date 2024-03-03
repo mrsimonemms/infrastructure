@@ -1,5 +1,8 @@
 dist
 tmp
+config.yaml
+ssh
+kubeconfig
 
 node_modules
 

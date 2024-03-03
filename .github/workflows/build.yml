@@ -67,7 +67,7 @@ jobs:
       - name: Merge the base config with the environment config
         uses: mikefarah/yq@master
         with:
-          cmd: yq eval-all '. as $item ireduce ({}; . * $item)' ./kubernetes/config.yaml ./kubernetes/${{ matrix.environment }}/config.yaml  > ${{ env.CONFIG_FILE }}
+          cmd: yq eval-all '. as $item ireduce ({}; . * $item)' ./kubernetes/config.yaml ./kubernetes/${{ matrix.environment }}/config.yaml > ${{ env.CONFIG_FILE }}
 
       - name: Add the Hetzner token
         uses: mikefarah/yq@master
