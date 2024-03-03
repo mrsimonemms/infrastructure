@@ -1,0 +1,10 @@
+k3s_version: v1.28.2+k3s1
+masters_pool:
+  instance_count: 1
+schedule_workloads_on_masters: true
+use_ssh_agent: true
+worker_node_pools:
+  - name: small-scaling
+    instance_type: cx21
+    location: nbg1
+    instance_count: 1

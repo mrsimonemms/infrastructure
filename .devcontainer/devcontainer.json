@@ -24,5 +24,8 @@
       "target": "/home/vscode/.ssh",
       "type": "bind"
     }
-  ]
+  ],
+  "containerEnv": {
+    "KUBECONFIG": "/workspaces/infrastructure/kubeconfig"
+  }
 }
