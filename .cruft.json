@@ -1,0 +1,17 @@
+{
+  "template": "https://github.com/mrsimonemms/new",
+  "commit": "eb82e9ab0b3a1e730717778ccc7c708004633bb9",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "infrastructure",
+      "description": "My home infrastructure",
+      "author": "Simon Emms <simon@simonemms.com>",
+      "_template": "https://github.com/mrsimonemms/new"
+    }
+  },
+  "directory": "terraform",
+  "skip": [
+    ".git"
+  ]
+}
