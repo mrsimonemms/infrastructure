@@ -12,19 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  cloud {
-    organization = "mrsimonemms"
-  }
-  required_version = ">= 1.0.0"
-  required_providers {
-    hcloud = {
-      source  = "hetznercloud/hcloud"
-      version = ">= 1.47.0"
-    }
-    ssh = {
-      source  = "loafoe/ssh"
-      version = "2.7.0"
-    }
-  }
+output "k3s_join_token" {
+  description = "K3s join token for adding additional nodes"
+  sensitive   = true
+  value       = local.k3s_join_token
+}
+
+output "kubeconfig" {
+  description = "Kubeconfig file"
+  sensitive   = true
+  value       = local.k3s_kubeconfig
 }
