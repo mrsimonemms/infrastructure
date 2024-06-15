@@ -15,12 +15,16 @@
 locals {
   global_ipv4_cidr = "0.0.0.0/0"
   global_ipv6_cidr = "::/0"
+  k3s_manager_labels = merge(local.labels, {
+    format(local.label_namespace, "type") = "manager"
+  })
+  kubernetes_api_port = 6443
   labels = {
     format(local.label_namespace, "project")   = var.name
     format(local.label_namespace, "workspace") = local.workspace_name
   }
-  kubernetes_api_port = 6443
-  label_namespace     = "simonemms.com/%s"
+  label_namespace = "simonemms.com/%s"
+  machine_user    = "k3s"
   name_format = join("-", [
     "infra",
     "%s", # name

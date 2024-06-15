@@ -30,11 +30,46 @@ variable "firewall_allow_ssh_access" {
   ]
 }
 
-# variable "location" {
-#   type        = string
-#   description = "Location to use. This is a single datacentre."
-#   default     = "nbg1"
-# }
+variable "location" {
+  type        = string
+  description = "Location to use. This is a single datacentre."
+  default     = "nbg1"
+}
+
+variable "k3s_manager_count" {
+  type        = number
+  description = "Number of manager nodes to use. This must be an odd number."
+  default     = 1
+
+  validation {
+    condition     = var.k3s_manager_count >= 1 && var.k3s_manager_count % 2 == 1
+    error_message = "Invalid k3s_manager_count given."
+  }
+}
+
+variable "k3s_manager_load_balancer_algorithm" {
+  type        = string
+  description = "Algorithm to use for the k3s manager load balancer"
+  default     = "round_robin"
+}
+
+variable "k3s_manager_load_balancer_type" {
+  type        = string
+  description = "Load balancer type for the k3s manager nodes"
+  default     = "lb11"
+}
+
+variable "k3s_manager_server_image" {
+  type        = string
+  description = "Image to use for the k3s nodes"
+  default     = "ubuntu-24.04"
+}
+
+variable "k3s_manager_server_type" {
+  type        = string
+  description = "Server type of the k3s nodes"
+  default     = "cx22"
+}
 
 variable "name" {
   type        = string
@@ -63,6 +98,18 @@ variable "region" {
   type        = string
   description = "Region to use. This covers multiple datacentres."
   default     = "eu-central"
+}
+
+# variable "ssh_key" {
+#   type        = string
+#   description = "Path to the private SSH key"
+#   default     = "~/.ssh/id_ed25519"
+# }
+
+variable "ssh_key_public" {
+  type        = string
+  description = "Path to the public SSH key"
+  default     = "~/.ssh/id_ed25519.pub"
 }
 
 variable "ssh_port" {
