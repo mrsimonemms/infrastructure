@@ -17,5 +17,13 @@
       ],
       "settings": {}
     }
+  },
+  "containerEnv": {
+    "TF_WORKSPACE": "infradev"
+  },
+  "remoteEnv": {
+    "TF_CLI_ARGS_apply": "-var-file=${containerEnv:TF_WORKSPACE}.tfvars",
+    "TF_CLI_ARGS_destroy": "-var-file=${containerEnv:TF_WORKSPACE}.tfvars",
+    "TF_CLI_ARGS_plan": "-var-file=${containerEnv:TF_WORKSPACE}.tfvars"
   }
 }
