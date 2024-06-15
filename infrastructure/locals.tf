@@ -12,15 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  cloud {
-    organization = "mrsimonemms"
+locals {
+  global_ipv4_cidr = "0.0.0.0/0"
+  global_ipv6_cidr = "::/0"
+  labels = {
+    format(local.label_namespace, "project")   = var.name
+    format(local.label_namespace, "workspace") = local.workspace_name
   }
-  required_version = ">= 1.0.0"
-  required_providers {
-    hcloud = {
-      source  = "hetznercloud/hcloud"
-      version = ">= 1.47.0"
-    }
-  }
+  kubernetes_api_port = 6443
+  label_namespace     = "simonemms.com/%s"
+  name_format = join("-", [
+    "infra",
+    "%s", # name
+    local.workspace_name
+  ])
+  workspace_name = replace(terraform.workspace, "/[\\W\\-]/", "") # alphanumeric workspace name
 }

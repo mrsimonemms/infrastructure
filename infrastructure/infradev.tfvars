@@ -12,15 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  cloud {
-    organization = "mrsimonemms"
-  }
-  required_version = ">= 1.0.0"
-  required_providers {
-    hcloud = {
-      source  = "hetznercloud/hcloud"
-      version = ">= 1.47.0"
-    }
-  }
-}
+network_subnet = "10.1.0.0/16"
