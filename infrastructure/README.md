@@ -6,14 +6,20 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_github"></a> [github](#requirement\_github) | >= 6.2.0 |
 | <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | >= 1.47.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.31.0 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.5.1 |
 | <a name="requirement_ssh"></a> [ssh](#requirement\_ssh) | 2.7.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
+| <a name="provider_github"></a> [github](#provider\_github) | 6.2.1 |
 | <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.47.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.31.0 |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.5.1 |
 | <a name="provider_ssh"></a> [ssh](#provider\_ssh) | 2.7.0 |
 
 ## Modules
@@ -34,11 +40,15 @@ No modules.
 | [hcloud_placement_group.managers](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/placement_group) | resource |
 | [hcloud_server.manager](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server) | resource |
 | [hcloud_ssh_key.server](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/ssh_key) | resource |
+| [kubernetes_manifest.csi_driver](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/manifest) | resource |
+| [local_file.kubeconfig](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
 | [ssh_resource.initial_manager](https://registry.terraform.io/providers/loafoe/ssh/2.7.0/docs/resources/resource) | resource |
 | [ssh_resource.server_ready](https://registry.terraform.io/providers/loafoe/ssh/2.7.0/docs/resources/resource) | resource |
 | [ssh_sensitive_resource.additional_managers](https://registry.terraform.io/providers/loafoe/ssh/2.7.0/docs/resources/sensitive_resource) | resource |
 | [ssh_sensitive_resource.join_token](https://registry.terraform.io/providers/loafoe/ssh/2.7.0/docs/resources/sensitive_resource) | resource |
 | [ssh_sensitive_resource.kubeconfig](https://registry.terraform.io/providers/loafoe/ssh/2.7.0/docs/resources/sensitive_resource) | resource |
+| [github_release.csi_driver](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/release) | data source |
+| [github_repository_file.csi_driver](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/repository_file) | data source |
 
 ## Inputs
 
@@ -46,6 +56,9 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_firewall_allow_api_access"></a> [firewall\_allow\_api\_access](#input\_firewall\_allow\_api\_access) | CIDR range to allow access to the Kubernetes API | `list(string)` | <pre>[<br>  "0.0.0.0/0",<br>  "::/0"<br>]</pre> | no |
 | <a name="input_firewall_allow_ssh_access"></a> [firewall\_allow\_ssh\_access](#input\_firewall\_allow\_ssh\_access) | CIDR range to allow access to the servers via SSH | `list(string)` | <pre>[<br>  "0.0.0.0/0",<br>  "::/0"<br>]</pre> | no |
+| <a name="input_hetzner_csi_driver_owner"></a> [hetzner\_csi\_driver\_owner](#input\_hetzner\_csi\_driver\_owner) | GitHub owner to get the CSI driver from | `string` | `"hetznercloud"` | no |
+| <a name="input_hetzner_csi_driver_repo"></a> [hetzner\_csi\_driver\_repo](#input\_hetzner\_csi\_driver\_repo) | GitHub repo to get the CSI driver from | `string` | `"csi-driver"` | no |
+| <a name="input_hetzner_csi_driver_version"></a> [hetzner\_csi\_driver\_version](#input\_hetzner\_csi\_driver\_version) | Tag of the CSI driver to use - provide the tag name or latest | `string` | `"latest"` | no |
 | <a name="input_k3s_download_url"></a> [k3s\_download\_url](#input\_k3s\_download\_url) | URL to download K3s from | `string` | `"https://get.k3s.io"` | no |
 | <a name="input_k3s_manager_count"></a> [k3s\_manager\_count](#input\_k3s\_manager\_count) | Number of manager nodes to use. This must be an odd number. | `number` | `1` | no |
 | <a name="input_k3s_manager_load_balancer_algorithm"></a> [k3s\_manager\_load\_balancer\_algorithm](#input\_k3s\_manager\_load\_balancer\_algorithm) | Algorithm to use for the k3s manager load balancer | `string` | `"round_robin"` | no |

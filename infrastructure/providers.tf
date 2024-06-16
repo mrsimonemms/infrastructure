@@ -18,13 +18,30 @@ terraform {
   }
   required_version = ">= 1.0.0"
   required_providers {
+    github = {
+      source  = "integrations/github"
+      version = ">= 6.2.0"
+    }
+
     hcloud = {
       source  = "hetznercloud/hcloud"
       version = ">= 1.47.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.31.0"
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = ">= 2.5.1"
     }
     ssh = {
       source  = "loafoe/ssh"
       version = "2.7.0"
     }
   }
+}
+
+provider "kubernetes" {
+  config_path = local.tmp_kubeconfig
 }

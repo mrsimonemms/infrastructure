@@ -30,6 +30,24 @@ variable "firewall_allow_ssh_access" {
   ]
 }
 
+variable "hetzner_csi_driver_owner" {
+  type        = string
+  description = "GitHub owner to get the CSI driver from"
+  default     = "hetznercloud"
+}
+
+variable "hetzner_csi_driver_repo" {
+  type        = string
+  description = "GitHub repo to get the CSI driver from"
+  default     = "csi-driver"
+}
+
+variable "hetzner_csi_driver_version" {
+  type        = string
+  description = "Tag of the CSI driver to use - provide the tag name or latest"
+  default     = "latest"
+}
+
 variable "location" {
   type        = string
   description = "Location to use. This is a single datacentre."

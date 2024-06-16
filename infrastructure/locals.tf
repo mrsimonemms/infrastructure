@@ -30,5 +30,6 @@ locals {
     "%s", # name
     local.workspace_name
   ])
+  tmp_kubeconfig = "/tmp/kubeconfig"
   workspace_name = replace(terraform.workspace, "/[\\W\\-]/", "") # alphanumeric workspace name
 }
