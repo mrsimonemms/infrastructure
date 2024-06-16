@@ -56,6 +56,7 @@ resource "hcloud_firewall" "name" {
         source_ips = [
           hcloud_network.network.ip_range
         ]
+        protocol = "udp"
       },
       {
         description = "Allow access to Kubernetes API"

@@ -46,6 +46,9 @@ resource "hcloud_server" "manager" {
 
   network {
     network_id = hcloud_network.network.id
+    # Set the alias_ips to avoid this triggering an update each run
+    # @link https://github.com/hetznercloud/terraform-provider-hcloud/issues/650#issuecomment-1497160625
+    alias_ips = []
   }
 
   public_net {
