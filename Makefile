@@ -19,3 +19,9 @@ else
 	@cruft check || cruft update --skip-apply-ask --refresh-private-variables
 endif
 .PHONY: cruft-update
+
+kubeconfig:
+	@mkdir -p ${HOME}/.kube
+	@terraform -chdir=infrastructure output -json kubeconfig | jq -r > ${HOME}/.kube/config
+	@echo "Saved to ${HOME}/.kube/config"
+.PHONY: kubeconfig
