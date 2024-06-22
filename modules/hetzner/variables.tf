@@ -12,6 +12,66 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+variable "firewall_allow_api_access" {
+  type        = list(string)
+  description = "CIDR range to allow access to the Kubernetes API"
+  default = [
+    "0.0.0.0/0",
+    "::/0"
+  ]
+}
+
+variable "firewall_allow_ssh_access" {
+  type        = list(string)
+  description = "CIDR range to allow access to the servers via SSH"
+  default = [
+    "0.0.0.0/0",
+    "::/0"
+  ]
+}
+
+# variable "location" {
+#   type        = string
+#   description = "Location to use. This is a single datacentre."
+#   default     = "nbg1"
+# }
+
+variable "name" {
+  type        = string
+  description = "Name of project"
+  default     = "infrastructure"
+}
+
+variable "network_type" {
+  type        = string
+  description = "Type of network to use"
+  default     = "cloud"
+
+  validation {
+    condition     = contains(["cloud", "server", "vswitch"], var.network_type)
+    error_message = "Invalid network_type selected."
+  }
+}
+
+variable "network_subnet" {
+  type        = string
+  description = "Subnet of the main network"
+  default     = "10.0.0.0/16"
+}
+
+variable "region" {
+  type        = string
+  description = "Region to use. This covers multiple datacentres."
+  default     = "eu-central"
+}
+
+variable "ssh_port" {
+  type        = number
+  description = "Port to use for SSH access"
+  default     = 22
+}
+
 variable "workspace" {
   type        = string
   description = "Terraform workspace name"

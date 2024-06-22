@@ -13,6 +13,14 @@
 # limitations under the License.
 
 locals {
+  global_ipv4_cidr = "0.0.0.0/0"
+  global_ipv6_cidr = "::/0"
+  labels = {
+    format(local.label_namespace, "project")   = var.name
+    format(local.label_namespace, "workspace") = local.workspace_name
+  }
+  kubernetes_api_port = 6443
+  label_namespace     = "simonemms.com/%s"
   name_format = join("-", [
     "hetzner",
     var.name,
