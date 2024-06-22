@@ -19,5 +19,9 @@ terraform {
       source  = "hetznercloud/hcloud"
       version = ">= 1.47.0, < 2.0.0"
     }
+    ssh = {
+      source  = "loafoe/ssh"
+      version = ">= 2.7.0, < 3.0.0"
+    }
   }
 }
