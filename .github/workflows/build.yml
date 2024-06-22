@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # fetch-depth is required
 
       - uses: actions/setup-python@v5
         with:
@@ -39,5 +41,16 @@ jobs:
 
       - name: Install Trivy
         run: curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
+
+      - name: Install Terragrunt
+        uses: jaxxstorm/action-install-gh-release@v1.10.0
+        with:
+          repo: gruntwork-io/terragrunt
+          extension-matching: disable
+          rename-to: terragrunt
+          chmod: 0755
+
+      - name: Init Terragrunt
+        run: terragrunt run-all init
 
       - uses: pre-commit/action@v3.0.1

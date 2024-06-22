@@ -15,6 +15,7 @@
 locals {
   name_format = join("-", [
     "hetzner",
+    var.name,
     "%s", # resource name
     local.workspace_name
   ])                                                     # use `format(local.name_format, "<name>")` to use this
