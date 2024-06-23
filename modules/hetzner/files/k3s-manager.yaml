@@ -25,3 +25,7 @@ write_files:
       PasswordAuthentication no
       PermitRootLogin no
       Port ${sshPort}
+  - path: /etc/environment
+    content: |
+      KUBECONFIG="/etc/rancher/k3s/k3s.yaml"
+    append: true

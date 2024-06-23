@@ -27,11 +27,11 @@ resource "hcloud_placement_group" "managers" {
 }
 
 resource "hcloud_server" "manager" {
-  count = var.k3s_manager_count
+  count = var.k3s_manager_pool.count
 
   name        = format(local.name_format, "manager-${count.index}")
-  image       = var.k3s_manager_server_image
-  server_type = var.k3s_manager_server_type
+  image       = var.k3s_manager_pool.image
+  server_type = var.k3s_manager_pool.server_type
   location    = var.location
   ssh_keys = [
     hcloud_ssh_key.server.id
@@ -70,7 +70,7 @@ resource "hcloud_server" "manager" {
 }
 
 resource "ssh_resource" "server_ready" {
-  count = var.k3s_manager_count
+  count = var.k3s_manager_pool.count
 
   host        = hcloud_server.manager[count.index].ipv4_address
   user        = local.machine_user
