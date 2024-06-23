@@ -37,14 +37,52 @@ variable "location" {
   default     = "nbg1"
 }
 
-variable "k3s_manager_count" {
-  type        = number
-  description = "Number of manager nodes to use. This must be an odd number."
-  default     = 1
+variable "k3s_cluster_cidr" {
+  type        = string
+  description = "CIDR used for the k3s pod IPs"
+  default     = "10.244.0.0/16"
+}
+
+variable "k3s_cluster_dns" {
+  type        = string
+  description = "Cluster IP for CoreDNS. Should be in k3s_server_cidr range"
+  default     = "10.43.0.10"
+}
+
+variable "k3s_download_url" {
+  type        = string
+  description = "URL to download K3s from"
+  default     = "https://get.k3s.io"
+}
+
+variable "k3s_manager_pool" {
+  type = object({
+    name        = optional(string, "manager")
+    server_type = optional(string, "cx22")
+    count       = optional(number, 1)
+    image       = optional(string, "ubuntu-24.04")
+    labels = optional(
+      list(object({
+        key   = string
+        value = string
+      })),
+      [],
+    )
+    taints = optional(
+      list(object({
+        key    = string
+        value  = string
+        effect = string
+      })),
+      []
+    )
+  })
+  description = "Manager pool configuration"
+  default     = {}
 
   validation {
-    condition     = var.k3s_manager_count >= 1 && var.k3s_manager_count % 2 == 1
-    error_message = "Invalid k3s_manager_count given."
+    condition     = var.k3s_manager_pool.count >= 1 && var.k3s_manager_pool.count % 2 == 1
+    error_message = "Invalid k3s_manager_pool.count given."
   }
 }
 
@@ -60,16 +98,10 @@ variable "k3s_manager_load_balancer_type" {
   default     = "lb11"
 }
 
-variable "k3s_manager_server_image" {
+variable "k3s_service_cidr" {
   type        = string
-  description = "Image to use for the k3s nodes"
-  default     = "ubuntu-24.04"
-}
-
-variable "k3s_manager_server_type" {
-  type        = string
-  description = "Server type of the k3s nodes"
-  default     = "cx22"
+  description = "CIDR used for the k3s service IPs"
+  default     = "10.43.0.0/16"
 }
 
 variable "name" {

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 resource "hcloud_load_balancer" "k3s_manager" {
-  count = var.k3s_manager_count > 1 ? 1 : 0
+  count = var.k3s_manager_pool.count > 1 ? 1 : 0
 
   name               = format(local.name_format, "k3s-manager")
   load_balancer_type = var.k3s_manager_load_balancer_type
@@ -27,7 +27,7 @@ resource "hcloud_load_balancer" "k3s_manager" {
 }
 
 resource "hcloud_load_balancer_network" "k3s_manager" {
-  count = var.k3s_manager_count > 1 ? 1 : 0
+  count = var.k3s_manager_pool.count > 1 ? 1 : 0
 
   load_balancer_id = hcloud_load_balancer.k3s_manager[count.index].id
   network_id       = hcloud_network.network.id
@@ -38,7 +38,7 @@ resource "hcloud_load_balancer_network" "k3s_manager" {
 }
 
 resource "hcloud_load_balancer_service" "k3s_manager" {
-  count = var.k3s_manager_count > 1 ? 1 : 0
+  count = var.k3s_manager_pool.count > 1 ? 1 : 0
 
   load_balancer_id = hcloud_load_balancer.k3s_manager[count.index].id
   protocol         = "tcp"
@@ -47,7 +47,7 @@ resource "hcloud_load_balancer_service" "k3s_manager" {
 }
 
 resource "hcloud_load_balancer_target" "k3s_manager" {
-  count = var.k3s_manager_count > 1 ? 1 : 0
+  count = var.k3s_manager_pool.count > 1 ? 1 : 0
 
   load_balancer_id = hcloud_load_balancer.k3s_manager[count.index].id
   type             = "label_selector"

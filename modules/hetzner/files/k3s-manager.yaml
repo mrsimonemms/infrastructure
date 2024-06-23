@@ -5,6 +5,7 @@ package_update: true
 package_upgrade: true
 packages:
   - curl
+  - yq
 runcmd:
   - [service, sshd, restart]
   - [rm, -f, /root/.ssh/authorized_keys]
@@ -25,3 +26,7 @@ write_files:
       PasswordAuthentication no
       PermitRootLogin no
       Port ${sshPort}
+  - path: /etc/environment
+    content: |
+      KUBECONFIG="/etc/rancher/k3s/k3s.yaml"
+    append: true
