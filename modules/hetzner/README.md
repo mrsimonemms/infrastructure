@@ -36,6 +36,9 @@ No modules.
 | [hcloud_ssh_key.server](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/ssh_key) | resource |
 | [ssh_resource.initial_manager](https://registry.terraform.io/providers/loafoe/ssh/latest/docs/resources/resource) | resource |
 | [ssh_resource.server_ready](https://registry.terraform.io/providers/loafoe/ssh/latest/docs/resources/resource) | resource |
+| [ssh_sensitive_resource.additional_managers](https://registry.terraform.io/providers/loafoe/ssh/latest/docs/resources/sensitive_resource) | resource |
+| [ssh_sensitive_resource.join_token](https://registry.terraform.io/providers/loafoe/ssh/latest/docs/resources/sensitive_resource) | resource |
+| [ssh_sensitive_resource.kubeconfig](https://registry.terraform.io/providers/loafoe/ssh/latest/docs/resources/sensitive_resource) | resource |
 
 ## Inputs
 
@@ -43,6 +46,8 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_firewall_allow_api_access"></a> [firewall\_allow\_api\_access](#input\_firewall\_allow\_api\_access) | CIDR range to allow access to the Kubernetes API | `list(string)` | <pre>[<br>  "0.0.0.0/0",<br>  "::/0"<br>]</pre> | no |
 | <a name="input_firewall_allow_ssh_access"></a> [firewall\_allow\_ssh\_access](#input\_firewall\_allow\_ssh\_access) | CIDR range to allow access to the servers via SSH | `list(string)` | <pre>[<br>  "0.0.0.0/0",<br>  "::/0"<br>]</pre> | no |
+| <a name="input_k3s_cluster_cidr"></a> [k3s\_cluster\_cidr](#input\_k3s\_cluster\_cidr) | CIDR used for the k3s cluster | `string` | `"10.244.0.0/16"` | no |
+| <a name="input_k3s_download_url"></a> [k3s\_download\_url](#input\_k3s\_download\_url) | URL to download K3s from | `string` | `"https://get.k3s.io"` | no |
 | <a name="input_k3s_manager_count"></a> [k3s\_manager\_count](#input\_k3s\_manager\_count) | Number of manager nodes to use. This must be an odd number. | `number` | `1` | no |
 | <a name="input_k3s_manager_load_balancer_algorithm"></a> [k3s\_manager\_load\_balancer\_algorithm](#input\_k3s\_manager\_load\_balancer\_algorithm) | Algorithm to use for the k3s manager load balancer | `string` | `"round_robin"` | no |
 | <a name="input_k3s_manager_load_balancer_type"></a> [k3s\_manager\_load\_balancer\_type](#input\_k3s\_manager\_load\_balancer\_type) | Load balancer type for the k3s manager nodes | `string` | `"lb11"` | no |
@@ -60,5 +65,12 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_hcloud_network_name"></a> [hcloud\_network\_name](#output\_hcloud\_network\_name) | Name of the network |
+| <a name="output_k3s_cluster_cidr"></a> [k3s\_cluster\_cidr](#output\_k3s\_cluster\_cidr) | CIDR used for the k3s cluster |
+| <a name="output_k3s_join_token"></a> [k3s\_join\_token](#output\_k3s\_join\_token) | K3s join token for adding additional nodes |
+| <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | Kubeconfig file |
+| <a name="output_location"></a> [location](#output\_location) | Location to use. This is a single datacentre. |
+| <a name="output_region"></a> [region](#output\_region) | Region to use. This covers multiple datacentres. |
 <!-- END_TF_DOCS -->
