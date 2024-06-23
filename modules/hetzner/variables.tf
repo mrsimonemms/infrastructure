@@ -37,6 +37,18 @@ variable "location" {
   default     = "nbg1"
 }
 
+variable "k3s_cluster_cidr" {
+  type        = string
+  description = "CIDR used for the k3s cluster"
+  default     = "10.244.0.0/16"
+}
+
+variable "k3s_download_url" {
+  type        = string
+  description = "URL to download K3s from"
+  default     = "https://get.k3s.io"
+}
+
 variable "k3s_manager_count" {
   type        = number
   description = "Number of manager nodes to use. This must be an odd number."

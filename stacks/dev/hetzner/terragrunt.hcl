@@ -21,5 +21,6 @@ include {
 }
 
 inputs = {
-  network_subnet = "10.2.0.0/16"
+  k3s_manager_count = 3
+  network_subnet    = "10.2.0.0/16"
 }
