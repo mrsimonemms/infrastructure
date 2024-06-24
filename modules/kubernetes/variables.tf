@@ -12,10 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 variable "cilium_version" {
   type        = string
   description = "Version of Cilium to use - defaults to latest"
+  default     = null
+}
+
+variable "cloudflare_api_token" {
+  type        = string
+  description = "Cloudflare API token"
+  sensitive   = true
+}
+
+variable "external_dns_version" {
+  type        = string
+  description = "Version of External DNS to install - defaults to latest"
   default     = null
 }
 
@@ -54,6 +65,12 @@ variable "hetzner_csi_driver_version" {
   default     = "latest"
 }
 
+variable "ingress_nginx_version" {
+  type        = string
+  description = "Version of Ingress Nginx to install - defaults to latest"
+  default     = null
+}
+
 variable "k3s_cluster_cidr" {
   type        = string
   description = "CIDR used for the k3s cluster"
@@ -69,5 +86,23 @@ variable "kubeconfig" {
 variable "kube_context" {
   type        = string
   description = "Kubernetes context to use"
+  default     = "default"
+}
+
+# @todo(sje): create the load balancer in the hetzner stage
+variable "load_balancer_region" {
+  type        = string
+  description = "Region to use for the load balancer"
+}
+
+variable "load_balancer_type" {
+  type        = string
+  description = "Type of load balancer to use"
+  default     = "lb11"
+}
+
+variable "workspace" {
+  type        = string
+  description = "Terraform workspace name"
   default     = "default"
 }

@@ -22,10 +22,18 @@ include {
 
 dependency "hetzner" {
   config_path = "../hetzner"
+
+  mock_outputs = {
+    hcloud_network_name = "some-network"
+    k3s_cluster_cidr    = "0.0.0.0/0"
+    kubeconfig          = "some-kubeconfig"
+    region              = "some-region"
+  }
 }
 
 inputs = {
-  hcloud_network_name = dependency.hetzner.outputs.hcloud_network_name
-  k3s_cluster_cidr    = dependency.hetzner.outputs.k3s_cluster_cidr
-  kubeconfig          = dependency.hetzner.outputs.kubeconfig
+  hcloud_network_name  = dependency.hetzner.outputs.hcloud_network_name
+  k3s_cluster_cidr     = dependency.hetzner.outputs.k3s_cluster_cidr
+  kubeconfig           = dependency.hetzner.outputs.kubeconfig
+  load_balancer_region = dependency.hetzner.outputs.region
 }

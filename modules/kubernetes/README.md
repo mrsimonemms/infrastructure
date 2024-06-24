@@ -27,9 +27,13 @@ No modules.
 | Name | Type |
 |------|------|
 | [helm_release.cilium](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.external_dns](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.hcloud_ccm](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.ingress_nginx](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_annotations.hcloud_ccm](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/annotations) | resource |
 | [kubernetes_manifest.csi_driver](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/manifest) | resource |
+| [kubernetes_namespace_v1.external_dns](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1) | resource |
+| [kubernetes_secret_v1.external_dns](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [kubernetes_secret_v1.hcloud](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [github_release.csi_driver](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/release) | data source |
 | [github_repository_file.csi_driver](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/repository_file) | data source |
@@ -39,15 +43,21 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_cilium_version"></a> [cilium\_version](#input\_cilium\_version) | Version of Cilium to use - defaults to latest | `string` | `null` | no |
+| <a name="input_cloudflare_api_token"></a> [cloudflare\_api\_token](#input\_cloudflare\_api\_token) | Cloudflare API token | `string` | n/a | yes |
+| <a name="input_external_dns_version"></a> [external\_dns\_version](#input\_external\_dns\_version) | Version of External DNS to install - defaults to latest | `string` | `null` | no |
 | <a name="input_hcloud_network_name"></a> [hcloud\_network\_name](#input\_hcloud\_network\_name) | Hetzner network name | `string` | n/a | yes |
 | <a name="input_hcloud_token"></a> [hcloud\_token](#input\_hcloud\_token) | Hetzner API token | `string` | n/a | yes |
 | <a name="input_hetzner_cloud_config_manager_version"></a> [hetzner\_cloud\_config\_manager\_version](#input\_hetzner\_cloud\_config\_manager\_version) | Version of the HCloud CCM to use - defaults to latest | `string` | `null` | no |
 | <a name="input_hetzner_csi_driver_owner"></a> [hetzner\_csi\_driver\_owner](#input\_hetzner\_csi\_driver\_owner) | GitHub owner to get the CSI driver from | `string` | `"hetznercloud"` | no |
 | <a name="input_hetzner_csi_driver_repo"></a> [hetzner\_csi\_driver\_repo](#input\_hetzner\_csi\_driver\_repo) | GitHub repo to get the CSI driver from | `string` | `"csi-driver"` | no |
 | <a name="input_hetzner_csi_driver_version"></a> [hetzner\_csi\_driver\_version](#input\_hetzner\_csi\_driver\_version) | Tag of the CSI driver to use - provide the tag name or latest | `string` | `"latest"` | no |
+| <a name="input_ingress_nginx_version"></a> [ingress\_nginx\_version](#input\_ingress\_nginx\_version) | Version of Ingress Nginx to install - defaults to latest | `string` | `null` | no |
 | <a name="input_k3s_cluster_cidr"></a> [k3s\_cluster\_cidr](#input\_k3s\_cluster\_cidr) | CIDR used for the k3s cluster | `string` | `"10.244.0.0/16"` | no |
 | <a name="input_kube_context"></a> [kube\_context](#input\_kube\_context) | Kubernetes context to use | `string` | `"default"` | no |
 | <a name="input_kubeconfig"></a> [kubeconfig](#input\_kubeconfig) | Kubeconfig for the cluster | `string` | n/a | yes |
+| <a name="input_load_balancer_region"></a> [load\_balancer\_region](#input\_load\_balancer\_region) | Region to use for the load balancer | `string` | n/a | yes |
+| <a name="input_load_balancer_type"></a> [load\_balancer\_type](#input\_load\_balancer\_type) | Type of load balancer to use | `string` | `"lb11"` | no |
+| <a name="input_workspace"></a> [workspace](#input\_workspace) | Terraform workspace name | `string` | `"default"` | no |
 
 ## Outputs
 

@@ -17,4 +17,10 @@ locals {
   kubeconfig_clusters   = { for context in local.kubeconfig.clusters : context.name => context.cluster }
   kubeconfig_users      = { for context in local.kubeconfig.users : context.name => context.user }
   kubeconfig_by_context = { for context, cluster in local.kubeconfig_clusters : context => merge(cluster, local.kubeconfig_users[context]) }
+  name_format = join("-", [
+    "hetzner",
+    "%s", # resource name
+    local.workspace_name
+  ])                                                     # use `format(local.name_format, "<name>")` to use this
+  workspace_name = replace(var.workspace, "/[\\W]/", "") # alphanumeric workspace name
 }
