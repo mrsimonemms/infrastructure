@@ -12,6 +12,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+variable "hcloud_network_name" {
+  type        = string
+  description = "Hetzner network name"
+}
+
+variable "hcloud_token" {
+  type        = string
+  description = "Hetzner API token"
+  sensitive   = true
+}
+
+variable "hetzner_cloud_config_manager_version" {
+  type        = string
+  description = "Version of the HCloud CCM to use - defaults to latest"
+  default     = null
+}
+
+variable "hetzner_csi_driver_version" {
+  type        = string
+  description = "Tag of the CSI driver to use - defaults to latest"
+  default     = null
+}
+
+variable "k3s_cluster_cidr" {
+  type        = string
+  description = "CIDR used for the k3s cluster"
+  default     = "10.244.0.0/16"
+}
+
 variable "kubeconfig" {
   type        = string
   description = "Kubeconfig for the cluster"
