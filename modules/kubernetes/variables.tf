@@ -19,6 +19,41 @@ variable "cilium_version" {
   default     = null
 }
 
+variable "hcloud_network_name" {
+  type        = string
+  description = "Hetzner network name"
+}
+
+variable "hcloud_token" {
+  type        = string
+  description = "Hetzner API token"
+  sensitive   = true
+}
+
+variable "hetzner_cloud_config_manager_version" {
+  type        = string
+  description = "Version of the HCloud CCM to use - defaults to latest"
+  default     = null
+}
+
+variable "hetzner_csi_driver_owner" {
+  type        = string
+  description = "GitHub owner to get the CSI driver from"
+  default     = "hetznercloud"
+}
+
+variable "hetzner_csi_driver_repo" {
+  type        = string
+  description = "GitHub repo to get the CSI driver from"
+  default     = "csi-driver"
+}
+
+variable "hetzner_csi_driver_version" {
+  type        = string
+  description = "Tag of the CSI driver to use - provide the tag name or latest"
+  default     = "latest"
+}
+
 variable "k3s_cluster_cidr" {
   type        = string
   description = "CIDR used for the k3s cluster"

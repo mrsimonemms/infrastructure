@@ -15,6 +15,11 @@
 terraform {
   required_version = ">= 1.0.0"
   required_providers {
+    # Should use a GITHUB_TOKEN envvar to avoid rate-limiting
+    github = {
+      source  = "integrations/github"
+      version = ">= 6.2.2, < 7.0.0"
+    }
     helm = {
       source  = "hashicorp/helm"
       version = ">= 2.14.0, < 3.0.0"
