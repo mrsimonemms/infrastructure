@@ -24,10 +24,12 @@ dependency "hetzner" {
   config_path = "../hetzner"
 
   mock_outputs = {
-    kubeconfig = "some-kubeconfig"
+    k3s_cluster_cidr = "some-cluster-cidr"
+    kubeconfig       = "some-kubeconfig"
   }
 }
 
 inputs = {
-  kubeconfig = dependency.hetzner.outputs.kubeconfig
+  k3s_cluster_cidr = dependency.hetzner.outputs.k3s_cluster_cidr
+  kubeconfig       = dependency.hetzner.outputs.kubeconfig
 }

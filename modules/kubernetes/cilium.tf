@@ -12,27 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+resource "helm_release" "cilium" {
+  chart           = "cilium"
+  name            = "cilium"
+  atomic          = true
+  cleanup_on_fail = true
+  namespace       = "kube-system"
+  repository      = "https://helm.cilium.io"
+  reset_values    = true
+  version         = var.cilium_version
+  wait            = true
 
-variable "cilium_version" {
-  type        = string
-  description = "Version of Cilium to use - defaults to latest"
-  default     = null
-}
+  set {
+    name  = "ipv4NativeRoutingCIDR"
+    value = var.k3s_cluster_cidr
+  }
 
-variable "k3s_cluster_cidr" {
-  type        = string
-  description = "CIDR used for the k3s cluster"
-  default     = "10.244.0.0/16"
-}
-
-variable "kubeconfig" {
-  type        = string
-  description = "Kubeconfig for the cluster"
-  sensitive   = true
-}
-
-variable "kube_context" {
-  type        = string
-  description = "Kubernetes context to use"
-  default     = "default"
+  set {
+    name  = "ipam.mode"
+    value = "kubernetes"
+  }
 }
