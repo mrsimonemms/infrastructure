@@ -25,5 +25,6 @@ dependency "hetzner" {
 }
 
 inputs = {
-  kubeconfig = dependency.hetzner.outputs.kubeconfig
+  k3s_cluster_cidr = dependency.hetzner.outputs.k3s_cluster_cidr
+  kubeconfig       = dependency.hetzner.outputs.kubeconfig
 }
