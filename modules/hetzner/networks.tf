@@ -26,7 +26,7 @@ resource "hcloud_network_subnet" "subnet" {
   ip_range     = var.network_subnet
 }
 
-resource "hcloud_firewall" "name" {
+resource "hcloud_firewall" "firewall" {
   name = format(local.name_format, "firewall")
 
   dynamic "rule" {

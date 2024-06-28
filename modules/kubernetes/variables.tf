@@ -19,15 +19,31 @@ variable "cilium_version" {
   default     = null
 }
 
-variable "hcloud_network_name" {
+variable "cluster_autoscaler_version" {
   type        = string
-  description = "Hetzner network name"
+  description = "Version of Cluster Autoscaler to use - defaults to latest"
+  default     = null
 }
 
 variable "hcloud_token" {
   type        = string
   description = "Hetzner API token"
   sensitive   = true
+}
+
+variable "hcloud_firewall_name" {
+  type        = string
+  description = "Hetzner firewall name"
+}
+
+variable "hcloud_network_name" {
+  type        = string
+  description = "Hetzner network name"
+}
+
+variable "hcloud_ssh_key_id" {
+  type        = string
+  description = "ID of the SSH key"
 }
 
 variable "hetzner_cloud_config_manager_version" {
@@ -58,6 +74,12 @@ variable "k3s_cluster_cidr" {
   type        = string
   description = "CIDR used for the k3s cluster"
   default     = "10.244.0.0/16"
+}
+
+variable "k3s_manager_server_image" {
+  type        = string
+  description = "Image to use for the k3s nodes"
+  default     = "ubuntu-24.04"
 }
 
 variable "kubeconfig" {

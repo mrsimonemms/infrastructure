@@ -12,9 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+output "hcloud_firewall_name" {
+  description = "Name of the firewall"
+  value       = hcloud_firewall.firewall.name
+}
+
 output "hcloud_network_name" {
   description = "Name of the network"
   value       = hcloud_network.network.name
+}
+
+output "hcloud_ssh_key_id" {
+  description = "ID of the SSH key"
+  value       = hcloud_ssh_key.server.id
 }
 
 output "k3s_cluster_cidr" {
@@ -26,6 +36,11 @@ output "k3s_join_token" {
   description = "K3s join token for adding additional nodes"
   sensitive   = true
   value       = local.k3s_join_token
+}
+
+output "k3s_manager_server_image" {
+  description = "Image to use for the k3s nodes"
+  value       = var.k3s_manager_server_image
 }
 
 output "kubeconfig" {

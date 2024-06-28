@@ -24,7 +24,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [hcloud_firewall.name](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall) | resource |
+| [hcloud_firewall.firewall](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall) | resource |
 | [hcloud_load_balancer.k3s_manager](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/load_balancer) | resource |
 | [hcloud_load_balancer_network.k3s_manager](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/load_balancer_network) | resource |
 | [hcloud_load_balancer_service.k3s_manager](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/load_balancer_service) | resource |
@@ -67,9 +67,12 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_hcloud_firewall_name"></a> [hcloud\_firewall\_name](#output\_hcloud\_firewall\_name) | Name of the firewall |
 | <a name="output_hcloud_network_name"></a> [hcloud\_network\_name](#output\_hcloud\_network\_name) | Name of the network |
+| <a name="output_hcloud_ssh_key_id"></a> [hcloud\_ssh\_key\_id](#output\_hcloud\_ssh\_key\_id) | ID of the SSH key |
 | <a name="output_k3s_cluster_cidr"></a> [k3s\_cluster\_cidr](#output\_k3s\_cluster\_cidr) | CIDR used for the k3s cluster |
 | <a name="output_k3s_join_token"></a> [k3s\_join\_token](#output\_k3s\_join\_token) | K3s join token for adding additional nodes |
+| <a name="output_k3s_manager_server_image"></a> [k3s\_manager\_server\_image](#output\_k3s\_manager\_server\_image) | Image to use for the k3s nodes |
 | <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | Kubeconfig file |
 | <a name="output_location"></a> [location](#output\_location) | Location to use. This is a single datacentre. |
 | <a name="output_region"></a> [region](#output\_region) | Region to use. This covers multiple datacentres. |

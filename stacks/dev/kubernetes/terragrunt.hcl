@@ -25,7 +25,10 @@ dependency "hetzner" {
 }
 
 inputs = {
+  hcloud_firewall_name = dependency.hetzner.outputs.hcloud_firewall_name
   hcloud_network_name = dependency.hetzner.outputs.hcloud_network_name
+  hcloud_ssh_key_id =   dependency.hetzner.outputs.hcloud_ssh_key_id
   k3s_cluster_cidr    = dependency.hetzner.outputs.k3s_cluster_cidr
+  k3s_manager_server_image = dependency.hetzner.outputs.k3s_manager_server_image
   kubeconfig          = dependency.hetzner.outputs.kubeconfig
 }
