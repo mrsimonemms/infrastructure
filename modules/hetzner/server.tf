@@ -88,3 +88,13 @@ resource "ssh_resource" "server_ready" {
     hcloud_server.manager
   ]
 }
+
+locals {
+  k3s_worker_nodes = []
+}
+
+# output "sss" {
+#   value = flatten([for n in local.k3s_worker_nodes : [
+#     for s in s.count : {}
+#   ]])
+# }

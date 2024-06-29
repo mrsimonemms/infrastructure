@@ -143,3 +143,5 @@ resource "ssh_sensitive_resource" "additional_managers" {
     ssh_resource.initial_manager
   ]
 }
+
+# curl -sfL ${k3s_download_url} | K3S_URL=${server} K3S_TOKEN=${token} sh -

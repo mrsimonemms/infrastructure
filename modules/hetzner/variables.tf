@@ -84,6 +84,46 @@ variable "k3s_manager_server_type" {
   default     = "cx22"
 }
 
+variable "k3s_worker_pools" {
+  type = list(object({
+    name        = string
+    server_type = string
+    count       = number
+    image       = optional(string, null)
+    labels = optional(
+      list(object({
+        key   = string
+        value = string
+      })),
+      []
+    )
+    taints = optional(
+      list(object({
+        key   = string
+        value = string
+      })),
+      []
+    )
+    autoscaling = optional(
+      list(object({
+        enabled   = bool
+        min_count = number
+        max_count = number
+      })),
+      []
+    )
+  }))
+  description = "Worker pools"
+  default = [
+    # {
+    #   name = "pool1"
+    # },
+    # {
+    #   name = "pool2"
+    # }
+  ]
+}
+
 variable "name" {
   type        = string
   description = "Name of project"
