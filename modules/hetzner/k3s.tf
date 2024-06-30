@@ -42,6 +42,13 @@ locals {
     )
     write-kubeconfig-mode = "0644"
   }
+  k3s_common_worker_config = {
+    kubelet-arg = [
+      "cloud-provider=external"
+    ]
+    server = local.k3s_server_url
+    token  = local.k3s_join_token
+  }
   k3s_install_command = [
     # Get the network interface
     "ip route get ${cidrhost(var.network_subnet, 0)} | awk -F \"dev \" 'NR==1{split($2,a,\" \");print a[1]}' > /tmp/network-interface",
@@ -61,7 +68,7 @@ locals {
   k3s_initial_manager_private_ip = tolist(local.k3s_initial_manager.network)[0].ip
   k3s_join_token                 = chomp(ssh_sensitive_resource.join_token.result)
   k3s_kubeconfig                 = chomp(ssh_sensitive_resource.kubeconfig.result)
-  k3s_server_url                 = "https://${var.k3s_manager_pool.count > 1 ? hcloud_load_balancer.k3s_manager[0].ipv4 : local.k3s_initial_manager_private_ip}:6443"
+  k3s_server_url                 = "https://${var.k3s_manager_pool.count > 1 ? hcloud_load_balancer.k3s_manager[0].ipv4 : local.k3s_initial_manager_private_ip}:${local.kubernetes_api_port}"
 }
 
 resource "ssh_resource" "initial_manager" {

@@ -104,6 +104,45 @@ variable "k3s_service_cidr" {
   default     = "10.43.0.0/16"
 }
 
+variable "k3s_worker_pools" {
+  type = list(object({
+    name        = string
+    server_type = optional(string, "cx22")
+    count       = optional(number, 1)
+    image       = optional(string, "ubuntu-24.04")
+    location    = optional(string) # Defaults to var.location if not set
+    labels = optional(
+      list(object({
+        key   = string
+        value = string
+      })),
+      [],
+    )
+    taints = optional(
+      list(object({
+        key    = string
+        value  = string
+        effect = string
+      })),
+      []
+    )
+    autoscaling = optional(
+      object({
+        enabled = bool
+        min     = number
+        max     = number
+      }),
+      {
+        enabled = false
+        min     = null
+        max     = null
+      },
+    )
+  }))
+  description = "Worker pools configuration"
+  default     = []
+}
+
 variable "name" {
   type        = string
   description = "Name of project"

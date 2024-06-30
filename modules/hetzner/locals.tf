@@ -22,6 +22,30 @@ locals {
   k3s_manager_labels = merge(local.labels, {
     format(local.label_namespace, "type") = "manager"
   })
+  k3s_worker_labels = merge(local.labels, {
+    format(local.label_namespace, "type") = "worker"
+  })
+  k3s_worker_nodes = flatten([for w in var.k3s_worker_pools : [
+    # If autoscaling, don't create any nodes
+    for n in range(w.autoscaling.enabled ? 0 : w.count) :
+    merge(
+      w,
+      {
+        pool     = w.name
+        name     = "${w.name}-${n}"
+        location = w.location != null ? w.location : var.location
+        labels = concat(
+          // Add the pool name as a label
+          [
+            {
+              key   = format(local.label_namespace, "pool"),
+              value = w.name
+            },
+          ],
+          w.labels,
+        )
+    })
+  ]])
   kubernetes_api_port = 6443
   label_namespace     = "simonemms.com/%s"
   machine_user        = "k3s"
@@ -29,6 +53,12 @@ locals {
     "hetzner",
     "%s", # resource name
     local.workspace_name
-  ])                                                     # use `format(local.name_format, "<name>")` to use this
+  ]) # use `format(local.name_format, "<name>")` to use this
+  worker_placement_groups = {
+    for i, w in hcloud_placement_group.workers : var.k3s_worker_pools[i].name => {
+      id   = w.id
+      name = w.name
+    }
+  }
   workspace_name = replace(var.workspace, "/[\\W]/", "") # alphanumeric workspace name
 }
