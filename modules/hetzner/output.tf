@@ -43,3 +43,8 @@ output "region" {
   description = "Region to use. This covers multiple datacentres."
   value       = var.region
 }
+
+output "worker_placement_groups" {
+  description = "Placement groups of worker node pools"
+  value       = local.worker_placement_groups
+}

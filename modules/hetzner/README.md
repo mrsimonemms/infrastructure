@@ -32,7 +32,9 @@ No modules.
 | [hcloud_network.network](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/network) | resource |
 | [hcloud_network_subnet.subnet](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/network_subnet) | resource |
 | [hcloud_placement_group.managers](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/placement_group) | resource |
+| [hcloud_placement_group.workers](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/placement_group) | resource |
 | [hcloud_server.manager](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server) | resource |
+| [hcloud_server.workers](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server) | resource |
 | [hcloud_ssh_key.server](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/ssh_key) | resource |
 | [ssh_resource.initial_manager](https://registry.terraform.io/providers/loafoe/ssh/latest/docs/resources/resource) | resource |
 | [ssh_resource.server_ready](https://registry.terraform.io/providers/loafoe/ssh/latest/docs/resources/resource) | resource |
@@ -51,6 +53,7 @@ No modules.
 | <a name="input_k3s_manager_load_balancer_algorithm"></a> [k3s\_manager\_load\_balancer\_algorithm](#input\_k3s\_manager\_load\_balancer\_algorithm) | Algorithm to use for the k3s manager load balancer | `string` | `"round_robin"` | no |
 | <a name="input_k3s_manager_load_balancer_type"></a> [k3s\_manager\_load\_balancer\_type](#input\_k3s\_manager\_load\_balancer\_type) | Load balancer type for the k3s manager nodes | `string` | `"lb11"` | no |
 | <a name="input_k3s_manager_pool"></a> [k3s\_manager\_pool](#input\_k3s\_manager\_pool) | Manager pool configuration | <pre>object({<br>    name        = optional(string, "manager")<br>    server_type = optional(string, "cx22")<br>    count       = optional(number, 1)<br>    image       = optional(string, "ubuntu-24.04")<br>    labels = optional(<br>      list(object({<br>        key   = string<br>        value = string<br>      })),<br>      [],<br>    )<br>    taints = optional(<br>      list(object({<br>        key    = string<br>        value  = string<br>        effect = string<br>      })),<br>      []<br>    )<br>  })</pre> | `{}` | no |
+| <a name="input_k3s_worker_pools"></a> [k3s\_worker\_pools](#input\_k3s\_worker\_pools) | Worker pools configuration | <pre>list(object({<br>    name        = string<br>    server_type = optional(string, "cx22")<br>    count       = optional(number, 1)<br>    image       = optional(string, "ubuntu-24.04")<br>    labels = optional(<br>      list(object({<br>        key   = string<br>        value = string<br>      })),<br>      [],<br>    )<br>    taints = optional(<br>      list(object({<br>        key    = string<br>        value  = string<br>        effect = string<br>      })),<br>      []<br>    )<br>    autoscaling = optional(<br>      object({<br>        enabled = bool<br>        min     = number<br>        max     = number<br>      }),<br>      {<br>        enabled = false<br>        min     = null<br>        max     = null<br>      },<br>    )<br>  }))</pre> | `[]` | no |
 | <a name="input_location"></a> [location](#input\_location) | Location to use. This is a single datacentre. | `string` | `"nbg1"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of project | `string` | `"infrastructure"` | no |
 | <a name="input_network_subnet"></a> [network\_subnet](#input\_network\_subnet) | Subnet of the main network | `string` | `"10.0.0.0/16"` | no |
@@ -71,4 +74,5 @@ No modules.
 | <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | Kubeconfig file |
 | <a name="output_location"></a> [location](#output\_location) | Location to use. This is a single datacentre. |
 | <a name="output_region"></a> [region](#output\_region) | Region to use. This covers multiple datacentres. |
+| <a name="output_worker_placement_groups"></a> [worker\_placement\_groups](#output\_worker\_placement\_groups) | Placement groups of worker node pools |
 <!-- END_TF_DOCS -->
