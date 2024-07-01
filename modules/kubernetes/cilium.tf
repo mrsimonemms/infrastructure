@@ -11,3 +11,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+resource "helm_release" "cilium" {
+  chart           = "cilium"
+  name            = "cilium"
+  atomic          = true
+  cleanup_on_fail = true
+  namespace       = "kube-system"
+  repository      = "https://helm.cilium.io"
+  reset_values    = true
+  version         = var.cilium_version
+  wait            = true
+
+  set {
+    name  = "ipv4NativeRoutingCIDR"
+    value = var.k3s_cluster_cidr
+  }
+
+  set {
+    name  = "ipam.mode"
+    value = "kubernetes"
+  }
+}

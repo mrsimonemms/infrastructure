@@ -12,19 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-STACK ?= dev
-
-cruft-update:
-ifeq (,$(wildcard .cruft.json))
-	@echo "Cruft not configured"
-else
-	@cruft check || cruft update --skip-apply-ask --refresh-private-variables
-endif
-.PHONY: cruft-update
-
-kubeconfig:
-	@mkdir -p ${HOME}/.kube
-	@cd ./stacks/${STACK}/hetzner && terragrunt output -json kubeconfig | jq -r > ${HOME}/.kube/config
-	@chmod 600 ${HOME}/.kube/config
-	@echo "Saved to ${HOME}/.kube/config"
-.PHONY: kubeconfig
+locals {
+  kubeconfig            = yamldecode(var.kubeconfig)
+  kubeconfig_clusters   = { for context in local.kubeconfig.clusters : context.name => context.cluster }
+  kubeconfig_users      = { for context in local.kubeconfig.users : context.name => context.user }
+  kubeconfig_by_context = { for context, cluster in local.kubeconfig_clusters : context => merge(cluster, local.kubeconfig_users[context]) }
+}

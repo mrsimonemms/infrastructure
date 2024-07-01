@@ -19,3 +19,23 @@ terraform {
 include {
   path = "../../common.hcl"
 }
+
+inputs = {
+  k3s_manager_pool = {
+    count = 3
+    server_type = "cpx11"
+  }
+  k3s_worker_pools = [
+    {
+      name = "pool1"
+      count = 3
+      server_type = "cpx11"
+      autoscaling = {
+        enabled = true
+        min = 1
+        max = 3
+      }
+    }
+  ]
+  network_subnet = "10.2.0.0/16"
+}

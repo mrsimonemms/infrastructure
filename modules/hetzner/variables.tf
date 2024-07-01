@@ -12,6 +12,172 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+variable "firewall_allow_api_access" {
+  type        = list(string)
+  description = "CIDR range to allow access to the Kubernetes API"
+  default = [
+    "0.0.0.0/0",
+    "::/0"
+  ]
+}
+
+variable "firewall_allow_ssh_access" {
+  type        = list(string)
+  description = "CIDR range to allow access to the servers via SSH"
+  default = [
+    "0.0.0.0/0",
+    "::/0"
+  ]
+}
+
+variable "location" {
+  type        = string
+  description = "Location to use. This is a single datacentre."
+  default     = "nbg1"
+}
+
+variable "k3s_cluster_cidr" {
+  type        = string
+  description = "CIDR used for the k3s cluster"
+  default     = "10.244.0.0/16"
+}
+
+variable "k3s_download_url" {
+  type        = string
+  description = "URL to download K3s from"
+  default     = "https://get.k3s.io"
+}
+
+variable "k3s_manager_pool" {
+  type = object({
+    name        = optional(string, "manager")
+    server_type = optional(string, "cx22")
+    count       = optional(number, 1)
+    image       = optional(string, "ubuntu-24.04")
+    labels = optional(
+      list(object({
+        key   = string
+        value = string
+      })),
+      [],
+    )
+    taints = optional(
+      list(object({
+        key    = string
+        value  = string
+        effect = string
+      })),
+      []
+    )
+  })
+  description = "Manager pool configuration"
+  default     = {}
+
+  validation {
+    condition     = var.k3s_manager_pool.count >= 1 && var.k3s_manager_pool.count % 2 == 1
+    error_message = "Invalid k3s_manager_pool.count given."
+  }
+}
+
+variable "k3s_manager_load_balancer_algorithm" {
+  type        = string
+  description = "Algorithm to use for the k3s manager load balancer"
+  default     = "round_robin"
+}
+
+variable "k3s_manager_load_balancer_type" {
+  type        = string
+  description = "Load balancer type for the k3s manager nodes"
+  default     = "lb11"
+}
+
+variable "k3s_worker_pools" {
+  type = list(object({
+    name        = string
+    server_type = optional(string, "cx22")
+    count       = optional(number, 1)
+    image       = optional(string, "ubuntu-24.04")
+    location    = optional(string)
+    labels = optional(
+      list(object({
+        key   = string
+        value = string
+      })),
+      [],
+    )
+    taints = optional(
+      list(object({
+        key    = string
+        value  = string
+        effect = string
+      })),
+      []
+    )
+    autoscaling = optional(
+      object({
+        enabled = bool
+        min     = number
+        max     = number
+      }),
+      {
+        enabled = false
+        min     = null
+        max     = null
+      },
+    )
+  }))
+  description = "Worker pools configuration"
+  default     = []
+}
+
+variable "name" {
+  type        = string
+  description = "Name of project"
+  default     = "infrastructure"
+}
+
+variable "network_type" {
+  type        = string
+  description = "Type of network to use"
+  default     = "cloud"
+
+  validation {
+    condition     = contains(["cloud", "server", "vswitch"], var.network_type)
+    error_message = "Invalid network_type selected."
+  }
+}
+
+variable "network_subnet" {
+  type        = string
+  description = "Subnet of the main network"
+  default     = "10.0.0.0/16"
+}
+
+variable "region" {
+  type        = string
+  description = "Region to use. This covers multiple datacentres."
+  default     = "eu-central"
+}
+
+variable "ssh_key" {
+  type        = string
+  description = "Path to the private SSH key"
+  default     = "~/.ssh/id_ed25519"
+}
+
+variable "ssh_key_public" {
+  type        = string
+  description = "Path to the public SSH key"
+  default     = "~/.ssh/id_ed25519.pub"
+}
+
+variable "ssh_port" {
+  type        = number
+  description = "Port to use for SSH access"
+  default     = 2244
+}
+
 variable "workspace" {
   type        = string
   description = "Terraform workspace name"
