@@ -78,10 +78,10 @@ resource "helm_release" "hcloud_csi" {
     value = sha512(yamlencode(kubernetes_secret_v1.hcloud.data))
   }
 
-  # set {
-  #   name = "controller.nodeSelector.node-role\.kubernetes\.io/control-plane"
-  #   value = ""
-  # }
+  set {
+    name  = "node.podAnnotations.secret"
+    value = sha512(yamlencode(kubernetes_secret_v1.hcloud.data))
+  }
 
   depends_on = [kubernetes_secret_v1.hcloud]
 }

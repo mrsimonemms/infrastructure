@@ -98,6 +98,7 @@ variable "k3s_worker_pools" {
     server_type = optional(string, "cx22")
     count       = optional(number, 1)
     image       = optional(string, "ubuntu-24.04")
+    location    = optional(string)
     labels = optional(
       list(object({
         key   = string

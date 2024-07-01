@@ -19,6 +19,12 @@ variable "cilium_version" {
   default     = null
 }
 
+variable "cluster_autoscaler_version" {
+  type        = string
+  description = "Version of Cluster Autoscaler to use - defaults to latest"
+  default     = null
+}
+
 variable "hcloud_network_name" {
   type        = string
   description = "Hetzner network name"
@@ -58,4 +64,40 @@ variable "kube_context" {
   type        = string
   description = "Kubernetes context to use"
   default     = "default"
+}
+
+variable "worker_pools" {
+  type = object({
+    firewall_id = string
+    network_id  = string
+    ssh_key_id  = string
+    pools = list(object({
+      location    = string
+      min         = string
+      max         = string
+      name        = string
+      server_type = string
+    }))
+    config = object({
+      imagesForArch = object({
+        arm64 = string
+        amd64 = string
+      })
+      nodeConfigs = map(object({
+        cloudInit = string
+        labels = list(object({
+          key   = string
+          value = string
+        }))
+        taints = list(object({
+          key    = string
+          value  = string
+          effect = string
+        }))
+      }))
+    })
+  })
+  description = "Cluster autoscaler configuration"
+  # sensitive   = true
+  default = null
 }

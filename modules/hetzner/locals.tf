@@ -33,8 +33,17 @@ locals {
       name        = "${w.name}-${n}"
       image       = w.image
       server_type = w.server_type
-      labels      = w.labels
-      taints      = w.taints
+      labels = concat(
+        // Add the pool name as a label
+        [
+          {
+            key   = format(local.label_namespace, "pool"),
+            value = w.name
+          },
+        ],
+        w.labels,
+      )
+      taints = w.taints
     }
   ]])
   kubernetes_api_port = 6443
@@ -45,11 +54,11 @@ locals {
     "%s", # resource name
     local.workspace_name
   ]) # use `format(local.name_format, "<name>")` to use this
-  worker_placement_groups = {
-    for i, w in hcloud_placement_group.workers : var.k3s_worker_pools[i].name => {
-      id   = w.id
-      name = w.name
-    }
-  }
+  # worker_placement_groups = {
+  #   for i, w in hcloud_placement_group.workers : var.k3s_worker_pools[i].name => {
+  #     id   = w.id
+  #     name = w.name
+  #   }
+  # }
   workspace_name = replace(var.workspace, "/[\\W]/", "") # alphanumeric workspace name
 }

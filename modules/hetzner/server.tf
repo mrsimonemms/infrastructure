@@ -89,62 +89,62 @@ resource "ssh_resource" "server_ready" {
   ]
 }
 
-resource "hcloud_placement_group" "workers" {
-  count = length(var.k3s_worker_pools)
+# resource "hcloud_placement_group" "workers" {
+#   count = length(var.k3s_worker_pools)
 
-  name = format(local.name_format, "k3s-worker-${var.k3s_worker_pools[count.index].name}")
-  type = "spread"
+#   name = format(local.name_format, "k3s-worker-${var.k3s_worker_pools[count.index].name}")
+#   type = "spread"
 
-  labels = merge(local.k3s_worker_labels, {
-    format(local.label_namespace, "pool") = var.k3s_worker_pools[count.index].name
-  })
-}
+#   labels = merge(local.k3s_worker_labels, {
+#     format(local.label_namespace, "pool") = var.k3s_worker_pools[count.index].name
+#   })
+# }
 
-resource "hcloud_server" "workers" {
-  count = length(local.k3s_worker_nodes)
+# resource "hcloud_server" "workers" {
+#   count = length(local.k3s_worker_nodes)
 
-  name        = format(local.name_format, local.k3s_worker_nodes[count.index].name)
-  image       = local.k3s_worker_nodes[count.index].image
-  server_type = local.k3s_worker_nodes[count.index].server_type
-  location    = var.location
-  ssh_keys = [
-    hcloud_ssh_key.server.id
-  ]
-  placement_group_id = local.worker_placement_groups[local.k3s_worker_nodes[count.index].pool].id
+#   name        = format(local.name_format, local.k3s_worker_nodes[count.index].name)
+#   image       = local.k3s_worker_nodes[count.index].image
+#   server_type = local.k3s_worker_nodes[count.index].server_type
+#   location    = var.location
+#   ssh_keys = [
+#     hcloud_ssh_key.server.id
+#   ]
+#   placement_group_id = local.worker_placement_groups[local.k3s_worker_nodes[count.index].pool].id
 
-  user_data = templatefile("${path.module}/files/k3s-worker.yaml", {
-    k3s_config = {
-      node-label = [for l in local.k3s_worker_nodes[count.index].labels : "${l.key}=${l.value}"]
-      node-name  = format(local.name_format, local.k3s_worker_nodes[count.index].name)
-      node-taint = [for t in local.k3s_worker_nodes[count.index].taints : "${t.key}=${t.value}:${t.effect}"]
-      server     = local.k3s_server_url
-      token      = local.k3s_join_token
-    }
-    k3s_download_url = var.k3s_download_url
-    sshPort          = var.ssh_port
-    publicKey        = hcloud_ssh_key.server.public_key
-    user             = local.machine_user
-  })
+#   user_data = templatefile("${path.module}/files/k3s-worker.yaml", {
+#     k3s_config = {
+#       node-label = [for l in local.k3s_worker_nodes[count.index].labels : "${l.key}=${l.value}"]
+#       node-name  = format(local.name_format, local.k3s_worker_nodes[count.index].name)
+#       node-taint = [for t in local.k3s_worker_nodes[count.index].taints : "${t.key}=${t.value}:${t.effect}"]
+#       server     = local.k3s_server_url
+#       token      = local.k3s_join_token
+#     }
+#     k3s_download_url = var.k3s_download_url
+#     sshPort          = var.ssh_port
+#     publicKey        = hcloud_ssh_key.server.public_key
+#     user             = local.machine_user
+#   })
 
-  network {
-    network_id = hcloud_network.network.id
-    # Set the alias_ips to avoid this triggering an update each run
-    # @link https://github.com/hetznercloud/terraform-provider-hcloud/issues/650#issuecomment-1497160625
-    alias_ips = []
-  }
+#   network {
+#     network_id = hcloud_network.network.id
+#     # Set the alias_ips to avoid this triggering an update each run
+#     # @link https://github.com/hetznercloud/terraform-provider-hcloud/issues/650#issuecomment-1497160625
+#     alias_ips = []
+#   }
 
-  public_net {
-    ipv4_enabled = true
-    ipv6_enabled = true
-  }
+#   public_net {
+#     ipv4_enabled = true
+#     ipv6_enabled = true
+#   }
 
-  labels = merge(local.k3s_worker_labels, {
-    format(local.label_namespace, "pool") = local.k3s_worker_nodes[count.index].pool
-  })
+#   labels = merge(local.k3s_worker_labels, {
+#     format(local.label_namespace, "pool") = local.k3s_worker_nodes[count.index].pool
+#   })
 
-  lifecycle {
-    ignore_changes = [
-      ssh_keys
-    ]
-  }
-}
+#   lifecycle {
+#     ignore_changes = [
+#       ssh_keys
+#     ]
+#   }
+# }
