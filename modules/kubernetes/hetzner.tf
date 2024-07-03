@@ -56,7 +56,7 @@ resource "kubernetes_annotations" "hcloud_ccm" {
     namespace = helm_release.hcloud_ccm.namespace
   }
   template_annotations = {
-    "secret" = sha512(yamlencode(kubernetes_secret_v1.hcloud.data))
+    secret = sha512(yamlencode(kubernetes_secret_v1.hcloud.data))
   }
 }
 
@@ -75,11 +75,4 @@ resource "helm_release" "hcloud_csi" {
     name  = "controller.podAnnotations.secret"
     value = sha512(yamlencode(kubernetes_secret_v1.hcloud.data))
   }
-
-  # set {
-  #   name = "controller.nodeSelector.node-role\.kubernetes\.io/control-plane"
-  #   value = ""
-  # }
-
-  depends_on = [kubernetes_secret_v1.hcloud]
 }

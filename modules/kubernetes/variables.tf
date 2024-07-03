@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+variable "cluster_autoscaler_version" {
+  type        = string
+  description = "Version of Cluster Autoscaler to use - defaults to latest"
+  default     = null
+}
+
 variable "hcloud_network_name" {
   type        = string
   description = "Hetzner network name"
@@ -51,4 +57,33 @@ variable "kube_context" {
   type        = string
   description = "Kubernetes context to use"
   default     = "default"
+}
+
+variable "worker_pools" {
+  type = list(object({
+    cloud_init  = string
+    firewall_id = string
+    image       = string
+    labels = list(object({
+      key   = string
+      value = string
+    }))
+    network_id = string
+    pool = object({
+      instanceType = string
+      minSize      = number
+      maxSize      = number
+      name         = string
+      region       = string
+    })
+    ssh_key_id = string
+    taints = list(object({
+      key    = string
+      value  = string
+      effect = string
+    }))
+  }))
+  description = "Cluster autoscaler configuration"
+  # sensitive   = true
+  default = []
 }

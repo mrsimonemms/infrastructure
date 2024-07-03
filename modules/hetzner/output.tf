@@ -43,3 +43,58 @@ output "region" {
   description = "Region to use. This covers multiple datacentres."
   value       = var.region
 }
+
+output "worker_pools" {
+  sensitive   = true
+  description = "Worker pool configuration for Cluster Autoscaler"
+  value = [
+    for w in var.k3s_worker_pools : {
+      labels = concat([
+        {
+          key   = "node.kubernetes.io/role"
+          value = "autoscaler-node"
+        },
+        {
+          key   = format(local.label_namespace, "pool")
+          value = w.name
+        },
+        ],
+        w.labels,
+      )
+      taints = w.taints
+      cloud_init = templatefile("${path.module}/files/k3s-worker.yaml", {
+        k3s_config = merge(local.k3s_common_worker_config, {
+          node-label = [for l in concat(
+            [
+              {
+                key   = "node.kubernetes.io/role"
+                value = "autoscaler-node"
+              },
+              {
+                key   = format(local.label_namespace, "pool")
+                value = w.name
+              },
+            ],
+            w.labels,
+          ) : "${l.key}=${l.value}"]
+          node-taint = [for t in w.taints : "${t.key}=${t.value}:${t.effect}"]
+        })
+        k3s_download_url = var.k3s_download_url
+        sshPort          = var.ssh_port
+        publicKey        = hcloud_ssh_key.server.public_key
+        user             = local.machine_user
+      })
+      firewall_id = hcloud_firewall.name.id
+      image       = w.image,
+      network_id  = hcloud_network.network.id
+      pool = {
+        instanceType = w.server_type
+        minSize      = w.autoscaling.min
+        maxSize      = w.autoscaling.max
+        name         = w.name
+        region       = w.location != null ? w.location : var.location
+      }
+      ssh_key_id = hcloud_ssh_key.server.id
+    } if lookup(w.autoscaling, "enabled", false) == true
+  ]
+}

@@ -76,4 +76,5 @@ No modules.
 | <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | Kubeconfig file |
 | <a name="output_location"></a> [location](#output\_location) | Location to use. This is a single datacentre. |
 | <a name="output_region"></a> [region](#output\_region) | Region to use. This covers multiple datacentres. |
+| <a name="output_worker_pools"></a> [worker\_pools](#output\_worker\_pools) | Worker pool configuration for Cluster Autoscaler |
 <!-- END_TF_DOCS -->
