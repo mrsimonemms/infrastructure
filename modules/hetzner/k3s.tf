@@ -34,8 +34,17 @@ locals {
     kube-proxy-arg              = "metrics-bind-address=0.0.0.0"
     kube-scheduler-arg          = "bind-address=0.0.0.0"
     node-label                  = [for l in var.k3s_manager_pool.labels : "${l.key}=${l.value}"]
-    node-taint                  = [for t in var.k3s_manager_pool.taints : "${t.key}=${t.value}:${t.effect}"]
-    service-cidr                = var.k3s_service_cidr
+    node-taint = [for t in concat(
+      var.schedule_workloads_on_manager_nodes ? [] : [
+        {
+          key    = "CriticalAddonsOnly"
+          value  = "true"
+          effect = "NoExecute"
+        }
+      ],
+      var.k3s_manager_pool.taints
+    ) : "${t.key}=${t.value}:${t.effect}"]
+    service-cidr = var.k3s_service_cidr
     tls-san = concat(
       [local.k3s_access_address],
       [for o in hcloud_server.manager : tolist(o.network)[0].ip]

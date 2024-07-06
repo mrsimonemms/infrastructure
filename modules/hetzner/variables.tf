@@ -172,6 +172,12 @@ variable "region" {
   default     = "eu-central"
 }
 
+variable "schedule_workloads_on_manager_nodes" {
+  type        = bool
+  description = "Allow scheduling of workloads of manager nodes."
+  default     = true
+}
+
 variable "ssh_key" {
   type        = string
   description = "Path to the private SSH key"

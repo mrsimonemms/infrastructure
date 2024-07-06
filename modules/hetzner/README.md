@@ -61,6 +61,7 @@ No modules.
 | <a name="input_network_subnet"></a> [network\_subnet](#input\_network\_subnet) | Subnet of the main network | `string` | `"10.0.0.0/16"` | no |
 | <a name="input_network_type"></a> [network\_type](#input\_network\_type) | Type of network to use | `string` | `"cloud"` | no |
 | <a name="input_region"></a> [region](#input\_region) | Region to use. This covers multiple datacentres. | `string` | `"eu-central"` | no |
+| <a name="input_schedule_workloads_on_manager_nodes"></a> [schedule\_workloads\_on\_manager\_nodes](#input\_schedule\_workloads\_on\_manager\_nodes) | Allow scheduling of workloads of manager nodes. | `bool` | `true` | no |
 | <a name="input_ssh_key"></a> [ssh\_key](#input\_ssh\_key) | Path to the private SSH key | `string` | `"~/.ssh/id_ed25519"` | no |
 | <a name="input_ssh_key_public"></a> [ssh\_key\_public](#input\_ssh\_key\_public) | Path to the public SSH key | `string` | `"~/.ssh/id_ed25519.pub"` | no |
 | <a name="input_ssh_port"></a> [ssh\_port](#input\_ssh\_port) | Port to use for SSH access | `number` | `2244` | no |

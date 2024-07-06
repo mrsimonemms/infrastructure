@@ -13,6 +13,12 @@
 # limitations under the License.
 
 locals {
+  control_plane_taints = [
+    {
+      key      = "CriticalAddonsOnly"
+      operator = "Exists"
+    },
+  ]
   kubeconfig            = yamldecode(var.kubeconfig)
   kubeconfig_clusters   = { for context in local.kubeconfig.clusters : context.name => context.cluster }
   kubeconfig_users      = { for context in local.kubeconfig.users : context.name => context.user }

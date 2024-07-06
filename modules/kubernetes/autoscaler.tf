@@ -90,4 +90,26 @@ resource "helm_release" "cluster_autoscaler" {
     name  = "podAnnotations.secret"
     value = sha512(yamlencode(kubernetes_secret_v1.cluster_autoscaler[count.index].data))
   }
+
+  # Allow running on control plane nodes
+  dynamic "set" {
+    for_each = flatten([
+      for i, taint in local.control_plane_taints :
+      [
+        for k, v in taint :
+        [
+          {
+            name  = "tolerations[${i}].${k}"
+            value = v
+          },
+        ]
+      ]
+    ])
+    iterator = each
+
+    content {
+      name  = each.value.name
+      value = each.value.value
+    }
+  }
 }

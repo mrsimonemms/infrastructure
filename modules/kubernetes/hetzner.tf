@@ -75,4 +75,30 @@ resource "helm_release" "hcloud_csi" {
     name  = "controller.podAnnotations.secret"
     value = sha512(yamlencode(kubernetes_secret_v1.hcloud.data))
   }
+
+  # Allow running on control plane nodes
+  dynamic "set" {
+    for_each = flatten([
+      for i, taint in local.control_plane_taints :
+      [
+        for k, v in taint :
+        [
+          {
+            name  = "controller.tolerations[${i}].${k}"
+            value = v
+          },
+          {
+            name  = "node.tolerations[${i}].${k}"
+            value = v
+          },
+        ]
+      ]
+    ])
+    iterator = each
+
+    content {
+      name  = each.value.name
+      value = each.value.value
+    }
+  }
 }
