@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+variable "cert_manager_version" {
+  type        = string
+  description = "Version of cert-manager to use - defaults to latest"
+  default     = null
+}
+
 variable "cluster_autoscaler_version" {
   type        = string
   description = "Version of Cluster Autoscaler to use - defaults to latest"
