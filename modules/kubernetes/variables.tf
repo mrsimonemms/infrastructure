@@ -18,6 +18,18 @@ variable "cluster_autoscaler_version" {
   default     = null
 }
 
+variable "cloudflare_api_token" {
+  type        = string
+  description = "Cloudflare API token"
+  sensitive   = true
+}
+
+variable "external_dns_version" {
+  type        = string
+  description = "Version of External DNS to install - defaults to latest"
+  default     = null
+}
+
 variable "hcloud_network_name" {
   type        = string
   description = "Hetzner network name"
@@ -41,6 +53,12 @@ variable "hetzner_csi_driver_version" {
   default     = null
 }
 
+variable "ingress_nginx_version" {
+  type        = string
+  description = "Version of Ingress Nginx to install - defaults to latest"
+  default     = null
+}
+
 variable "k3s_cluster_cidr" {
   type        = string
   description = "CIDR used for the k3s cluster"
@@ -57,6 +75,17 @@ variable "kube_context" {
   type        = string
   description = "Kubernetes context to use"
   default     = "default"
+}
+
+variable "load_balancer_region" {
+  type        = string
+  description = "Region to use for the load balancer"
+}
+
+variable "load_balancer_type" {
+  type        = string
+  description = "Type of load balancer to use"
+  default     = "lb11"
 }
 
 variable "worker_pools" {

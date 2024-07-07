@@ -27,13 +27,15 @@ dependency "hetzner" {
     hcloud_network_name = "some-network-name"
     k3s_cluster_cidr    = "some-cluster-cidr"
     kubeconfig          = "some-kubeconfig"
+    region              = "some-region"
     worker_pools        = []
   }
 }
 
 inputs = {
-  hcloud_network_name = dependency.hetzner.outputs.hcloud_network_name
-  k3s_cluster_cidr    = dependency.hetzner.outputs.k3s_cluster_cidr
-  kubeconfig          = dependency.hetzner.outputs.kubeconfig
-  worker_pools        = dependency.hetzner.outputs.worker_pools
+  hcloud_network_name  = dependency.hetzner.outputs.hcloud_network_name
+  k3s_cluster_cidr     = dependency.hetzner.outputs.k3s_cluster_cidr
+  kubeconfig           = dependency.hetzner.outputs.kubeconfig
+  load_balancer_region = dependency.hetzner.outputs.region
+  worker_pools         = dependency.hetzner.outputs.worker_pools
 }
