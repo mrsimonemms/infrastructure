@@ -30,11 +30,20 @@ resource "hcloud_firewall" "firewall" {
   name = format(local.name_format, "firewall")
 
   dynamic "rule" {
-    for_each = [
+    for_each = [for each in [
       {
         description = "SSH port"
         port        = var.ssh_port
         source_ips  = var.firewall_allow_ssh_access
+      },
+      {
+        description = "Allow ICMP (ping)"
+        source_ips = [
+          local.global_ipv4_cidr,
+          local.global_ipv6_cidr,
+        ]
+        protocol = "icmp"
+        port     = null
       },
       {
         description = "Allow all TCP traffic on private network"
@@ -49,12 +58,15 @@ resource "hcloud_firewall" "firewall" {
         ]
         protocol = "udp"
       },
+      # Direct public access only allowed if single manager node
       {
         description = "Allow access to Kubernetes API"
         port        = local.kubernetes_api_port
         source_ips  = var.firewall_allow_api_access
+        disabled    = var.k3s_manager_pool.count > 1
       }
-    ]
+    ] : each if lookup(each, "disabled", false) != true]
+
     content {
       description     = lookup(rule.value, "description", "")
       destination_ips = lookup(rule.value, "destination_ips", [])
