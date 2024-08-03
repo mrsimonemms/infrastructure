@@ -31,16 +31,56 @@ variable "firewall_allow_ssh_access" {
   ]
 }
 
-# variable "location" {
-#   type        = string
-#   description = "Location to use. This is a single datacentre."
-#   default     = "nbg1"
-# }
+variable "k3s_manager_load_balancer_algorithm" {
+  type        = string
+  description = "Algorithm to use for the k3s manager load balancer"
+  default     = "round_robin"
+}
+
+variable "k3s_manager_load_balancer_type" {
+  type        = string
+  description = "Load balancer type for the k3s manager nodes"
+  default     = "lb11"
+}
+
+variable "k3s_manager_pool" {
+  type = object({
+    name        = optional(string, "manager")
+    server_type = optional(string, "cx22")
+    count       = optional(number, 1)
+    image       = optional(string, "ubuntu-24.04")
+  })
+  description = "Manager pool configuration"
+  default     = {}
+
+  validation {
+    condition     = var.k3s_manager_pool.count >= 1 && var.k3s_manager_pool.count % 2 == 1
+    error_message = "Invalid k3s_manager_pool.count given."
+  }
+}
+
+variable "k3s_worker_pools" {
+  type = list(object({
+    name        = string
+    server_type = optional(string, "cx22")
+    count       = optional(number, 1)
+    image       = optional(string, "ubuntu-24.04")
+    location    = optional(string) # Defaults to var.location if not set
+  }))
+  description = "Worker pools configuration"
+  default     = []
+}
+
+variable "location" {
+  type        = string
+  description = "Location to use. This is a single datacentre."
+  default     = "nbg1"
+}
 
 variable "name" {
   type        = string
   description = "Name of project"
-  default     = "infrastructure"
+  default     = "k3s"
 }
 
 variable "network_type" {
@@ -64,6 +104,12 @@ variable "region" {
   type        = string
   description = "Region to use. This covers multiple datacentres."
   default     = "eu-central"
+}
+
+variable "ssh_key_public" {
+  type        = string
+  description = "Path to the public SSH key"
+  default     = "~/.ssh/id_ed25519.pub"
 }
 
 variable "ssh_port" {
