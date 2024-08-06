@@ -17,6 +17,12 @@ output "kube_api_server" {
   value       = var.k3s_manager_pool.count > 1 ? hcloud_load_balancer.k3s_manager[0].ipv4 : hcloud_server.manager[0].ipv4_address
 }
 
+output "kubeconfig" {
+  description = "Kubeconfig file"
+  sensitive   = true
+  value       = module.k3s.kube_config
+}
+
 output "pools" {
   description = "Servers created"
   value = merge(

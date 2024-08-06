@@ -18,7 +18,9 @@
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_k3s"></a> [k3s](#module\_k3s) | xunleii/k3s/module | n/a |
 
 ## Resources
 
@@ -64,6 +66,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_kube_api_server"></a> [kube\_api\_server](#output\_kube\_api\_server) | Kubernetes API server address |
+| <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | Kubeconfig file |
 | <a name="output_pools"></a> [pools](#output\_pools) | Servers created |
 | <a name="output_ssh_port"></a> [ssh\_port](#output\_ssh\_port) | SSH port for server |
 | <a name="output_ssh_user"></a> [ssh\_user](#output\_ssh\_user) | SSH user for server |
