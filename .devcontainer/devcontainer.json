@@ -17,5 +17,15 @@
       ],
       "settings": {}
     }
+  },
+  "mounts": [
+    {
+      "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.ssh",
+      "target": "/home/vscode/.ssh",
+      "type": "bind"
+    }
+  ],
+  "initializeCommand": {
+    "ensureSSHDirNix": "mkdir -p ${localEnv:HOME}${localEnv:USERPROFILE}/.ssh"
   }
 }

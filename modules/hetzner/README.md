@@ -12,7 +12,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | >= 1.47.0, < 2.0.0 |
+| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.48.0 |
 
 ## Modules
 
