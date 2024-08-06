@@ -30,10 +30,10 @@ output "pools" {
       ]
     },
     {
-      for w in local.k3s_worker_pools : w.pool => {
-        name         = hcloud_server.workers[w.name].name
-        ipv4_address = hcloud_server.workers[w.name].ipv4_address
-        ipv6_address = hcloud_server.workers[w.name].ipv6_address
+      for k, w in local.k3s_worker_pools : w.pool => {
+        name         = hcloud_server.workers[k].name
+        ipv4_address = hcloud_server.workers[k].ipv4_address
+        ipv6_address = hcloud_server.workers[k].ipv6_address
       }...
     }
   )

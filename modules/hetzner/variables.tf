@@ -106,6 +106,12 @@ variable "region" {
   default     = "eu-central"
 }
 
+variable "ssh_key" {
+  type        = string
+  description = "Path to private SSH key"
+  default     = "~/.ssh/id_ed25519"
+}
+
 variable "ssh_key_public" {
   type        = string
   description = "Path to the public SSH key"

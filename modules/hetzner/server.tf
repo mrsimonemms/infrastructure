@@ -88,16 +88,17 @@ resource "hcloud_placement_group" "workers" {
 }
 
 resource "hcloud_server" "workers" {
-  for_each = { for i in local.k3s_worker_pools : i.name => i }
+  count = length(local.k3s_worker_pools)
+  # for_each = { for i in local.k3s_worker_pools : i.name => i }
 
-  name        = format(local.name_format, each.value.name)
-  image       = each.value.image
-  server_type = each.value.server_type
-  location    = each.value.location
+  name        = format(local.name_format, local.k3s_worker_pools[count.index].name)
+  image       = local.k3s_worker_pools[count.index].image
+  server_type = local.k3s_worker_pools[count.index].server_type
+  location    = local.k3s_worker_pools[count.index].location
   ssh_keys = [
     hcloud_ssh_key.server.id
   ]
-  placement_group_id = hcloud_placement_group.workers[each.value.pool].id
+  placement_group_id = hcloud_placement_group.workers[local.k3s_worker_pools[count.index].pool].id
 
   user_data = local.user_data
 
@@ -114,7 +115,7 @@ resource "hcloud_server" "workers" {
   }
 
   labels = merge(local.k3s_worker_labels, {
-    format(local.label_namespace, "pool") = each.value.pool
+    format(local.label_namespace, "pool") = local.k3s_worker_pools[count.index].pool
   })
 
   lifecycle {
@@ -122,4 +123,40 @@ resource "hcloud_server" "workers" {
       ssh_keys
     ]
   }
+}
+
+resource "ssh_resource" "manager_ready" {
+  count = var.k3s_manager_pool.count
+
+  host        = hcloud_server.manager[count.index].ipv4_address
+  user        = local.ssh_user
+  private_key = file(var.ssh_key)
+  port        = var.ssh_port
+
+  timeout     = "5m"
+  retry_delay = "5s"
+
+  commands = [
+    "cloud-init status | grep \"status: done\""
+  ]
+
+  depends_on = [hcloud_server.manager]
+}
+
+resource "ssh_resource" "workers_ready" {
+  count = length(hcloud_server.workers)
+
+  host        = hcloud_server.workers[count.index].ipv4_address
+  user        = local.ssh_user
+  private_key = file(var.ssh_key)
+  port        = var.ssh_port
+
+  timeout     = "5m"
+  retry_delay = "5s"
+
+  commands = [
+    "cloud-init status | grep \"status: done\""
+  ]
+
+  depends_on = [hcloud_server.workers]
 }

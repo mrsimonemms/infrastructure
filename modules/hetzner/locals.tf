@@ -37,8 +37,9 @@ locals {
   ])
   kubernetes_api_port = 6443
   labels = {
-    format(local.label_namespace, "project")   = var.name
-    format(local.label_namespace, "workspace") = local.workspace_name
+    format(local.label_namespace, "project")     = var.name
+    format(local.label_namespace, "provisioner") = "terraform"
+    format(local.label_namespace, "workspace")   = local.workspace_name
   }
   label_namespace = "simonemms.com/%s"
   name_format = join("-", [
