@@ -17,7 +17,18 @@ module "k3s" {
 
   cluster_domain = format(local.name_format, "cluster")
   k3s_version    = "latest"
-  use_sudo       = true
+  use_sudo       = false
+  cidr = {
+    pods     = "10.42.0.0/16"
+    services = "10.43.0.0/16"
+  }
+  drain_timeout  = "30s"
+  managed_fields = ["label", "taint"] // ignore annotations
+
+  global_flags = [
+    "--flannel-iface ens10",
+    "--kubelet-arg cloud-provider=external" // required to use https://github.com/hetznercloud/hcloud-cloud-controller-manager
+  ]
 
   servers = {
     for i in range(length(hcloud_server.manager)) : hcloud_server.manager[i].name => {
@@ -28,6 +39,17 @@ module "k3s" {
         private_key = file(var.ssh_key)
         port        = var.ssh_port
       }
+
+      flags = concat(
+        [
+          "--disable-cloud-controller",
+          "--write-kubeconfig-mode 0644"
+        ],
+        [for i in hcloud_server.manager : "--tls-san ${i.ipv4_address}"],
+        var.k3s_manager_pool.count > 1 ? ["--tls-san ${hcloud_load_balancer.k3s_manager[0].ipv4}"] : []
+      )
+
+      annotations = { "server_id" : i } // these annotations will not be managed by this module
     }
   }
 
