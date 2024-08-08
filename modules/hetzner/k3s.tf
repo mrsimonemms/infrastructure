@@ -13,7 +13,8 @@
 # limitations under the License.
 
 module "k3s" {
-  source = "xunleii/k3s/module"
+  source  = "xunleii/k3s/module"
+  version = ">= 3.4.0, < 4.0.0"
 
   cluster_domain = format(local.name_format, "cluster")
   k3s_version    = "latest"
@@ -23,11 +24,11 @@ module "k3s" {
     services = "10.43.0.0/16"
   }
   drain_timeout  = "30s"
-  managed_fields = ["label", "taint"] // ignore annotations
+  managed_fields = ["label", "taint"] # ignore annotations
 
   global_flags = [
-    "--flannel-iface ens10",
-    "--kubelet-arg cloud-provider=external" // required to use https://github.com/hetznercloud/hcloud-cloud-controller-manager
+    "--flannel-iface eth0",
+    "--kubelet-arg cloud-provider=external" # required to use https://github.com/hetznercloud/hcloud-cloud-controller-manager
   ]
 
   servers = {
@@ -43,13 +44,18 @@ module "k3s" {
       flags = concat(
         [
           "--disable-cloud-controller",
-          "--write-kubeconfig-mode 0644"
+          "--write-kubeconfig-mode 0644",
         ],
-        [for i in hcloud_server.manager : "--tls-san ${i.ipv4_address}"],
-        var.k3s_manager_pool.count > 1 ? ["--tls-san ${hcloud_load_balancer.k3s_manager[0].ipv4}"] : []
+        [for i in hcloud_server.manager : "--tls-san ${i.ipv4_address}"],          # Server's public address
+        [for i in hcloud_server.manager : "--tls-san ${tolist(i.network)[0].ip}"], # Server's private address
+        # Load balancer, if created
+        var.k3s_manager_pool.count > 1 ? [
+          "--tls-san ${hcloud_load_balancer.k3s_manager[0].ipv4}",      # Public IP
+          "--tls-san ${hcloud_load_balancer.k3s_manager[0].network_ip}" # Private IP
+        ] : []
       )
 
-      annotations = { "server_id" : i } // these annotations will not be managed by this module
+      annotations = { "server_id" : i } # these annotations will not be managed by this module
     }
   }
 

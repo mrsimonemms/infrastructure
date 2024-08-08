@@ -22,7 +22,7 @@ include {
 
 inputs = {
   k3s_manager_pool = {
-    count = 1
+    count = 3
   }
   // k3s_worker_pools = [
   //   {
