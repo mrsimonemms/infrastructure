@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 variable "firewall_allow_api_access" {
   type        = list(string)
   description = "CIDR range to allow access to the Kubernetes API"
@@ -29,6 +28,18 @@ variable "firewall_allow_ssh_access" {
     "0.0.0.0/0",
     "::/0"
   ]
+}
+
+variable "hcloud_ccm_file" {
+  type        = string
+  description = "Hetzner Cloud Controller Manager manifest"
+  default     = "https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/latest/download/ccm-networks.yaml"
+}
+
+variable "hcloud_token" {
+  type        = string
+  description = "HCloud token"
+  sensitive   = true
 }
 
 variable "k3s_manager_load_balancer_algorithm" {
@@ -121,7 +132,7 @@ variable "ssh_key_public" {
 variable "ssh_port" {
   type        = number
   description = "Port to use for SSH access"
-  default     = 22
+  default     = 2244
 }
 
 variable "workspace" {
