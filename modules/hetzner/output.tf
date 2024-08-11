@@ -39,6 +39,7 @@ output "network_name" {
 }
 
 output "pools" {
+  sensitive   = true
   description = "Servers created"
   value = merge(
     {
