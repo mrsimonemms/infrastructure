@@ -26,7 +26,7 @@ module "k3s" {
       connection = {
         host        = i.ipv4_address
         port        = var.ssh_port
-        private_key = file(var.ssh_key)
+        private_key = var.ssh_key
         user        = local.ssh_user
       }
     }
@@ -41,7 +41,7 @@ module "k3s" {
       connection = {
         host        = hcloud_server.workers[i].ipv4_address
         port        = var.ssh_port
-        private_key = file(var.ssh_key)
+        private_key = var.ssh_key
         user        = local.ssh_user
       }
     }...

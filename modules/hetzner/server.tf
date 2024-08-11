@@ -17,7 +17,7 @@
 ##########
 resource "hcloud_ssh_key" "server" {
   name       = format(local.name_format, "ssh_key")
-  public_key = file(var.ssh_key_public)
+  public_key = var.ssh_key_public
 
   labels = merge(local.k3s_manager_labels, {})
 }
@@ -130,7 +130,7 @@ resource "ssh_resource" "manager_ready" {
 
   host        = hcloud_server.manager[count.index].ipv4_address
   user        = local.ssh_user
-  private_key = file(var.ssh_key)
+  private_key = var.ssh_key
   port        = var.ssh_port
 
   timeout     = "5m"
@@ -148,7 +148,7 @@ resource "ssh_resource" "workers_ready" {
 
   host        = hcloud_server.workers[count.index].ipv4_address
   user        = local.ssh_user
-  private_key = file(var.ssh_key)
+  private_key = var.ssh_key
   port        = var.ssh_port
 
   timeout     = "5m"

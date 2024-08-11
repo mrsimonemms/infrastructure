@@ -32,16 +32,16 @@ terraform {
 
 provider "helm" {
   kubernetes {
-    host                   = local.kubeconfig_by_context[var.kube_context].server
-    client_certificate     = base64decode(local.kubeconfig_by_context[var.kube_context].client-certificate-data)
-    client_key             = base64decode(local.kubeconfig_by_context[var.kube_context].client-key-data)
-    cluster_ca_certificate = base64decode(local.kubeconfig_by_context[var.kube_context].certificate-authority-data)
+    host                   = try(local.kubeconfig_by_context[var.kube_context].server, null)
+    client_certificate     = try(base64decode(local.kubeconfig_by_context[var.kube_context].client-certificate-data), null)
+    client_key             = try(base64decode(local.kubeconfig_by_context[var.kube_context].client-key-data), null)
+    cluster_ca_certificate = try(base64decode(local.kubeconfig_by_context[var.kube_context].certificate-authority-data), null)
   }
 }
 
 provider "kubernetes" {
-  host                   = local.kubeconfig_by_context[var.kube_context].server
-  client_certificate     = base64decode(local.kubeconfig_by_context[var.kube_context].client-certificate-data)
-  client_key             = base64decode(local.kubeconfig_by_context[var.kube_context].client-key-data)
-  cluster_ca_certificate = base64decode(local.kubeconfig_by_context[var.kube_context].certificate-authority-data)
+  host                   = try(local.kubeconfig_by_context[var.kube_context].server, null)
+  client_certificate     = try(base64decode(local.kubeconfig_by_context[var.kube_context].client-certificate-data), null)
+  client_key             = try(base64decode(local.kubeconfig_by_context[var.kube_context].client-key-data), null)
+  cluster_ca_certificate = try(base64decode(local.kubeconfig_by_context[var.kube_context].certificate-authority-data), null)
 }
