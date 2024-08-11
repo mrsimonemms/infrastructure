@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+output "hcloud_network_name" {
+  description = "Name of the network"
+  value       = hcloud_network.network.name
+}
+
 output "kubeconfig" {
   sensitive   = true
   description = "Kubeconfig"

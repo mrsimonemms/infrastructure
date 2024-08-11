@@ -65,6 +65,7 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_hcloud_network_name"></a> [hcloud\_network\_name](#output\_hcloud\_network\_name) | Name of the network |
 | <a name="output_k3s_cluster_cidr"></a> [k3s\_cluster\_cidr](#output\_k3s\_cluster\_cidr) | CIDR used for the k3s cluster |
 | <a name="output_kube_api_server"></a> [kube\_api\_server](#output\_kube\_api\_server) | Kubernetes API server address |
 | <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | Kubeconfig |
