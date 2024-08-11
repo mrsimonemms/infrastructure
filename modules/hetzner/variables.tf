@@ -107,21 +107,20 @@ variable "region" {
 }
 
 variable "ssh_key" {
+  sensitive   = true
   type        = string
-  description = "Path to private SSH key"
-  default     = "~/.ssh/id_ed25519"
+  description = "Private SSH key"
 }
 
 variable "ssh_key_public" {
   type        = string
-  description = "Path to the public SSH key"
-  default     = "~/.ssh/id_ed25519.pub"
+  description = "Public SSH key"
 }
 
 variable "ssh_port" {
   type        = number
   description = "Port to use for SSH access"
-  default     = 22
+  default     = 2244
 }
 
 variable "workspace" {

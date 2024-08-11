@@ -20,7 +20,7 @@ locals {
     },
   ]
   kubeconfig            = yamldecode(var.kubeconfig)
-  kubeconfig_clusters   = { for context in local.kubeconfig.clusters : context.name => context.cluster }
-  kubeconfig_users      = { for context in local.kubeconfig.users : context.name => context.user }
-  kubeconfig_by_context = { for context, cluster in local.kubeconfig_clusters : context => merge(cluster, local.kubeconfig_users[context]) }
+  kubeconfig_clusters   = try({ for context in local.kubeconfig.clusters : context.name => context.cluster }, {})
+  kubeconfig_users      = try({ for context in local.kubeconfig.users : context.name => context.user }, {})
+  kubeconfig_by_context = try({ for context, cluster in local.kubeconfig_clusters : context => merge(cluster, local.kubeconfig_users[context]) }, {})
 }
