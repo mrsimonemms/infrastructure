@@ -56,9 +56,9 @@
 | <a name="input_network_subnet"></a> [network\_subnet](#input\_network\_subnet) | Subnet of the main network | `string` | `"10.0.0.0/16"` | no |
 | <a name="input_network_type"></a> [network\_type](#input\_network\_type) | Type of network to use | `string` | `"cloud"` | no |
 | <a name="input_region"></a> [region](#input\_region) | Region to use. This covers multiple datacentres. | `string` | `"eu-central"` | no |
-| <a name="input_ssh_key"></a> [ssh\_key](#input\_ssh\_key) | Path to private SSH key | `string` | `"~/.ssh/id_ed25519"` | no |
-| <a name="input_ssh_key_public"></a> [ssh\_key\_public](#input\_ssh\_key\_public) | Path to the public SSH key | `string` | `"~/.ssh/id_ed25519.pub"` | no |
-| <a name="input_ssh_port"></a> [ssh\_port](#input\_ssh\_port) | Port to use for SSH access | `number` | `22` | no |
+| <a name="input_ssh_key"></a> [ssh\_key](#input\_ssh\_key) | Private SSH key | `string` | n/a | yes |
+| <a name="input_ssh_key_public"></a> [ssh\_key\_public](#input\_ssh\_key\_public) | Public SSH key | `string` | n/a | yes |
+| <a name="input_ssh_port"></a> [ssh\_port](#input\_ssh\_port) | Port to use for SSH access | `number` | `2244` | no |
 | <a name="input_workspace"></a> [workspace](#input\_workspace) | Terraform workspace name | `string` | `"default"` | no |
 
 ## Outputs
