@@ -20,8 +20,18 @@ include {
   path = "../../common.hcl"
 }
 
-inputs = {
-  k3s_manager_pool = {
-    count = 3
+dependency "hetzner" {
+  config_path = "../hetzner"
+
+  mock_outputs = {
+    hcloud_network_name = "some-network-name"
+    k3s_cluster_cidr    = "some-cluster-cidr"
+    kubeconfig          = "some-kubeconfig"
   }
+}
+
+inputs = {
+  hcloud_network_name = dependency.hetzner.outputs.hcloud_network_name
+  k3s_cluster_cidr    = dependency.hetzner.outputs.k3s_cluster_cidr
+  kubeconfig          = dependency.hetzner.outputs.kubeconfig
 }
