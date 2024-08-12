@@ -26,7 +26,9 @@
     }
   ],
   "initializeCommand": {
-    "ensureKubeDir": "mkdir -p ${localEnv:HOME}${localEnv:USERPROFILE}/.kube",
     "ensureSSHDirNix": "mkdir -p ${localEnv:HOME}${localEnv:USERPROFILE}/.ssh"
+  },
+  "postAttachCommand": {
+    "ensureKubeDir": "mkdir -p /home/vscode/.kube"
   }
 }

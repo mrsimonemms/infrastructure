@@ -62,3 +62,10 @@ module "k3s" {
     ssh_resource.workers_ready
   ]
 }
+
+resource "local_sensitive_file" "kubeconfig" {
+  content              = module.k3s.kubeconfig
+  filename             = pathexpand("~/.kube/config")
+  file_permission      = "0600"
+  directory_permission = "0755"
+}

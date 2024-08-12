@@ -7,6 +7,7 @@
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
 | <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | >= 1.47.0, < 2.0.0 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.5.1, < 3.0.0 |
 | <a name="requirement_ssh"></a> [ssh](#requirement\_ssh) | >= 2.7.0, < 3.0.0 |
 
 ## Providers
@@ -14,6 +15,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.48.0 |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.5.1 |
 | <a name="provider_ssh"></a> [ssh](#provider\_ssh) | 2.7.0 |
 
 ## Modules
@@ -38,6 +40,7 @@
 | [hcloud_server.manager](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server) | resource |
 | [hcloud_server.workers](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server) | resource |
 | [hcloud_ssh_key.server](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/ssh_key) | resource |
+| [local_sensitive_file.kubeconfig](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/sensitive_file) | resource |
 | [ssh_resource.manager_ready](https://registry.terraform.io/providers/loafoe/ssh/latest/docs/resources/resource) | resource |
 | [ssh_resource.workers_ready](https://registry.terraform.io/providers/loafoe/ssh/latest/docs/resources/resource) | resource |
 
