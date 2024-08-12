@@ -22,17 +22,26 @@ include {
 
 inputs = {
   k3s_manager_pool = {
-    count = 3
+    count = 1
   }
   k3s_worker_pools = [
-    {
-      count = 2
-      name  = "pool1"
-    },
-    {
-      count = 1
-      name  = "pool2"
-    }
+    // {
+    //   count = 2
+    //   name  = "pool1"
+    // },
+    // {
+    //   count = 1
+    //   name  = "pool2"
+    // }
   ]
+  k3s_existing_worker_pools = {
+    "pool1" : [
+      {
+        name = "homelab-001"
+        host = "192.168.1.243"
+        user = "homelab"
+      }
+    ]
+  }
   network_subnet = "10.2.0.0/16"
 }

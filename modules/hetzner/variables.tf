@@ -71,6 +71,17 @@ variable "k3s_worker_pools" {
   default     = []
 }
 
+variable "k3s_existing_worker_pools" {
+  type = map(list(object({
+    name = string
+    host = string
+    port = optional(number, 22)
+    user = optional(string)
+  })))
+  description = "Additional workers on already existing nodes"
+  default     = {}
+}
+
 variable "location" {
   type        = string
   description = "Location to use. This is a single datacentre."

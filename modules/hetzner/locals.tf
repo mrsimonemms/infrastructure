@@ -31,8 +31,33 @@ locals {
           location = w.location != null ? w.location : var.location
           name     = "${w.name}-${n}"
           pool     = w.name
+          labels = [
+            {
+              key   = "provider"
+              value = "hetzner"
+            }
+          ]
         }
       )
+    ]
+  ])
+  k3s_additional_pools = flatten([
+    for poolName, nodes in var.k3s_existing_worker_pools : [
+      for i, n in nodes : {
+        name = lookup(n, "name", "${poolName}-${i}")
+        pool = poolName
+        labels = [
+          {
+            key   = "provider"
+            value = "manual"
+          }
+        ]
+
+        # Connection details
+        host = n.host
+        port = n.port
+        user = n.user == null ? local.ssh_user : n.user
+      }
     ]
   ])
   kubernetes_api_port = 6443

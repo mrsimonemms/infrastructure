@@ -50,6 +50,11 @@ resource "helm_release" "hcloud_ccm" {
     value = sha512(yamlencode(kubernetes_secret_v1.hcloud.data))
   }
 
+  set {
+    name  = "nodeSelector.provider"
+    value = "hetzner"
+  }
+
   depends_on = [kubernetes_secret_v1.hcloud]
 }
 
@@ -67,6 +72,16 @@ resource "helm_release" "hcloud_csi" {
   set {
     name  = "controller.podAnnotations.secret"
     value = sha512(yamlencode(kubernetes_secret_v1.hcloud.data))
+  }
+
+  set {
+    name  = "controller.nodeSelector.provider"
+    value = "hetzner"
+  }
+
+  set {
+    name  = "node.nodeSelector.provider"
+    value = "hetzner"
   }
 
   # Allow running on control plane nodes

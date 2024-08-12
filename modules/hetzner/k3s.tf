@@ -22,6 +22,12 @@ module "k3s" {
       name              = i.name
       node-external-ip  = i.ipv4_address
       node-ip           = tolist(i.network)[0].ip
+      labels = [
+        {
+          key   = "provider"
+          value = "hetzner"
+        }
+      ]
 
       connection = {
         host        = i.ipv4_address
@@ -32,20 +38,38 @@ module "k3s" {
     }
   ]
 
-  workers = {
-    for i, p in local.k3s_worker_pools : p.pool => {
-      name             = hcloud_server.workers[i].name
-      node-external-ip = hcloud_server.workers[i].ipv4_address
-      node-ip          = tolist(hcloud_server.workers[i].network)[0].ip
+  workers = merge(
+    {
+      for i, p in local.k3s_worker_pools : p.pool => {
+        name             = hcloud_server.workers[i].name
+        node-external-ip = hcloud_server.workers[i].ipv4_address
+        node-ip          = tolist(hcloud_server.workers[i].network)[0].ip
+        labels           = lookup(p, "labels", [])
 
-      connection = {
-        host        = hcloud_server.workers[i].ipv4_address
-        port        = var.ssh_port
-        private_key = var.ssh_key
-        user        = local.ssh_user
-      }
-    }...
-  }
+        connection = {
+          host        = hcloud_server.workers[i].ipv4_address
+          port        = var.ssh_port
+          private_key = var.ssh_key
+          user        = local.ssh_user
+        }
+      }...
+    },
+    {
+      for p in local.k3s_additional_pools : p.pool => {
+        name             = p.name
+        node-external-ip = p.host
+        node-ip          = p.host
+        labels           = lookup(p, "labels", [])
+
+        connection = {
+          host        = p.host
+          port        = p.port
+          private_key = var.ssh_key
+          user        = p.user
+        }
+      }...
+    }
+  )
 
   disable_addons = [
     "local-storage",
@@ -59,7 +83,8 @@ module "k3s" {
 
   depends_on = [
     ssh_resource.manager_ready,
-    ssh_resource.workers_ready
+    ssh_resource.workers_ready,
+    ssh_resource.rpi_ready
   ]
 }
 
