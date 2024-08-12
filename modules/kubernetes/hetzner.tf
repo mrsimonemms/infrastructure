@@ -45,19 +45,12 @@ resource "helm_release" "hcloud_ccm" {
     value = var.k3s_cluster_cidr
   }
 
-  depends_on = [kubernetes_secret_v1.hcloud]
-}
+  set {
+    name  = "podAnnotations.secret"
+    value = sha512(yamlencode(kubernetes_secret_v1.hcloud.data))
+  }
 
-resource "kubernetes_annotations" "hcloud_ccm" {
-  api_version = "apps/v1"
-  kind        = "Deployment"
-  metadata {
-    name      = helm_release.hcloud_ccm.chart
-    namespace = helm_release.hcloud_ccm.namespace
-  }
-  template_annotations = {
-    secret = sha512(yamlencode(kubernetes_secret_v1.hcloud.data))
-  }
+  depends_on = [kubernetes_secret_v1.hcloud]
 }
 
 resource "helm_release" "hcloud_csi" {
