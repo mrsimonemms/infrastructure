@@ -12,26 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  source = "../../../modules/${basename(get_terragrunt_dir())}"
-}
-
-include {
-  path = "../../k8s-backend.hcl"
-}
-
-dependency "hetzner" {
-  config_path = "../hetzner"
-
-  mock_outputs = {
-    hcloud_network_name = "some-network-name"
-    k3s_cluster_cidr    = "some-cluster-cidr"
-    kubeconfig          = "some-kubeconfig"
-  }
+locals {
+  workspace = "infra-${basename(dirname(get_terragrunt_dir()))}-${reverse(split("/", get_terragrunt_dir()))[0]}"
 }
 
 inputs = {
-  hcloud_network_name = dependency.hetzner.outputs.hcloud_network_name
-  k3s_cluster_cidr    = dependency.hetzner.outputs.k3s_cluster_cidr
-  kubeconfig          = dependency.hetzner.outputs.kubeconfig
+  workspace = local.workspace
+}
+
+# Use Kubernetes backend
+generate "remote_state" {
+  path      = "backend.tf"
+  if_exists = "overwrite_terragrunt"
+  contents  = <<EOF
+terraform {
+  backend "kubernetes" {
+    secret_suffix = "state"
+    config_path = "~/.kube/config"
+    namespace = "kube-system"
+  }
+}
+EOF
 }
