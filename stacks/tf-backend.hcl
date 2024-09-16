@@ -18,6 +18,11 @@ locals {
   workspace        = "infra-${basename(dirname(get_terragrunt_dir()))}-${reverse(split("/", get_terragrunt_dir()))[0]}"
 }
 
+inputs = {
+  workspace = local.workspace
+}
+
+# Use Terraform cloud backend
 generate "remote_state" {
   path      = "backend.tf"
   if_exists = "overwrite_terragrunt"
@@ -32,8 +37,4 @@ terraform {
   }
 }
 EOF
-}
-
-inputs = {
-  workspace = local.workspace
 }
