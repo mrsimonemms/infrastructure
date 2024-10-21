@@ -29,10 +29,6 @@ inputs = {
       count = 2
       name  = "pool1"
     },
-    {
-      count = 1
-      name  = "pool2"
-    }
   ]
   network_subnet = "10.2.0.0/16"
 }
