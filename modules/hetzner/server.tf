@@ -160,3 +160,77 @@ resource "ssh_resource" "workers_ready" {
 
   depends_on = [hcloud_server.workers]
 }
+
+
+resource "ssh_resource" "configure_rpi_for_k3s" {
+  for_each = { for i in local.k3s_additional_pools : i.host => i }
+
+  host        = each.value.host
+  user        = each.value.user
+  private_key = var.ssh_key
+  port        = each.value.port
+
+  timeout     = "5m"
+  retry_delay = "5s"
+
+  commands = concat(
+    [
+      for i in [
+        "cgroup_enable=cpuset",
+        "cgroup_memory=1",
+        "cgroup_enable=memory"
+      ] : "grep -qF '${i}' /boot/firmware/cmdline.txt || sudo sed -i '1 s/$/ ${i}/' /boot/firmware/cmdline.txt"
+    ],
+    [
+      "sudo reboot"
+    ]
+  )
+}
+
+# This exists to check that the node has restarted
+resource "ssh_resource" "rpi_ready" {
+  for_each = { for i in local.k3s_additional_pools : i.host => i }
+
+  host        = each.value.host
+  user        = each.value.user
+  private_key = var.ssh_key
+  port        = each.value.port
+
+  timeout     = "5m"
+  retry_delay = "5s"
+
+  commands = [
+    "cat /proc/cgroups"
+  ]
+
+  triggers = {
+    always = timestamp()
+  }
+
+  depends_on = [ssh_resource.configure_rpi_for_k3s]
+}
+
+resource "ssh_resource" "uninstall_k3s" {
+  for_each = { for i in local.k3s_additional_pools : i.host => i }
+
+  host        = each.value.host
+  user        = each.value.user
+  private_key = var.ssh_key
+  port        = each.value.port
+
+  timeout     = "5m"
+  retry_delay = "5s"
+
+  commands = [
+    "k3s-agent-uninstall.sh",
+    "sudo rm -Rf /etc/rancher"
+  ]
+
+  triggers = {
+    host = each.key
+  }
+
+  depends_on = [module.k3s]
+
+  when = "destroy"
+}
