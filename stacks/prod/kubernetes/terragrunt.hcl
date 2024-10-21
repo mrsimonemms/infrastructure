@@ -17,7 +17,7 @@ terraform {
 }
 
 include {
-  path = "../../common.hcl"
+  path = "../../k8s-backend.hcl"
 }
 
 dependency "hetzner" {

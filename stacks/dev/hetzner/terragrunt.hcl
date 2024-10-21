@@ -17,7 +17,7 @@ terraform {
 }
 
 include {
-  path = "../../common.hcl"
+  path = "../../tf-backend.hcl"
 }
 
 inputs = {

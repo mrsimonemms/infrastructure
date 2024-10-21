@@ -13,27 +13,24 @@
 # limitations under the License.
 
 locals {
-  tfc_hostname     = "app.terraform.io"
-  tfc_organization = "mrsimonemms"
-  workspace        = basename(dirname(get_terragrunt_dir()))
+  workspace = basename(dirname(get_terragrunt_dir()))
 }
 
+inputs = {
+  workspace = local.workspace
+}
+
+# Use Kubernetes backend
 generate "remote_state" {
   path      = "backend.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
 terraform {
-  backend "remote" {
-    hostname = "${local.tfc_hostname}"
-    organization = "${local.tfc_organization}"
-    workspaces {
-      name = "infra-${local.workspace}-hetzner"
-    }
+  backend "kubernetes" {
+    secret_suffix = "state"
+    config_path = "~/.kube/config"
+    namespace = "kube-system"
   }
 }
 EOF
-}
-
-inputs = {
-  workspace = local.workspace
 }
