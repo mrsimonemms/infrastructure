@@ -15,7 +15,8 @@
 locals {
   tfc_hostname     = "app.terraform.io"
   tfc_organization = "mrsimonemms"
-  workspace        = "infra-${basename(dirname(get_terragrunt_dir()))}-${reverse(split("/", get_terragrunt_dir()))[0]}"
+  project          = reverse(split("/", get_terragrunt_dir()))[0]
+  workspace        = basename(dirname(get_terragrunt_dir()))
 }
 
 generate "remote_state" {
@@ -27,7 +28,7 @@ terraform {
     hostname = "${local.tfc_hostname}"
     organization = "${local.tfc_organization}"
     workspaces {
-      name = "${local.workspace}"
+      name = "infra-${local.workspace}-${local.project}"
     }
   }
 }
