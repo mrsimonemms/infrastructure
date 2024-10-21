@@ -43,11 +43,10 @@ locals {
   }
   label_namespace = "simonemms.com/%s"
   name_format = join("-", [
-    "hetzner",
+    local.workspace_name,
     var.name,
     "%s", # resource name
-    local.workspace_name
-  ]) # use `format(local.name_format, "<name>")` to use this
+  ])      # use `format(local.name_format, "<name>")` to use this
   ssh_user = "k3smanager"
   user_data = templatefile("${path.module}/files/cloud-config.yaml", {
     sshPort   = var.ssh_port
