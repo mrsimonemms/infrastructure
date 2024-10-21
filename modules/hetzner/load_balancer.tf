@@ -17,7 +17,7 @@ resource "hcloud_load_balancer" "k3s_manager" {
 
   name               = format(local.name_format, "load_balancer")
   load_balancer_type = var.k3s_manager_load_balancer_type
-  network_zone       = var.region
+  location           = var.location
 
   algorithm {
     type = var.k3s_manager_load_balancer_algorithm
