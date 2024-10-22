@@ -1,0 +1,28 @@
+global:
+  domain: ${domain}
+redis-ha:
+  enabled: true
+repoServer:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+server:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: HTTP
+      kubernetes.io/tls-acme: "true"
+      cert-manager.io/cluster-issuer: letsencrypt
+    tls: true
+    extraTLS:
+      - hosts:
+          - ${domain}
+        secretName: argocd-tls
+configs:
+  params:
+    server.insecure: true

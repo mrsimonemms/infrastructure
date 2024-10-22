@@ -12,27 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  source = "../../../modules/${basename(get_terragrunt_dir())}"
-}
+resource "helm_release" "argocd" {
+  chart            = "argo-cd"
+  name             = "argocd"
+  atomic           = true
+  cleanup_on_fail  = true
+  create_namespace = true
+  namespace        = "argocd"
+  repository       = "https://argoproj.github.io/argo-helm"
+  reset_values     = true
+  version          = var.argocd_version
+  wait             = true
 
-include {
-  path = "../../common.hcl"
-}
+  timeout = 10 * 60 # The Redis deployment can take it's sweet time
 
-dependency "hetzner" {
-  config_path = "../hetzner"
-
-  mock_outputs = {
-    hcloud_network_name = "some-network-name"
-    k3s_cluster_cidr    = "some-cluster-cidr"
-    kubeconfig          = "some-kubeconfig"
-  }
-}
-
-inputs = {
-  domain              = "dev.simonemms.com"
-  hcloud_network_name = dependency.hetzner.outputs.hcloud_network_name
-  k3s_cluster_cidr    = dependency.hetzner.outputs.k3s_cluster_cidr
-  kubeconfig          = dependency.hetzner.outputs.kubeconfig
+  values = [
+    templatefile("${path.module}/files/argocd.yaml", {
+      domain = "argocd.${var.domain}"
+    })
+  ]
 }
