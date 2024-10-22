@@ -12,6 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+variable "argocd_version" {
+  type        = string
+  description = "Version of ArgoCD to use - defaults to latest"
+  default     = null
+}
+
+variable "domain" {
+  type        = string
+  description = "Domain to use - this may be a top-level or subdomain"
+}
+
 variable "hcloud_network_name" {
   type        = string
   description = "Name of the network"
