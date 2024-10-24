@@ -12,6 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+variable "argocd_version" {
+  type        = string
+  description = "Version of ArgoCD to use - defaults to latest"
+  default     = null
+}
+
+variable "domain" {
+  type        = string
+  description = "Domain to use - this may be a top-level or subdomain"
+}
+
 variable "hcloud_network_name" {
   type        = string
   description = "Name of the network"
@@ -51,4 +62,21 @@ variable "kube_context" {
   type        = string
   description = "Kubernetes context to use"
   default     = "default"
+}
+
+variable "ingress_nginx_version" {
+  type        = string
+  description = "Version of Ingress Nginx to install - defaults to latest"
+  default     = null
+}
+
+variable "load_balancer_location" {
+  type        = string
+  description = "Location to use for the load balancer"
+}
+
+variable "load_balancer_type" {
+  type        = string
+  description = "Type of load balancer to use"
+  default     = "lb11"
 }
