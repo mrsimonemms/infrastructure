@@ -72,8 +72,10 @@
 | <a name="output_k3s_cluster_cidr"></a> [k3s\_cluster\_cidr](#output\_k3s\_cluster\_cidr) | CIDR used for the k3s cluster |
 | <a name="output_kube_api_server"></a> [kube\_api\_server](#output\_kube\_api\_server) | Kubernetes API server address |
 | <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | Kubeconfig |
+| <a name="output_location"></a> [location](#output\_location) | Location to use. This is a single datacentre. |
 | <a name="output_network_name"></a> [network\_name](#output\_network\_name) | Name of the network |
 | <a name="output_pools"></a> [pools](#output\_pools) | Servers created |
+| <a name="output_region"></a> [region](#output\_region) | Region to use. This covers multiple datacentres. |
 | <a name="output_ssh_port"></a> [ssh\_port](#output\_ssh\_port) | SSH port for server |
 | <a name="output_ssh_user"></a> [ssh\_user](#output\_ssh\_user) | SSH user for server |
 <!-- END_TF_DOCS -->
