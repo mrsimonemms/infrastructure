@@ -63,3 +63,20 @@ variable "kube_context" {
   description = "Kubernetes context to use"
   default     = "default"
 }
+
+variable "ingress_nginx_version" {
+  type        = string
+  description = "Version of Ingress Nginx to install - defaults to latest"
+  default     = null
+}
+
+variable "load_balancer_location" {
+  type        = string
+  description = "Location to use for the load balancer"
+}
+
+variable "load_balancer_type" {
+  type        = string
+  description = "Type of load balancer to use"
+  default     = "lb11"
+}

@@ -33,6 +33,11 @@ output "k3s_cluster_cidr" {
   value       = module.k3s.cluster_cidr
 }
 
+output "location" {
+  description = "Location to use. This is a single datacentre."
+  value       = var.location
+}
+
 output "network_name" {
   description = "Name of the network"
   value       = hcloud_network.network.name
@@ -59,6 +64,11 @@ output "pools" {
       }...
     }
   )
+}
+
+output "region" {
+  description = "Region to use. This covers multiple datacentres."
+  value       = var.region
 }
 
 output "ssh_port" {
