@@ -1,0 +1,14 @@
+# The proxy protocol settings conflict with cert-manager
+# @link https://github.com/kube-hetzner/terraform-hcloud-kube-hetzner/issues/354
+controller:
+  kind: DaemonSet
+  config:
+    use-proxy-protocol: false
+  service:
+    annotations:
+      load-balancer.hetzner.cloud/name: "${name}"
+      load-balancer.hetzner.cloud/location: "${location}"
+      load-balancer.hetzner.cloud/type: "${type}"
+      load-balancer.hetzner.cloud/disable-private-ingress: true
+      load-balancer.hetzner.cloud/use-private-ip: true
+      load-balancer.hetzner.cloud/uses-proxyprotocol: false
