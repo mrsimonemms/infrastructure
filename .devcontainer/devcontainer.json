@@ -1,7 +1,12 @@
 {
   "image": "ghcr.io/mrsimonemms/devcontainers/full",
   "name": "devcontainer",
-  "features": {},
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/gh-release:1": {
+      "repo": "vitobotta/hetzner-k3s",
+      "binaryNames": "hetzner-k3s"
+    }
+  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -9,5 +14,18 @@
       ],
       "settings": {}
     }
+  },
+  "mounts": [
+    {
+      "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.ssh",
+      "target": "/home/vscode/.ssh",
+      "type": "bind"
+    }
+  ],
+  "initializeCommand": {
+    "ensureSSHDirNix": "mkdir -p ${localEnv:HOME}${localEnv:USERPROFILE}/.ssh"
+  },
+  "postAttachCommand": {
+    "ensureKubeDir": "mkdir -p /home/vscode/.kube"
   }
 }
