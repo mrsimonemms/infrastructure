@@ -1,0 +1,17 @@
+{
+  "template": "https://github.com/mrsimonemms/new",
+  "commit": "205721d3de7e267ed2a2569c310e4e10e39c9cde",
+  "checkout": "main",
+  "context": {
+    "cookiecutter": {
+      "project_name": "infrastructure",
+      "description": "My infrastructure",
+      "author": "Simon Emms <simon@simonemms.com>",
+      "_template": "https://github.com/mrsimonemms/new"
+    }
+  },
+  "directory": "blank",
+  "skip": [
+    ".git"
+  ]
+}
