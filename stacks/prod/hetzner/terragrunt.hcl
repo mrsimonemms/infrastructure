@@ -22,6 +22,12 @@ include {
 
 inputs = {
   k3s_manager_pool = {
-    count = 3
+    count = 1
   }
+  k3s_worker_pools = [
+    {
+      count = 2
+      name  = "pool1"
+    },
+  ]
 }
