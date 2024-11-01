@@ -28,7 +28,8 @@ resource "helm_release" "argocd" {
 
   values = [
     templatefile("${path.module}/files/argocd.yaml", {
-      domain = "argocd.${var.domain}"
+      cluster_issuer = var.cluster_issuer
+      domain         = "argocd.${var.domain}"
     })
   ]
 }

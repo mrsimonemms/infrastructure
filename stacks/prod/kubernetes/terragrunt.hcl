@@ -32,6 +32,7 @@ dependency "hetzner" {
 }
 
 inputs = {
+  cluster_issuer         = "letsencrypt"
   domain                 = "prod.simonemms.com"
   hcloud_network_name    = dependency.hetzner.outputs.hcloud_network_name
   k3s_cluster_cidr       = dependency.hetzner.outputs.k3s_cluster_cidr
