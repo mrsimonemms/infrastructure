@@ -35,14 +35,20 @@ module "k3s" {
   workers = {
     for i, p in local.k3s_worker_pools : p.pool => {
       name             = hcloud_server.workers[i].name
-      node-external-ip = hcloud_server.workers[i].ipv4_address
-      node-ip          = tolist(hcloud_server.workers[i].network)[0].ip
+      node-external-ip = hcloud_server.workers[i].ipv6_address
+      node-ip          = one(hcloud_server.workers[i].network[*].ip)
 
       connection = {
-        host        = hcloud_server.workers[i].ipv4_address
+        host        = one(hcloud_server.workers[i].network[*].ip)
         port        = var.ssh_port
         private_key = var.ssh_key
         user        = local.ssh_user
+
+        # Always go through the first manager
+        bastion_host        = hcloud_server.manager[0].ipv4_address
+        bastion_user        = local.ssh_user
+        bastion_private_key = var.ssh_key
+        bastion_port        = var.ssh_port
       }
     }...
   }
