@@ -18,6 +18,12 @@ variable "argocd_version" {
   default     = null
 }
 
+variable "cluster_issuer" {
+  type        = string
+  description = "Cluster issuer to use for certificate"
+  default     = "letsencrypt-staging"
+}
+
 variable "domain" {
   type        = string
   description = "Domain to use - this may be a top-level or subdomain"

@@ -17,7 +17,7 @@ server:
       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       nginx.ingress.kubernetes.io/backend-protocol: HTTP
       kubernetes.io/tls-acme: "true"
-      cert-manager.io/cluster-issuer: letsencrypt
+      cert-manager.io/cluster-issuer: ${cluster_issuer}
     tls: true
     extraTLS:
       - hosts:
