@@ -3,6 +3,6 @@ clusterName: dev
 argocd:
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
-    targetRevision: HEAD
+    targetRevision: sje/argo-registry
   destination:
     server: https://kubernetes.default.svc
