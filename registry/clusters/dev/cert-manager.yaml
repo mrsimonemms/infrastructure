@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
     path: registry/clusters/dev/components/cert-manager
-    targetRevision: HEAD
+    targetRevision: sje/argo-registry
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
