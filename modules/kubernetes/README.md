@@ -26,6 +26,7 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [helm_release.apps](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.argocd](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.hcloud_ccm](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.hcloud_csi](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
@@ -50,6 +51,7 @@ No modules.
 | <a name="input_kubeconfig"></a> [kubeconfig](#input\_kubeconfig) | Kubeconfig for the cluster | `string` | n/a | yes |
 | <a name="input_load_balancer_location"></a> [load\_balancer\_location](#input\_load\_balancer\_location) | Location to use for the load balancer | `string` | n/a | yes |
 | <a name="input_load_balancer_type"></a> [load\_balancer\_type](#input\_load\_balancer\_type) | Type of load balancer to use | `string` | `"lb11"` | no |
+| <a name="input_workspace"></a> [workspace](#input\_workspace) | Workspace name | `string` | n/a | yes |
 
 ## Outputs
 

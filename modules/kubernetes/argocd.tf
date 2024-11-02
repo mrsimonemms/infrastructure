@@ -33,3 +33,21 @@ resource "helm_release" "argocd" {
     })
   ]
 }
+
+resource "helm_release" "apps" {
+  chart            = "${path.module}/apps"
+  name             = "apps"
+  atomic           = true
+  cleanup_on_fail  = true
+  create_namespace = true
+  namespace        = "argocd"
+  reset_values     = true
+  wait             = true
+
+  set {
+    name  = "clusterName"
+    value = var.workspace
+  }
+
+  depends_on = [helm_release.argocd]
+}

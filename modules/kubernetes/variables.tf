@@ -86,3 +86,8 @@ variable "load_balancer_type" {
   description = "Type of load balancer to use"
   default     = "lb11"
 }
+
+variable "workspace" {
+  type        = string
+  description = "Workspace name"
+}

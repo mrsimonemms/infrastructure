@@ -1,0 +1,8 @@
+clusterName: dev
+
+argocd:
+  source:
+    repoURL: https://github.com/mrsimonemms/infrastructure
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
