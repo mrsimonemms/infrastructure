@@ -97,6 +97,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: azure/setup-kubectl@v4
+
       - name: Deploy
         uses: gruntwork-io/terragrunt-action@v2
         with:
@@ -104,3 +106,6 @@ jobs:
           tg_version: ${{ env.TG_VERSION }}
           tg_dir: ${{ env.WORKING_DIR }}
           tg_command: run-all apply
+
+      - name: ArgoCD registry
+        run: kubectl apply -f registry/clusters/prod/registry.yaml
