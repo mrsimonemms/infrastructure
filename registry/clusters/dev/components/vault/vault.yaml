@@ -1,0 +1,171 @@
+apiVersion: vault.banzaicloud.com/v1alpha1
+kind: Vault
+metadata:
+  name: vault
+  namespace: vault
+  labels:
+    app.kubernetes.io/name: vault
+    vault_cr: vault
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  size: 3
+  image: hashicorp/vault:1.18.1
+
+  annotations:
+    common/annotation: "true"
+
+  vaultAnnotations:
+    type/instance: vault
+
+  vaultConfigurerAnnotations:
+    type/instance: vaultconfigurer
+
+  vaultLabels:
+    example.com/log-format: json
+
+  vaultConfigurerLabels:
+    example.com/log-format: string
+
+  serviceAccount: vault
+
+  serviceType: ClusterIP
+
+  ingress:
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+      kubernetes.io/tls-acme: "true"
+      cert-manager.io/cluster-issuer: letsencrypt-staging
+    spec:
+      ingressClassName: nginx
+      rules:
+        - host: vault.dev.simonemms.com
+          http:
+            paths:
+              - backend:
+                  service:
+                    name: vault
+                    port:
+                      number: 8200
+                path: /
+                pathType: Prefix
+      tls:
+        - hosts:
+            - vault.dev.simonemms.com
+          secretName: vault-tls
+
+  volumeClaimTemplates:
+    - metadata:
+        name: vault-raft
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        volumeMode: Filesystem
+        resources:
+          requests:
+            storage: 1Gi
+
+  volumeMounts:
+    - name: vault-raft
+      mountPath: /vault/file
+
+  # Add Velero fsfreeze sidecar container and supporting hook annotations to Vault Pods:
+  # https://velero.io/docs/v1.2.0/hooks/
+  veleroEnabled: true
+
+  caNamespaces:
+    - vswh
+
+  unsealConfig:
+    options:
+      preFlightChecks: true
+      storeRootToken: true
+      secretShares: 5
+      secretThreshold: 3
+    kubernetes:
+      secretNamespace: vault
+
+  config:
+    storage:
+      raft:
+        path: "/vault/file"
+    listener:
+      tcp:
+        address: "0.0.0.0:8200"
+        tls_cert_file: /vault/tls/server.crt
+        tls_key_file: /vault/tls/server.key
+    api_addr: https://vault.vault:8200
+    cluster_addr: "https://${.Env.POD_NAME}:8201"
+    ui: true
+
+  statsdDisabled: true
+
+  serviceRegistrationEnabled: true
+
+  resources:
+    # A YAML representation of resource ResourceRequirements for vault container
+    # Detail can reference: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container
+    vault:
+      limits:
+        memory: "512Mi"
+        cpu: "200m"
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+
+  # See: https://banzaicloud.com/docs/bank-vaults/cli-tool/#example-external-vault-configuration
+  # The repository also contains a lot examples in the test/deploy and operator/deploy directories.
+  externalConfig:
+    policies:
+      - name: allow_secrets
+        rules: path "secret/*" {
+          capabilities = ["create", "read", "update", "delete", "list"]
+          }
+
+    groups:
+      - name: admin1
+        policies:
+          - allow_secrets
+        metadata:
+          privileged: true
+        type: external
+      - name: admin2
+        policies:
+          - allow_secrets
+        metadata:
+          privileged: true
+        type: external
+
+    group-aliases:
+      - name: admin1
+        mountpath: token
+        group: admin1
+
+    auth:
+      - type: kubernetes
+        roles:
+          - name: default
+            bound_service_account_names:
+              - default
+              - vault-secrets-webhook
+            bound_service_account_namespaces:
+              - vault
+              - vswh
+            policies:
+              - allow_secrets
+            ttl: 1h
+
+    secrets:
+      - path: secret
+        type: kv
+        description: General secrets.
+        options:
+          version: 2
+
+    startupSecrets: []
+
+  vaultEnvsConfig:
+    - name: VAULT_LOG_LEVEL
+      value: debug
