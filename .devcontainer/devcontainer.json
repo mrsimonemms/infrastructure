@@ -7,7 +7,11 @@
       "installTerraformDocs": true
     },
     "ghcr.io/dhoeric/features/trivy:1": {},
-    "ghcr.io/devcontainers-contrib/features/argo-cd:1": {}
+    "ghcr.io/devcontainers-contrib/features/argo-cd:1": {},
+    "ghcr.io/devcontainers-contrib/features/gh-release:1": {
+      "repo": "bank-vaults/bank-vaults",
+      "binaryNames": "bank-vaults"
+    }
   },
   "customizations": {
     "vscode": {
@@ -29,7 +33,14 @@
   "initializeCommand": {
     "ensureSSHDirNix": "mkdir -p ${localEnv:HOME}${localEnv:USERPROFILE}/.ssh"
   },
+  "onCreateCommand": {
+    "vault": "brew tap hashicorp/tap && brew install hashicorp/tap/vault"
+  },
   "postAttachCommand": {
     "ensureKubeDir": "mkdir -p /home/vscode/.kube"
+  },
+  "containerEnv": {
+    "VAULT_ADDR": "https://127.0.0.1:8200",
+    "VAULT_CACERT": "/tmp/vault-ca.crt"
   }
 }
