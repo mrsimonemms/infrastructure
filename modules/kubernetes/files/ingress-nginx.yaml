@@ -4,6 +4,8 @@ controller:
   kind: DaemonSet
   config:
     use-proxy-protocol: false
+  extraArgs:
+    enable-ssl-passthrough: true
   service:
     annotations:
       load-balancer.hetzner.cloud/name: "${name}"
