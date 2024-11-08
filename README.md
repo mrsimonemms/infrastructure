@@ -1,5 +1,7 @@
 # infrastructure
 
+![Prod](https://argocd.prod.simonemms.com/api/badge?name=registry)
+
 My home infrastructure
 
 <!-- toc -->

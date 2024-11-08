@@ -24,5 +24,7 @@ server:
           - ${domain}
         secretName: argocd-tls
 configs:
+  cm:
+    statusbadge.enabled: true
   params:
     server.insecure: true
