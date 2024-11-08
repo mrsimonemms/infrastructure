@@ -76,6 +76,18 @@ variable "ingress_nginx_version" {
   default     = null
 }
 
+variable "infisical_client_id" {
+  type        = string
+  description = "Infisical client ID"
+  sensitive   = true
+}
+
+variable "infisical_client_secret" {
+  type        = string
+  description = "Infisical client secret"
+  sensitive   = true
+}
+
 variable "load_balancer_location" {
   type        = string
   description = "Location to use for the load balancer"
