@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
     path: registry/templates/registry/components/cert-manager
-    targetRevision: HEAD
+    targetRevision: sje/cluster-refactor
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager

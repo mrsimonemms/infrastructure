@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
     path: registry/templates/registry
-    targetRevision: HEAD
+    targetRevision: sje/cluster-refactor
     kustomize:
       patches:
         - target:
