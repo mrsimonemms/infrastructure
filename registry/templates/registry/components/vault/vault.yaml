@@ -37,11 +37,11 @@ spec:
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
       nginx.ingress.kubernetes.io/backend-protocol: HTTPS
       kubernetes.io/tls-acme: "true"
-      cert-manager.io/cluster-issuer: letsencrypt-staging
+      cert-manager.io/cluster-issuer: letsencrypt
     spec:
       ingressClassName: nginx
       rules:
-        - host: vault.dev.simonemms.com
+        - host: vault.simonemms.com
           http:
             paths:
               - backend:
@@ -53,7 +53,7 @@ spec:
                 pathType: Prefix
       tls:
         - hosts:
-            - vault.dev.simonemms.com
+            - vault.simonemms.com
           secretName: vault-tls
 
   volumeClaimTemplates:

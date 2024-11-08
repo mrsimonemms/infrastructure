@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
-    path: registry/clusters/dev/components/vault
+    path: registry/templates/registry/components/vault
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

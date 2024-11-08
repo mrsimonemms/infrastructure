@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
-    path: registry/clusters/dev/components/cert-manager
+    path: registry/templates/registry/components/cert-manager
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc

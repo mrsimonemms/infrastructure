@@ -9,8 +9,37 @@ spec:
   project: default
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
-    path: registry/clusters/dev
+    path: registry/templates/registry
     targetRevision: HEAD
+    kustomize:
+      patches:
+        - target:
+            group: vault.banzaicloud.com
+            version: v1alpha1
+            kind: Vault
+            name: vault
+          patch: >
+            - op: replace
+              path: /spec/ingress/annotations/cert-manager.io/cluster-issuer
+              value: letsencrypt-staging
+        - target:
+            group: vault.banzaicloud.com
+            version: v1alpha1
+            kind: Vault
+            name: vault
+          patch: >
+            - op: replace
+              path: /spec/ingress/spec/rules/0/host
+              value: vault.dev.simonemms.com
+        - target:
+            group: vault.banzaicloud.com
+            version: v1alpha1
+            kind: Vault
+            name: vault
+          patch: >
+            - op: replace
+              path: /spec/ingress/spec/tls/0/hosts
+              value: vault.dev.simonemms.com
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
