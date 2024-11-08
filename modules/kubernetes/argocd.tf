@@ -32,4 +32,8 @@ resource "helm_release" "argocd" {
       domain         = "argocd.${var.domain}"
     })
   ]
+
+  depends_on = [
+    helm_release.ingress_nginx
+  ]
 }
