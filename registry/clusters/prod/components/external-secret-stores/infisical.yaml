@@ -1,0 +1,25 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterSecretStore
+metadata:
+  name: infisical
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  provider:
+    infisical:
+      auth:
+        universalAuthCredentials:
+          clientId:
+            key: clientId
+            namespace: external-secrets
+            name: infisical
+          clientSecret:
+            key: clientSecret
+            namespace: external-secrets
+            name: infisical
+      secretsScope:
+        projectSlug: infrastructure-kn-ma
+        environmentSlug: prod
+        secretsPath: /
+        recursive: true
+      hostAPI: https://app.infisical.com
