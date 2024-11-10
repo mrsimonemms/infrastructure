@@ -1,27 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns
+  name: reloader
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "10"
 spec:
   project: default
   source:
-    chart: external-dns
-    repoURL: registry-1.docker.io/bitnamicharts
-    targetRevision: 8.5.1
+    repoURL: https://stakater.github.io/stakater-charts
+    targetRevision: 1.1.0
     helm:
       valuesObject:
-        commonAnnotations:
-          secret.reloader.stakater.com/reload: cloudflare
-        provider: cloudflare
-        cloudflare:
-          secretName: cloudflare
-          proxied: false
+        reloader:
+          watchGlobally: true
+    chart: reloader
   destination:
     server: https://kubernetes.default.svc
-    namespace: external-dns
+    namespace: reloader
   syncPolicy:
     automated:
       prune: true
