@@ -12,8 +12,10 @@ permissions:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   HCLOUD_TOKEN: ${{ secrets.HCLOUD_TOKEN }}
+  KUBECONFIG: ${{ github.workspace }}/.kubeconfig
   TF_TOKEN_app_terraform_io: ${{ secrets.TERRAFORM_CLOUD_SECRET }}
   TF_VAR_hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+  TF_VAR_kubeconfig_output_path: ${{ github.workspace }}/.kubeconfig
   TF_VAR_infisical_client_id: ${{ secrets.INFISICAL_CLIENT_ID }}
   TF_VAR_infisical_client_secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
   TF_VAR_ssh_key: ${{ secrets.SSH_KEY_PRIVATE }}
@@ -110,6 +112,9 @@ jobs:
           tg_version: ${{ env.TG_VERSION }}
           tg_dir: ${{ env.WORKING_DIR }}
           tg_command: run-all apply
+
+      - name: Change kubeconfig owner to runner
+        run: sudo chown $(whoami):$(whoami) $KUBECONFIG
 
       - name: ArgoCD registry
         run: kubectl apply -f registry/clusters/prod/registry.yaml

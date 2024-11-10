@@ -71,6 +71,12 @@ variable "k3s_worker_pools" {
   default     = []
 }
 
+variable "kubeconfig_output_path" {
+  type        = string
+  description = "Output path for the Kubeconfig"
+  default     = "~/.kube/config"
+}
+
 variable "location" {
   type        = string
   description = "Location to use. This is a single datacentre."
