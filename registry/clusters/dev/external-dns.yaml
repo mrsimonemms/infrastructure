@@ -11,8 +11,10 @@ spec:
   project: default
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
-    path: registry/clusters/dev/components/external-dns
-    targetRevision: HEAD
+    path: registry/components/external-dns
+    targetRevision: main
+    kustomize:
+      patches: []
   destination:
     server: https://kubernetes.default.svc
     namespace: external-dns

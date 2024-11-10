@@ -12,7 +12,9 @@ spec:
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
     path: registry/clusters/prod
-    targetRevision: HEAD
+    targetRevision: main
+    kustomize:
+      patches: []
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
