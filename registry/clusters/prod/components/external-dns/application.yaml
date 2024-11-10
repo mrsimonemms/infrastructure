@@ -13,6 +13,8 @@ spec:
     targetRevision: 8.5.1
     helm:
       valuesObject:
+        commonAnnotations:
+          secret.reloader.stakater.com/reload: cloudflare
         provider: cloudflare
         cloudflare:
           secretName: cloudflare
