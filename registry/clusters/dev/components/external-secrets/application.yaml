@@ -13,6 +13,8 @@ spec:
     helm:
       valuesObject:
         installCRDs: true
+        bitwarden-sdk-server:
+          enabled: true
     chart: external-secrets
   destination:
     server: https://kubernetes.default.svc
