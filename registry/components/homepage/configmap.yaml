@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage
+  namespace: homepage
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+data:
+  bookmarks.yaml: ""
+  docker.yaml: ""
+  kubernetes.yaml: |
+    mode: cluster
+  services.yaml: ""
+  settings.yaml: |
+    background:
+      image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
+      blur: sm
+      saturate: 50
+      brightness: 50
+      opacity: 50
+    headerStyle: boxed
+  widgets.yaml: |
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: Cluster
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+    - search:
+        provider:
+          - duckduckgo
+          - google
+        focus: true
+        showSearchSuggestions: true
+        target: _blank
+    - openmeteo:
+        label: Telford, UK
+        latitude: 52.68
+        longitude: -2.47
+        timezone: Europe/London
+        units: metric
+        cache: 15
+        format:
+          maximumFractionDigits: 1

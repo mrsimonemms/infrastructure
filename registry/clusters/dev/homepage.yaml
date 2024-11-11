@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homepage-components
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "40"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mrsimonemms/infrastructure
+    path: registry/components/homepage
+    targetRevision: HEAD
+    kustomize:
+      patches:
+        - target:
+            group: argoproj.io
+            version: v1alpha1
+            kind: Application
+            name: homepage
+          patch: |-
+            - op: replace
+              path: /spec/source/helm/valuesObject/ingress/main/hosts/0/host
+              value: homepage.dev.simonemms.com
+        - target:
+            group: argoproj.io
+            version: v1alpha1
+            kind: Application
+            name: homepage
+          patch: |-
+            - op: replace
+              path: /spec/source/helm/valuesObject/ingress/main/tls/0/hosts/0
+              value: homepage.dev.simonemms.com
+        - target:
+            group: argoproj.io
+            version: v1alpha1
+            kind: Application
+            name: homepage
+          patch: |-
+            - op: replace
+              path: /spec/source/helm/valuesObject/ingress/main/annotations/cert-manager.io~1cluster-issuer
+              value: letsencrypt-staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: homepage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
