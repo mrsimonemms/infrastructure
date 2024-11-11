@@ -1,6 +1,6 @@
 # infrastructure
 
-![Prod](https://argocd.prod.simonemms.com/api/badge?name=registry)
+![Prod](https://argocd.simonemms.com/api/badge?name=registry)
 
 My home infrastructure
 
