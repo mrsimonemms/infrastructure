@@ -30,7 +30,9 @@ No modules.
 | [helm_release.hcloud_ccm](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.hcloud_csi](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.ingress_nginx](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [kubernetes_namespace_v1.argocd](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1) | resource |
 | [kubernetes_namespace_v1.external_secrets](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1) | resource |
+| [kubernetes_secret_v1.github_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [kubernetes_secret_v1.hcloud](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [kubernetes_secret_v1.infisical](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [random_integer.ingress_load_balancer_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/integer) | resource |
@@ -39,6 +41,10 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_argocd_github_client_id"></a> [argocd\_github\_client\_id](#input\_argocd\_github\_client\_id) | GitHub OIDC client ID for Dex | `string` | n/a | yes |
+| <a name="input_argocd_github_client_secret"></a> [argocd\_github\_client\_secret](#input\_argocd\_github\_client\_secret) | GitHub OIDC client secret for Dex | `string` | n/a | yes |
+| <a name="input_argocd_github_org"></a> [argocd\_github\_org](#input\_argocd\_github\_org) | GitHub org to use for Dex OIDC | `string` | n/a | yes |
+| <a name="input_argocd_github_teams"></a> [argocd\_github\_teams](#input\_argocd\_github\_teams) | GitHub teams to use for Dex OIDC | <pre>object({<br>    org-admin = list(string)<br>  })</pre> | n/a | yes |
 | <a name="input_argocd_version"></a> [argocd\_version](#input\_argocd\_version) | Version of ArgoCD to use - defaults to latest | `string` | `null` | no |
 | <a name="input_cluster_issuer"></a> [cluster\_issuer](#input\_cluster\_issuer) | Cluster issuer to use for certificate | `string` | `"letsencrypt-staging"` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | Domain to use - this may be a top-level or subdomain | `string` | n/a | yes |
