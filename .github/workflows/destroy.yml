@@ -1,0 +1,40 @@
+name: Destroy
+on:
+  workflow_dispatch:
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  HCLOUD_TOKEN: ${{ secrets.HCLOUD_TOKEN }}
+  KUBECONFIG: ${{ github.workspace }}/.kubeconfig
+  TF_TOKEN_app_terraform_io: ${{ secrets.TERRAFORM_CLOUD_SECRET }}
+  TF_VAR_hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+  TF_VAR_infisical_client_id: ${{ secrets.INFISICAL_CLIENT_ID }}
+  TF_VAR_infisical_client_secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
+  TF_VAR_ssh_key: ${{ secrets.SSH_KEY_PRIVATE }}
+  TF_VAR_ssh_key_public: ${{ secrets.SSH_KEY_PUBLIC }}
+  TF_VERSION: '1.9.3'
+  TG_VERSION: '0.66.1'
+  WORKING_DIR: stacks/prod
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: prod
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Delete module.k3s
+        uses: gruntwork-io/terragrunt-action@v2
+        continue-on-error: true
+        with:
+          tf_version: ${{ env.TF_VERSION }}
+          tg_version: ${{ env.TG_VERSION }}
+          tg_dir: ${{ env.WORKING_DIR }}/hetzner
+          tg_command: state rm module.k3s
+
+      - name: Destroy
+        uses: gruntwork-io/terragrunt-action@v2
+        with:
+          tf_version: ${{ env.TF_VERSION }}
+          tg_version: ${{ env.TG_VERSION }}
+          tg_dir: ${{ env.WORKING_DIR }}
+          tg_command: run-all destroy
