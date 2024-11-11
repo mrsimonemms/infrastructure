@@ -1,14 +1,17 @@
 global:
   domain: ${domain}
 redis-ha:
-  enabled: true
+  # enabled: true
+  enabled: false
 repoServer:
   autoscaling:
-    enabled: true
+    # enabled: true
+    enabled: false
     minReplicas: 2
 server:
   autoscaling:
-    enabled: true
+    # enabled: true
+    enabled: false
     minReplicas: 2
   ingress:
     enabled: true
@@ -25,6 +28,10 @@ server:
         secretName: argocd-tls
 configs:
   cm:
+    admin.enabled: false
+    dex.config: |-
+      ${indent(6, yamlencode(dex_config))}
     statusbadge.enabled: true
+    url: https://${domain}
   params:
     server.insecure: true

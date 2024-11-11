@@ -12,13 +12,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+resource "kubernetes_namespace_v1" "argocd" {
+  metadata {
+    name = "argocd"
+  }
+}
+
+resource "kubernetes_secret_v1" "github_secret" {
+  metadata {
+    name      = "github-oidc"
+    namespace = kubernetes_namespace_v1.argocd.metadata[0].name
+    labels = {
+      "app.kubernetes.io/part-of" = "argocd"
+    }
+  }
+
+  data = {
+    clientId     = var.argocd_github_client_id
+    clientSecret = var.argocd_github_client_secret
+  }
+}
+
 resource "helm_release" "argocd" {
   chart            = "argo-cd"
   name             = "argocd"
   atomic           = true
   cleanup_on_fail  = true
   create_namespace = true
-  namespace        = "argocd"
+  namespace        = kubernetes_namespace_v1.argocd.metadata[0].name
   repository       = "https://argoproj.github.io/argo-helm"
   reset_values     = true
   version          = var.argocd_version
@@ -29,7 +50,27 @@ resource "helm_release" "argocd" {
   values = [
     templatefile("${path.module}/files/argocd.yaml", {
       cluster_issuer = var.cluster_issuer
-      domain         = "argocd.${var.domain}"
+      dex_config = {
+        connectors = [
+          {
+            type = "github"
+            id   = "github"
+            name = "GitHub"
+            config = {
+              # Prepend with a $ so it looks for the secret
+              clientID     = join("", ["$", "${kubernetes_secret_v1.github_secret.metadata[0].name}:clientId"])
+              clientSecret = join("", ["$", "${kubernetes_secret_v1.github_secret.metadata[0].name}:clientSecret"])
+              orgs = [
+                {
+                  name  = var.argocd_github_org
+                  teams = var.argocd_github_teams
+                }
+              ]
+            }
+          }
+        ]
+      }
+      domain = "argocd.${var.domain}"
     })
   ]
 

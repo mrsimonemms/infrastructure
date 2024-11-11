@@ -18,6 +18,28 @@ variable "argocd_version" {
   default     = null
 }
 
+variable "argocd_github_org" {
+  type        = string
+  description = "GitHub org to use for Dex OIDC"
+}
+
+variable "argocd_github_teams" {
+  type        = list(string)
+  description = "GitHub teams to use for Dex OIDC"
+}
+
+variable "argocd_github_client_id" {
+  type        = string
+  description = "GitHub OIDC client ID for Dex"
+  sensitive   = true
+}
+
+variable "argocd_github_client_secret" {
+  type        = string
+  description = "GitHub OIDC client secret for Dex"
+  sensitive   = true
+}
+
 variable "cluster_issuer" {
   type        = string
   description = "Cluster issuer to use for certificate"
