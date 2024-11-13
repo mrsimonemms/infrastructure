@@ -49,7 +49,6 @@ module "k3s" {
 
   disable_addons = [
     "local-storage",
-    "metrics-server",
     "servicelb",
     "traefik"
   ]
