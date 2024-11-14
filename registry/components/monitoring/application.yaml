@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    chart: kube-prometheus-stack
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 66.1.1
+    helm:
+      valuesObject:
+        grafana:
+          admin:
+            existingSecret: credentials
+          ingress:
+            enabled: true
+            annotations:
+              kubernetes.io/tls-acme: "true"
+              cert-manager.io/cluster-issuer: letsencrypt
+              gethomepage.dev/description: Grafana Dashboards
+              gethomepage.dev/enabled: "true"
+              gethomepage.dev/group: Cluster Management
+              gethomepage.dev/icon: grafana
+              gethomepage.dev/name: Grafana
+            ingressClassName: nginx
+            hosts:
+              - monitoring.simonemms.com
+            tls:
+              - hosts:
+                  - monitoring.simonemms.com
+                secretName: monitoring-tls
+          sidecar:
+            dashboards:
+              enabled: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
