@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dex
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    chart: dex
+    repoURL: https://charts.dexidp.io
+    targetRevision: 0.19.1
+    helm:
+      valuesObject:
+        config:
+          issuer: https://dex.dev.simonemms.com
+          storage:
+            type: memory
+          connectors:
+            - type: mockCallback
+              id: mock
+              name: Example
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/tls-acme: "true"
+            cert-manager.io/cluster-issuer: letsencrypt-staging
+          hosts:
+            - host: dex.dev.simonemms.com
+              paths:
+                - path: /
+
+          tls:
+            - hosts:
+                - dex.dev.simonemms.com
+              secretName: dex-cert
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dex
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

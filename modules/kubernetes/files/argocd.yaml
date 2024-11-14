@@ -10,6 +10,8 @@ server:
   autoscaling:
     enabled: true
     minReplicas: 2
+  dex:
+    enabled: false
   ingress:
     enabled: true
     ingressClassName: nginx
@@ -32,8 +34,10 @@ server:
 configs:
   cm:
     admin.enabled: false
-    dex.config: |-
-      ${indent(6, yamlencode(dex_config))}
+    oidc.config: |-
+      ${indent(6, yamlencode(oidc_config))}
+    # dex.config: |-
+    #   ${indent(6, yamlencode(dex_config))}
     statusbadge.enabled: true
     url: https://${domain}
   params:
