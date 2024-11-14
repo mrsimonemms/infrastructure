@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
-    path: registry/clusters/dev
+    path: registry/clusters/dev/components
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
