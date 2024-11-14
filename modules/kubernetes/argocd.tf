@@ -99,6 +99,6 @@ resource "helm_release" "argocd" {
   ]
 
   depends_on = [
-    helm_release.ingress_nginx
+    helm_release.hcloud_ccm,
   ]
 }
