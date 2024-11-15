@@ -22,6 +22,9 @@ spec:
             use-proxy-protocol: false
           extraArgs:
             enable-ssl-passthrough: true
+          service:
+            annotations:
+              metallb.universe.tf/allow-shared-ip: primary
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-nginx
