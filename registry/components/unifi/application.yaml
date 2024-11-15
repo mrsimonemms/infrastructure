@@ -1,0 +1,76 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: unifi
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    chart: unifi
+    repoURL: https://k8s-at-home.com/charts/
+    targetRevision: 5.1.2
+    helm:
+      valuesObject:
+        image:
+          repository: jacobalberty/unifi
+          tag: v8.6.9
+        service:
+          main:
+            annotations:
+              metallb.universe.tf/allow-shared-ip: primary
+            type: LoadBalancer
+          udp:
+            enabled: false
+            type: LoadBalancer
+            annotations:
+              metallb.universe.tf/allow-shared-ip: primary
+            ports:
+              stun:
+                enabled: true
+                port: 3478
+                protocol: UDP
+              syslog:
+                enabled: true
+                port: 5514
+                protocol: UDP
+              discovery:
+                enabled: true
+                port: 10001
+                protocol: UDP
+        ingress:
+          main:
+            enabled: true
+            annotations:
+              kubernetes.io/tls-acme: "true"
+              cert-manager.io/cluster-issuer: letsencrypt
+            ingressClassName: nginx
+            hosts:
+              - host: unifi.simonemms.com
+                paths:
+                  - path: /
+                    pathType: Prefix
+            tls:
+              - hosts:
+                  - unifi.simonemms.com
+                secretName: unifi-tls
+        persistence:
+          data:
+            enabled: true
+            accessMode: ReadWriteOnce
+            size: 10Gi
+        mongodb:
+          enabled: true
+          persistence:
+            enabled: true
+            size: 10Gi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: unifi
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
