@@ -58,6 +58,22 @@ resource "hcloud_firewall" "firewall" {
         ]
         protocol = "udp"
       },
+      {
+        description = "Allow TCP access to port 80"
+        source_ips = [
+          local.global_ipv4_cidr,
+          local.global_ipv6_cidr,
+        ]
+        port = 80
+      },
+      {
+        description = "Allow TCP access to port 443"
+        source_ips = [
+          local.global_ipv4_cidr,
+          local.global_ipv6_cidr,
+        ]
+        port = 443
+      },
       # Direct public access only allowed if single manager node
       {
         description = "Allow access to Kubernetes API"

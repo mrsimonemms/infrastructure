@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubectl-metallb-system
+  namespace: metallb-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: kubectl-metallb-system
+  namespace: metallb-system
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - get
+  - apiGroups:
+      - metallb.io
+    resources:
+      - ipaddresspools
+    verbs:
+      - get
+      - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubectl-metallb-system
+  namespace: metallb-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kubectl-metallb-system
+subjects:
+  - kind: ServiceAccount
+    name: kubectl-metallb-system
+    namespace: metallb-system
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: generator
+  namespace: metallb-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  backoffLimit: 5
+  ttlSecondsAfterFinished: 30
+  template:
+    spec:
+      containers:
+        - name: address-pool
+          image: bitnami/kubectl:1.30
+          command:
+            - bash
+            - -c
+            - kubectl get configmap -n metallb-system nodes -o jsonpath='{.data.resource}' | kubectl apply -f -
+      restartPolicy: OnFailure
+      serviceAccountName: kubectl-metallb-system

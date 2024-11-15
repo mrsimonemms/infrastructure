@@ -94,12 +94,6 @@ variable "kube_context" {
   default     = "default"
 }
 
-variable "ingress_nginx_version" {
-  type        = string
-  description = "Version of Ingress Nginx to install - defaults to latest"
-  default     = null
-}
-
 variable "infisical_client_id" {
   type        = string
   description = "Infisical client ID"
@@ -110,15 +104,4 @@ variable "infisical_client_secret" {
   type        = string
   description = "Infisical client secret"
   sensitive   = true
-}
-
-variable "load_balancer_location" {
-  type        = string
-  description = "Location to use for the load balancer"
-}
-
-variable "load_balancer_type" {
-  type        = string
-  description = "Type of load balancer to use"
-  default     = "lb11"
 }
