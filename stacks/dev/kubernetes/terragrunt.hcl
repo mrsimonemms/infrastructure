@@ -27,14 +27,12 @@ dependency "hetzner" {
     hcloud_network_name = "some-network-name"
     k3s_cluster_cidr    = "some-cluster-cidr"
     kubeconfig          = "some-kubeconfig"
-    location            = "some-location"
   }
 }
 
 inputs = {
-  domain                 = "dev.simonemms.com"
-  hcloud_network_name    = dependency.hetzner.outputs.hcloud_network_name
-  k3s_cluster_cidr       = dependency.hetzner.outputs.k3s_cluster_cidr
-  kubeconfig             = dependency.hetzner.outputs.kubeconfig
-  load_balancer_location = dependency.hetzner.outputs.location
+  domain              = "dev.simonemms.com"
+  hcloud_network_name = dependency.hetzner.outputs.hcloud_network_name
+  k3s_cluster_cidr    = dependency.hetzner.outputs.k3s_cluster_cidr
+  kubeconfig          = dependency.hetzner.outputs.kubeconfig
 }
