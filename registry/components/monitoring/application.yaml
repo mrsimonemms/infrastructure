@@ -23,7 +23,7 @@ spec:
             annotations:
               kubernetes.io/tls-acme: "true"
               cert-manager.io/cluster-issuer: letsencrypt
-              gethomepage.dev/description: Grafana Dashboards
+              gethomepage.dev/description: Grafana dashboards
               gethomepage.dev/enabled: "true"
               gethomepage.dev/group: Cluster Management
               gethomepage.dev/icon: grafana
