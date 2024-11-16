@@ -37,7 +37,7 @@ spec:
             group: argoproj.io
             version: v1alpha1
             kind: Application
-            name: homepage
+            name: monitoring
           patch: |-
             - op: replace
               path: /spec/source/helm/valuesObject/grafana/ingress/annotations/cert-manager.io~1cluster-issuer
