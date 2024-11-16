@@ -45,6 +45,11 @@ spec:
             annotations:
               kubernetes.io/tls-acme: "true"
               cert-manager.io/cluster-issuer: letsencrypt
+              gethomepage.dev/description: Unifi network control panel
+              gethomepage.dev/enabled: "true"
+              gethomepage.dev/group: Cluster Management
+              gethomepage.dev/icon: unifi
+              gethomepage.dev/name: Unifi
             ingressClassName: nginx
             hosts:
               - host: unifi.simonemms.com
