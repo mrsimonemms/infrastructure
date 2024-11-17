@@ -23,4 +23,7 @@ locals {
   kubeconfig_clusters   = try({ for context in local.kubeconfig.clusters : context.name => context.cluster }, {})
   kubeconfig_users      = try({ for context in local.kubeconfig.users : context.name => context.user }, {})
   kubeconfig_by_context = try({ for context, cluster in local.kubeconfig_clusters : context => merge(cluster, local.kubeconfig_users[context]) }, {})
+  manager_nodes = [
+    for n in flatten(data.kubernetes_nodes.cluster.nodes) : n if strcontains(n.metadata[0].name, "manager")
+  ]
 }
