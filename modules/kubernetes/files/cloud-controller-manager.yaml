@@ -1,0 +1,6 @@
+networking:
+  enabled: true
+
+env:
+  HCLOUD_LOAD_BALANCERS_ENABLED:
+    value: "false"

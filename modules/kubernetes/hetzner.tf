@@ -35,10 +35,10 @@ resource "helm_release" "hcloud_ccm" {
   version         = var.hetzner_cloud_config_manager_version
   wait            = true
 
-  set {
-    name  = "networking.enabled"
-    value = "true"
-  }
+
+  values = [
+    templatefile("${path.module}/files/cloud-controller-manager.yaml", {})
+  ]
 
   set {
     name  = "networking.clusterCIDR"
