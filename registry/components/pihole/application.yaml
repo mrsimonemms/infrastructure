@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pihole
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    chart: pihole
+    repoURL: https://mojo2600.github.io/pihole-kubernetes/
+    targetRevision: 2.26.2
+    helm:
+      valuesObject:
+        admin:
+          enabled: true
+          existingSecret: password
+          passwordKey: password
+        virtualHost: pihole.simonemms.com
+        podAnnotations:
+          secret.reloader.stakater.com/reload: password
+        DNS1: 208.67.222.222 # OpenDNS
+        DNS2: 1.1.1.1 # Cloudflare
+        extraEnvVars:
+          FTLCONF_PRIVACYLEVEL: 3
+          QUERY_LOGGING: false
+          WEBLOGS_STDOUT: 1
+          WEBTHEME: default-darker
+        serviceWeb:
+          https:
+            enabled: false
+        serviceDns:
+          type: LoadBalancer
+          externalTrafficPolicy: Cluster
+          annotations:
+            metallb.universe.tf/allow-shared-ip: primary
+            metallb.universe.tf/ip-allocated-from-pool: nodes
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/tls-acme: "true"
+            cert-manager.io/cluster-issuer: letsencrypt
+            gethomepage.dev/description: Network-wide ad blocking
+            gethomepage.dev/enabled: "true"
+            gethomepage.dev/group: Cluster Management
+            gethomepage.dev/icon: pi-hole
+            gethomepage.dev/name: Pi-hole
+          ingressClassName: nginx
+          hosts:
+            - pihole.simonemms.com
+          tls:
+            - hosts:
+                - pihole.simonemms.com
+              secretName: pihole-tls
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: pihole
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
