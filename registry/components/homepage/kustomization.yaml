@@ -4,3 +4,4 @@ resources:
   - application.yaml
   - configmap.yaml
   - namespace.yaml
+  - secret.yaml
