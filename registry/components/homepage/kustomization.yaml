@@ -1,6 +1,16 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - application.yaml
+  - all.yaml
   - configmap.yaml
   - namespace.yaml
+patches:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: homepage
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
