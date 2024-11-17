@@ -41,7 +41,8 @@ resource "kubernetes_config_map_v1" "metallb" {
       }
       spec = {
         addresses = [
-          for n in flatten(data.kubernetes_nodes.cluster.nodes[*].status[*].addresses) : "${n.address}/32" if n.type == "ExternalIP"
+          # Only use managers as ingress IP
+          for n in flatten(local.manager_nodes[*].status[*].addresses) : "${n.address}/32" if n.type == "ExternalIP"
         ]
       }
     })
