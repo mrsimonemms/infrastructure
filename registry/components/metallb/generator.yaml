@@ -17,6 +17,13 @@ rules:
     verbs:
       - get
   - apiGroups:
+      - apps
+    resources:
+      - deployments
+    verbs:
+      - list
+      - patch
+  - apiGroups:
       - metallb.io
     resources:
       - ipaddresspools
@@ -45,9 +52,10 @@ metadata:
   namespace: metallb-system
   annotations:
     argocd.argoproj.io/sync-wave: "20"
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   backoffLimit: 5
-  ttlSecondsAfterFinished: 30
   template:
     spec:
       containers:
@@ -56,6 +64,9 @@ spec:
           command:
             - bash
             - -c
-            - kubectl get configmap -n metallb-system nodes -o jsonpath='{.data.resource}' | kubectl apply -f -
+          args:
+            - |
+              kubectl get configmap -n metallb-system nodes -o jsonpath='{.data.resource}' | kubectl apply -f -
+              kubectl rollout restart -n metallb-system -l app.kubernetes.io/name=metallb deployment
       restartPolicy: OnFailure
       serviceAccountName: kubectl-metallb-system
