@@ -36,6 +36,7 @@ configs:
     admin.enabled: false
     dex.config: |-
       ${indent(6, yamlencode(dex_config))}
+    kustomize.buildOptions: --enable-helm
     statusbadge.enabled: true
     url: https://${domain}
   params:
