@@ -51,3 +51,8 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+  ignoreDifferences:
+    - kind: Service
+      namespace: monitoring
+      jsonPointers:
+        - /spec/externalName
