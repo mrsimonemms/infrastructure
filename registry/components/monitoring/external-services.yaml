@@ -1,0 +1,22 @@
+# These are used to keep track of temperature in garden/greenhouse
+apiVersion: v1
+kind: Service
+metadata:
+  name: garden
+  namespace: monitoring
+  annotations:
+    tailscale.com/tailnet-fqdn: garden.tail30e9d2.ts.net
+spec:
+  externalName: garden
+  type: ExternalName
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: greenhouse
+  namespace: monitoring
+  annotations:
+    tailscale.com/tailnet-fqdn: greenhouse.tail30e9d2.ts.net
+spec:
+  externalName: greenhouse
+  type: ExternalName
