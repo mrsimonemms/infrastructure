@@ -47,11 +47,30 @@ spec:
             server:
               domain: monitoring.simonemms.com
               root_url: "https://%(domain)s"
+            auth.github:
+              enabled: true
+              allow_sign_up: true
+              scopes: user:email,read:org
+              auth_url: https://github.com/login/oauth/authorize
+              token_url: https://github.com/login/oauth/access_token
+              api_url: https://api.github.com/user
+              team_ids: $__file{/etc/secrets/credentials/githubTeamId}
+              allowed_organizations:
+                - $__file{/etc/secrets/credentials/githubOrg}
+              client_id: $__file{/etc/secrets/credentials/githubClientId}
+              client_secret: $__file{/etc/secrets/credentials/githubClientSecret}
+          extraSecretMounts:
+            - name: credentials
+              secretName: credentials
+              defaultMode: 0440
+              mountPath: /etc/secrets/credentials
+              readOnly: true
           persistence:
             enabled: true
             type: statefulset
           podAnnotations:
             configmap.reloader.stakater.com/reload: grafana-dashboards
+            secret.reloader.stakater.com/reload: credentials
           ingress:
             enabled: true
             annotations:
