@@ -15,9 +15,39 @@ spec:
     targetRevision: 66.1.1
     helm:
       valuesObject:
+        prometheus:
+          prometheusSpec:
+            additionalScrapeConfigs:
+              - job_name: garden
+                static_configs:
+                  - targets:
+                      - garden:3000
+              - job_name: greenhouse
+                static_configs:
+                  - targets:
+                      - greenhouse:3000
         grafana:
           admin:
             existingSecret: credentials
+          dashboardProviders:
+            dashboardproviders.yaml:
+              apiVersion: 1
+              providers:
+                - name: "default"
+                  orgId: 1
+                  folder: ""
+                  type: file
+                  disableDeletion: false
+                  editable: true
+                  options:
+                    path: /var/lib/grafana/dashboards/default
+          dashboardsConfigMaps:
+            default: grafana-dashboards
+          persistence:
+            enabled: true
+            type: statefulset
+          podAnnotations:
+            configmap.reloader.stakater.com/reload: grafana-dashboards
           ingress:
             enabled: true
             annotations:
