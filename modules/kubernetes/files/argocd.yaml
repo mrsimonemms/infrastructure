@@ -61,4 +61,3 @@ configs:
     create: true
     policy.csv: |
       ${indent(6, policy)}
-  repoServer:
