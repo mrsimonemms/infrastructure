@@ -101,23 +101,6 @@ locals {
       port     = 10001
       protocol = "udp"
     },
-    {
-      description = "PiHole DNS TCP"
-      source_ips = [
-        local.global_ipv4_cidr,
-        local.global_ipv6_cidr,
-      ]
-      port = 53
-    },
-    {
-      description = "PiHole DNS UDP"
-      source_ips = [
-        local.global_ipv4_cidr,
-        local.global_ipv6_cidr,
-      ]
-      port     = 53
-      protocol = "udp"
-    },
     # Direct public access only allowed if single manager node
     {
       description = "Allow access to Kubernetes API"
