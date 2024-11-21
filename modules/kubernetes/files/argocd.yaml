@@ -18,7 +18,6 @@ server:
       nginx.ingress.kubernetes.io/backend-protocol: HTTP
       kubernetes.io/tls-acme: "true"
       cert-manager.io/cluster-issuer: ${cluster_issuer}
-
       gethomepage.dev/description: Get stuff done with Kubernetes!
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: Cluster Management
