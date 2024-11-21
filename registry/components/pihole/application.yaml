@@ -46,6 +46,8 @@ spec:
             gethomepage.dev/group: Cluster Management
             gethomepage.dev/icon: pi-hole
             gethomepage.dev/name: Pi-hole
+            # Pod selector required because names don't match
+            gethomepage.dev/pod-selector: app=pihole
           ingressClassName: nginx
           hosts:
             - pihole.simonemms.com
