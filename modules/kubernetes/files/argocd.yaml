@@ -1,5 +1,8 @@
 global:
   domain: ${domain}
+controller:
+  emptyDir:
+    sizeLimit: 500Mi
 redis-ha:
   enabled: true
 repoServer:
