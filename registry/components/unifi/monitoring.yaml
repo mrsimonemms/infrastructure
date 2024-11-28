@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: unifi
+  namespace: unifi
+  labels:
+    prometheus: enabled
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  jobLabel: unifi-poller
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: unpoller
+      app.kubernetes.io/name: unifi-poller
+  podMetricsEndpoints:
+    - port: metrics
+      path: /metrics
