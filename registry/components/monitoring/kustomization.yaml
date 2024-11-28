@@ -1,8 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - application.yaml
   - dashboard-configmap.yaml
   - external-services.yaml
+  - grafana.yaml
+  - grafana-operator.yaml
+  - kube-prom-stack.yaml
   - namespace.yaml
   - secret.yaml
