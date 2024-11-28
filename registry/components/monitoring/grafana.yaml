@@ -1,0 +1,111 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  namespace: monitoring
+  labels:
+    dashboards: grafana
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  config:
+    log:
+      mode: "console"
+    auth:
+      disable_login_form: "false"
+  deployment:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: grafana
+              env:
+                - name: GF_SECURITY_ADMIN_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: credentials
+                      key: admin-user
+                - name: GF_SECURITY_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: credentials
+                      key: admin-password
+  ingress:
+    spec:
+      ingressClassName: nginx
+      rules:
+        - host: monitoring.simonemms.com
+      tls:
+        - hosts:
+            - monitoring.simonemms.com
+          secretName: monitoring-tls
+---
+# Ingress doesn't support annotations
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: monitoring
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+    gethomepage.dev/description: Grafana dashboards
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: Cluster Management
+    gethomepage.dev/icon: grafana
+    gethomepage.dev/name: Grafana
+    # Pod selector required because names don't match
+    # gethomepage.dev/pod-selector: app=grafana
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: monitoring.simonemms.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana-service
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - monitoring.simonemms.com
+      secretName: monitoring-tls
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanadatasource-sample
+  namespace: monitoring
+# annotations:
+#   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+#   argocd.argoproj.io/sync-wave: "20"
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  datasource:
+    name: prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus-operated:9090
+    jsonData:
+      "tlsSkipVerify": true
+      "timeInterval": "5s"
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: node-exporter-latest
+  namespace: monitoring
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  grafanaCom:
+    id: 1860
