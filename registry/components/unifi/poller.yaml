@@ -1,0 +1,59 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: unpoller
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    chart: unifi-poller
+    repoURL: https://k8s-at-home.com/charts/
+    targetRevision: 11.1.2
+    helm:
+      valuesObject:
+        image:
+          repository: ghcr.io/unpoller/unpoller
+          tag: v2.11.2
+        env:
+          - name: TZ
+            value: UTC
+          - name: UP_UNIFI_DEFAULT_URL
+            value: https://unifi:8443
+          - name: UP_UNIFI_DEFAULT_USER
+            valueFrom:
+              secretKeyRef:
+                name: unifi-poller
+                key: username
+          - name: UP_UNIFI_DEFAULT_PASS
+            valueFrom:
+              secretKeyRef:
+                name: unifi-poller
+                key: password
+          - name: UP_UNIFI_DEFAULT_VERIFY_SSL
+            value: false
+          - name: UP_PROMETHEUS_DISABLE
+            value: false
+          - name: UP_INFLUXDB_DISABLE
+            value: "true"
+          - name: UP_PROMETHEUS_REPORT_ERRORS
+            value: "true"
+          - name: UP_PROMETHEUS_NAMESPACE
+            value: unpoller
+        resources:
+          requests:
+            cpu: 100m
+            memory: 32Mi
+          limits:
+            cpu: 200m
+            memory: 64Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: unifi
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
