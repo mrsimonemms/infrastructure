@@ -13,6 +13,35 @@ spec:
     repoURL: https://github.com/mrsimonemms/infrastructure
     path: registry/components/fission
     targetRevision: HEAD
+    kustomize:
+      patches:
+        - target:
+            group: networking.k8s.io
+            version: v1
+            kind: Ingress
+            name: fission
+          patch: |-
+            - op: replace
+              path: /spec/rules/hosts/0/host
+              value: fission.dev.simonemms.com
+        - target:
+            group: networking.k8s.io
+            version: v1
+            kind: Ingress
+            name: fission
+          patch: |-
+            - op: replace
+              path: /spec/tls/0/hosts/0
+              value: fission.dev.simonemms.com
+        - target:
+            group: networking.k8s.io
+            version: v1
+            kind: Ingress
+            name: fission
+          patch: |-
+            - op: replace
+              path: /spec/metadata/annotations/cert-manager.io~1cluster-issuer
+              value: letsencrypt-staging
   destination:
     server: https://kubernetes.default.svc
     namespace: fission
