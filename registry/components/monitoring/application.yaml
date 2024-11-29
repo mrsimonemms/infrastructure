@@ -17,12 +17,15 @@ spec:
       valuesObject:
         prometheus:
           prometheusSpec:
-            podMonitorSelector:
-              matchLabels:
-                monitoring.simonemms.com: "true"
-            serviceMonitorSelector:
-              matchLabels:
-                monitoring.simonemms.com: "true"
+            # scrapeConfigSelector:
+            #   matchLabels:
+            #     monitoring.simonemms.com: "true"
+            # podMonitorSelector:
+            #   matchLabels:
+            #     monitoring.simonemms.com: "true"
+            # serviceMonitorSelector:
+            #   matchLabels:
+            #     monitoring.simonemms.com: "true"
             additionalScrapeConfigs:
               - job_name: garden
                 static_configs:
