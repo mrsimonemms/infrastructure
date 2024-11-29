@@ -23,7 +23,7 @@ spec:
           patch: |-
             - op: replace
               path: /spec/source/helm/valuesObject/grafana/ingress/hosts/0
-              value: monitoring.dev.simonemms.com
+              value: grafana.dev.simonemms.com
         - target:
             group: argoproj.io
             version: v1alpha1
@@ -32,7 +32,7 @@ spec:
           patch: |-
             - op: replace
               path: /spec/source/helm/valuesObject/grafana/ingress/tls/0/hosts/0
-              value: monitoring.dev.simonemms.com
+              value: grafana.dev.simonemms.com
         - target:
             group: argoproj.io
             version: v1alpha1
@@ -41,7 +41,7 @@ spec:
           patch: |-
             - op: replace
               path: /spec/source/helm/valuesObject/grafana/grafana.ini/server/domain
-              value: monitoring.dev.simonemms.com
+              value: grafana.dev.simonemms.com
         - target:
             group: argoproj.io
             version: v1alpha1
