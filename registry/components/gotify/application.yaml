@@ -1,0 +1,104 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gotify
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    chart: app-template
+    repoURL: https://bjw-s-labs.github.io/helm-charts
+    targetRevision: 4.1.2
+    helm:
+      valuesObject:
+        controllers:
+          main:
+            annotations:
+              secret.reloader.stakater.com/reload: credentials
+            defaultContainerOptions:
+              resources:
+                requests:
+                  memory: 1Gi
+                  cpu: 150m
+            containers:
+              main:
+                image:
+                  repository: ghcr.io/gotify/server
+                  pullPolicy: IfNotPresent
+                  tag: 2.6.1
+                probes:
+                  liveness:
+                    enabled: true
+                    custom: true
+                    spec:
+                      httpGet:
+                        path: /health
+                        port: 8080
+                  readiness:
+                    enabled: true
+                    custom: true
+                    spec:
+                      httpGet:
+                        path: /health
+                        port: 8080
+                env:
+                  - name: TZ
+                    value: UTC
+                  - name: GOTIFY_DATABASE_DIALECT
+                    value: sqlite3
+                  - name: GOTIFY_SERVER_PORT
+                    value: "8080"
+                  - name: GOTIFY_UPLOADEDIMAGESDIR
+                    value: data/images
+                  - name: GOTIFY_PLUGINSDIR
+                    value: data/plugins
+                  - name: GOTIFY_REGISTRATION
+                    value: "false"
+                  - name: GOTIFY_DEFAULTUSER_NAME
+                    valueFrom:
+                      secretKeyRef:
+                        name: credentials
+                        key: username
+                  - name: GOTIFY_DEFAULTUSER_PASS
+                    valueFrom:
+                      secretKeyRef:
+                        name: credentials
+                        key: password
+        service:
+          main:
+            controller: main
+            ports:
+              http:
+                port: 8080
+        ingress:
+          main:
+            enabled: true
+            annotations:
+              kubernetes.io/tls-acme: "true"
+              cert-manager.io/cluster-issuer: letsencrypt
+            className: nginx
+            hosts:
+              - host: gotify.simonemms.com
+                paths:
+                  - path: /
+                    pathType: Prefix
+                    service:
+                      identifier: main
+                      port: http
+            tls:
+              - hosts:
+                  - gotify.simonemms.com
+                secretName: gotify-tls
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gotify
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
