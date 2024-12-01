@@ -9,6 +9,35 @@ repoServer:
   autoscaling:
     enabled: true
     minReplicas: 2
+  extraContainers:
+    - name: kustomized-helm
+      image: '{{ default .Values.global.image.repository .Values.repoServer.image.repository }}:{{ default (include "argo-cd.defaultTag" .) .Values.repoServer.image.tag }}'
+      command:
+        - argocd-cmp-server
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+            - ALL
+      volumeMounts:
+        - name: plugins
+          mountPath: /home/argocd/cmp-server/plugins
+        - name: cmp-kustomized-helm
+          mountPath: /home/argocd/cmp-server/config/plugin.yaml
+          subPath: kustomized-helm.yaml
+        - mountPath: /tmp
+          name: cmp-tmp
+  volumes:
+    - name: cmp-kustomized-helm
+      configMap:
+        name: argocd-cmp-cm
+    - name: cmp-tmp
+      emptyDir: {}
 server:
   autoscaling:
     enabled: true
@@ -36,25 +65,19 @@ configs:
     admin.enabled: false
     dex.config: |-
       ${indent(6, yamlencode(dex_config))}
-    kustomize.buildOptions: --enable-helm
+    kustomize.buildOptions: --enable-helm --load-restrictor=LoadRestrictionsNone
     statusbadge.enabled: true
     url: https://${domain}
   cmp:
     create: true
     plugins:
       kustomized-helm:
-        init:
-          command:
-            - /bin/sh
-            - -c
-          args:
-            - helm dependency build || true
         generate:
           command:
             - /bin/sh
             - -c
           args:
-            - helm template . --name-template $${ARGOCD_APP_NAME} --namespace $${ARGOCD_APP_NAMESPACE} --include-crds > all.yaml && kustomize build
+            - kustomize build --enable-helm
   params:
     server.insecure: true
   rbac:
