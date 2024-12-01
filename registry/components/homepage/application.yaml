@@ -13,8 +13,8 @@ spec:
     chart: homepage
     repoURL: https://jameswynn.github.io/helm-charts
     targetRevision: 2.0.1
-    plugin:
-      name: kustomized-helm
+    # plugin:
+    #   name: kustomized-helm
     helm:
       valuesObject:
         image:
