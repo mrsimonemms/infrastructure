@@ -13,34 +13,35 @@ spec:
     chart: homepage
     repoURL: https://jameswynn.github.io/helm-charts
     targetRevision: 2.0.1
-    # plugin:
-    #   name: kustomized-helm
-    helm:
-      valuesObject:
-        image:
-          tag: v0.9.13
-        controller:
-          annotations:
-            configmap.reloader.stakater.com/reload: homepage
-        config:
-          useExistingConfigMap: homepage
-        enableRbac: true
-        ingress:
-          main:
-            enabled: true
+    plugin:
+      name: kustomized-helm
+      env:
+      - name: HELM_VALUES
+        value: |
+          image:
+            tag: v0.9.13
+          controller:
             annotations:
-              kubernetes.io/tls-acme: "true"
-              cert-manager.io/cluster-issuer: letsencrypt
-            ingressClassName: nginx
-            hosts:
-              - host: homepage.simonemms.com
-                paths:
-                  - path: /
-                    pathType: Prefix
-            tls:
-              - hosts:
-                  - homepage.simonemms.com
-                secretName: homepage-tls
+              configmap.reloader.stakater.com/reload: homepage
+          config:
+            useExistingConfigMap: homepage
+          enableRbac: true
+          ingress:
+            main:
+              enabled: true
+              annotations:
+                kubernetes.io/tls-acme: "true"
+                cert-manager.io/cluster-issuer: letsencrypt-staging
+              ingressClassName: nginx
+              hosts:
+                - host: homepage.dev.simonemms.com
+                  paths:
+                    - path: /
+                      pathType: Prefix
+              tls:
+                - hosts:
+                    - homepage.dev.simonemms.com
+                  secretName: homepage-tls
   destination:
     server: https://kubernetes.default.svc
     namespace: homepage
