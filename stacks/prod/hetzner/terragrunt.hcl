@@ -23,13 +23,13 @@ include {
 inputs = {
   k3s_manager_pool = {
     count       = 1
-    server_type = "cpx21"
+    server_type = "cx32"
   }
   k3s_worker_pools = [
     {
       count       = 2
       name        = "pool1"
-      server_type = "cpx21"
+      server_type = "cx32"
     },
   ]
 }
