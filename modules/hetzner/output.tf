@@ -24,6 +24,7 @@ output "kubeconfig" {
 }
 
 output "kube_api_server" {
+  sensitive   = true
   description = "Kubernetes API server address"
   value       = module.k3s.kube_api_server
 }
