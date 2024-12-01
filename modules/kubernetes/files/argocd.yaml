@@ -4,11 +4,13 @@ controller:
   emptyDir:
     sizeLimit: 500Mi
 redis-ha:
-  enabled: true
+  # enabled: true
+  enabled: false
 repoServer:
-  autoscaling:
-    enabled: true
-    minReplicas: 2
+  replaces: 1
+  # autoscaling:
+  #   enabled: true
+  #   minReplicas: 2
   extraContainers:
     - name: kustomized-helm
       image: '{{ default .Values.global.image.repository .Values.repoServer.image.repository }}:{{ default (include "argo-cd.defaultTag" .) .Values.repoServer.image.tag }}'
@@ -65,7 +67,8 @@ configs:
     admin.enabled: false
     dex.config: |-
       ${indent(6, yamlencode(dex_config))}
-    kustomize.buildOptions: --enable-helm --load-restrictor=LoadRestrictionsNone
+    kustomize.buildOptions: --enable-helm
+    # kustomize.buildOptions: --enable-helm --load-restrictor=LoadRestrictionsNone
     statusbadge.enabled: true
     url: https://${domain}
   cmp:
@@ -77,13 +80,13 @@ configs:
             - /bin/sh
             - -c
           args:
-            - helm dependency build
+            - helm dependency build || true
         generate:
           command:
             - /bin/sh
             - -c
           args:
-            - helm template --release-name release-name . > all.yaml && kustomize build
+            - echo "$$HELM_VALUES" | helm template . --name-template $$ARGOCD_APP_NAME --namespace $$ARGOCD_APP_NAMESPACE $$ARGOCD_ENV_HELM_ARGS -f - --include-crds > all.yaml && kustomize build
   params:
     server.insecure: true
   rbac:

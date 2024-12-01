@@ -15,33 +15,10 @@ spec:
     targetRevision: 2.0.1
     plugin:
       name: kustomized-helm
-      env:
-      - name: HELM_VALUES
-        value: |
-          image:
-            tag: v0.9.13
-          controller:
-            annotations:
-              configmap.reloader.stakater.com/reload: homepage
-          config:
-            useExistingConfigMap: homepage
-          enableRbac: true
-          ingress:
-            main:
-              enabled: true
-              annotations:
-                kubernetes.io/tls-acme: "true"
-                cert-manager.io/cluster-issuer: letsencrypt-staging
-              ingressClassName: nginx
-              hosts:
-                - host: homepage.dev.simonemms.com
-                  paths:
-                    - path: /
-                      pathType: Prefix
-              tls:
-                - hosts:
-                    - homepage.dev.simonemms.com
-                  secretName: homepage-tls
+      # env:
+      # - name: HELM_VALUES
+      #   value: |
+
   destination:
     server: https://kubernetes.default.svc
     namespace: homepage
