@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup
+  namespace: unifi
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  schedule: "* * * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: hello
+              image: minio/mc:RELEASE.2024-11-17T19-35-25Z
+              imagePullPolicy: IfNotPresent
+              command:
+                - bash
+                - -c
+              args:
+                - sleep 3600
+              env:
+                - name: MC_HOST_backup
+                  valueFrom:
+                    secretKeyRef:
+                      name: s3-creds
+                      key: alias_host
+          #     volumeMounts:
+          #       - name: data
+          #         mountPath: /data
+          # volumes:
+          #   - name: data
+          #     persistentVolumeClaim:
+          #       claimName: unifi-data
+          restartPolicy: OnFailure
