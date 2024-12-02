@@ -17,6 +17,15 @@ spec:
       valuesObject:
         prometheus:
           prometheusSpec:
+            # scrapeConfigSelector:
+            #   matchLabels:
+            #     monitoring.simonemms.com: "true"
+            # podMonitorSelector:
+            #   matchLabels:
+            #     monitoring.simonemms.com: "true"
+            # serviceMonitorSelector:
+            #   matchLabels:
+            #     monitoring.simonemms.com: "true"
             additionalScrapeConfigs:
               - job_name: garden
                 static_configs:
@@ -47,6 +56,10 @@ spec:
             server:
               domain: grafana.simonemms.com
               root_url: "https://%(domain)s"
+          serviceMonitor:
+            enabled: true
+            labels:
+              monitoring.simonemms.com: "true"
           persistence:
             enabled: true
             type: statefulset

@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: unifi
+  namespace: unifi
+  labels:
+    monitoring.simonemms.com: "true"
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: unifi-poller
+      app.kubernetes.io/instance: unpoller
+  endpoints:
+    - port: metrics
