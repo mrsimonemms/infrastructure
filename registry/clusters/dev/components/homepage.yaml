@@ -24,21 +24,9 @@ spec:
             - op: replace
               path: /spec/source/helm/valuesObject/ingress/main/hosts/0/host
               value: homepage.dev.simonemms.com
-        - target:
-            group: argoproj.io
-            version: v1alpha1
-            kind: Application
-            name: homepage
-          patch: |-
             - op: replace
               path: /spec/source/helm/valuesObject/ingress/main/tls/0/hosts/0
               value: homepage.dev.simonemms.com
-        - target:
-            group: argoproj.io
-            version: v1alpha1
-            kind: Application
-            name: homepage
-          patch: |-
             - op: replace
               path: /spec/source/helm/valuesObject/ingress/main/annotations/cert-manager.io~1cluster-issuer
               value: letsencrypt-staging
