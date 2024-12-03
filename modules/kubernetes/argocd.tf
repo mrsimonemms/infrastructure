@@ -18,9 +18,15 @@ resource "kubernetes_namespace_v1" "argocd" {
   }
 }
 
-resource "kubernetes_secret_v1" "github_secret" {
+data "infisical_secrets" "common_secrets" {
+  env_slug     = var.infisical_environment_slug
+  workspace_id = var.infisical_project_id
+  folder_path  = "/"
+}
+
+resource "kubernetes_secret_v1" "oidc_secret" {
   metadata {
-    name      = "github-oidc"
+    name      = "oidc"
     namespace = kubernetes_namespace_v1.argocd.metadata[0].name
     labels = {
       "app.kubernetes.io/part-of" = "argocd"
@@ -28,8 +34,8 @@ resource "kubernetes_secret_v1" "github_secret" {
   }
 
   data = {
-    clientId     = var.argocd_github_client_id
-    clientSecret = var.argocd_github_client_secret
+    clientId     = data.infisical_secrets.common_secrets.secrets["OIDC_CLIENT_ID"].value
+    clientSecret = data.infisical_secrets.common_secrets.secrets["OIDC_CLIENT_SECRET"].value
   }
 }
 
@@ -50,27 +56,14 @@ resource "helm_release" "argocd" {
   values = [
     templatefile("${path.module}/files/argocd.yaml", {
       cluster_issuer = var.cluster_issuer
-      dex_config = {
-        connectors = [
-          {
-            type = "github"
-            id   = "github"
-            name = "GitHub"
-            config = {
-              # Prepend with a $ so it looks for the secret
-              clientID     = join("", ["$", "${kubernetes_secret_v1.github_secret.metadata[0].name}:clientId"])
-              clientSecret = join("", ["$", "${kubernetes_secret_v1.github_secret.metadata[0].name}:clientSecret"])
-              orgs = [
-                {
-                  name  = var.argocd_github_org
-                  teams = flatten(values(var.argocd_github_teams))
-                }
-              ]
-            }
-          }
-        ]
+      domain         = "argocd.${var.domain}"
+      oidc_config = {
+        name         = "OIDC"
+        issuer       = "https://oidc.${var.domain}"
+        clientID     = join("", ["$", "${kubernetes_secret_v1.oidc_secret.metadata[0].name}:clientId"])
+        clientSecret = join("", ["$", "${kubernetes_secret_v1.oidc_secret.metadata[0].name}:clientSecret"])
       }
-      domain = "argocd.${var.domain}"
+      oidc_tls_skip_verify = var.argocd_oidc_tls_skip_verify
       policy = join("\n", concat(
         # org-admin policy
         [

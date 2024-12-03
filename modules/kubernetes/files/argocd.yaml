@@ -1,4 +1,7 @@
 global:
+  addPrometheusAnnotations: true
+  deploymentAnnotations:
+    secret.reloader.stakater.com/reload: oidc
   domain: ${domain}
 controller:
   emptyDir:
@@ -9,6 +12,8 @@ repoServer:
   autoscaling:
     enabled: true
     minReplicas: 2
+dex:
+  enabled: false
 server:
   autoscaling:
     enabled: true
@@ -34,8 +39,9 @@ server:
 configs:
   cm:
     admin.enabled: false
-    dex.config: |-
-      ${indent(6, yamlencode(dex_config))}
+    oidc.config: |-
+      ${indent(6, yamlencode(oidc_config))}
+    oidc.tls.insecure.skip.verify: ${oidc_tls_skip_verify}
     statusbadge.enabled: true
     url: https://${domain}
   params:

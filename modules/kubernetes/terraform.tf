@@ -19,6 +19,10 @@ terraform {
       source  = "hashicorp/helm"
       version = ">= 2.14.0, < 3.0.0"
     }
+    infisical = {
+      source  = "infisical/infisical"
+      version = ">= 0.12.4, < 1.0.0"
+    }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = ">= 2.31.0, < 3.0.0"
@@ -33,6 +37,11 @@ provider "helm" {
     client_key             = try(base64decode(local.kubeconfig_by_context[var.kube_context].client-key-data), null)
     cluster_ca_certificate = try(base64decode(local.kubeconfig_by_context[var.kube_context].certificate-authority-data), null)
   }
+}
+
+provider "infisical" {
+  client_id     = var.infisical_client_id
+  client_secret = var.infisical_client_secret
 }
 
 provider "kubernetes" {

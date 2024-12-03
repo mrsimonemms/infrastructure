@@ -30,16 +30,10 @@ variable "argocd_github_teams" {
   description = "GitHub teams to use for Dex OIDC"
 }
 
-variable "argocd_github_client_id" {
-  type        = string
-  description = "GitHub OIDC client ID for Dex"
-  sensitive   = true
-}
-
-variable "argocd_github_client_secret" {
-  type        = string
-  description = "GitHub OIDC client secret for Dex"
-  sensitive   = true
+variable "argocd_oidc_tls_skip_verify" {
+  type        = bool
+  description = "Skip TLS verification for Argo OIDC provider"
+  default     = false
 }
 
 variable "cluster_issuer" {
@@ -103,5 +97,16 @@ variable "infisical_client_id" {
 variable "infisical_client_secret" {
   type        = string
   description = "Infisical client secret"
+  sensitive   = true
+}
+
+variable "infisical_environment_slug" {
+  type        = string
+  description = "Infisical environment slug"
+}
+
+variable "infisical_project_id" {
+  type        = string
+  description = "Infisical project ID"
   sensitive   = true
 }
