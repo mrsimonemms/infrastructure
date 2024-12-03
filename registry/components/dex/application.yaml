@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dex
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    chart: dex
+    repoURL: https://charts.dexidp.io
+    targetRevision: 0.19.1
+    helm:
+      valuesObject:
+        configSecret:
+          create: false
+          name: config
+        deploymentAnnotations:
+          secret.reloader.stakater.com/reload: config
+        ingress:
+          enabled: true
+          className: nginx
+          annotations:
+            kubernetes.io/tls-acme: "true"
+            cert-manager.io/cluster-issuer: letsencrypt
+          hosts:
+            - host: oidc.simonemms.com
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - hosts:
+                - oidc.simonemms.com
+              secretName: oidc-tls
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dex
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
