@@ -31,9 +31,10 @@ dependency "hetzner" {
 }
 
 inputs = {
-  cluster_issuer      = "letsencrypt"
-  domain              = "simonemms.com"
-  hcloud_network_name = dependency.hetzner.outputs.hcloud_network_name
-  k3s_cluster_cidr    = dependency.hetzner.outputs.k3s_cluster_cidr
-  kubeconfig          = dependency.hetzner.outputs.kubeconfig
+  cluster_issuer             = "letsencrypt"
+  domain                     = "simonemms.com"
+  hcloud_network_name        = dependency.hetzner.outputs.hcloud_network_name
+  infisical_environment_slug = "prod"
+  k3s_cluster_cidr           = dependency.hetzner.outputs.k3s_cluster_cidr
+  kubeconfig                 = dependency.hetzner.outputs.kubeconfig
 }

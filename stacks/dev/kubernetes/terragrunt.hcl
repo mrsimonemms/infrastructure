@@ -31,8 +31,10 @@ dependency "hetzner" {
 }
 
 inputs = {
-  domain              = "dev.simonemms.com"
-  hcloud_network_name = dependency.hetzner.outputs.hcloud_network_name
-  k3s_cluster_cidr    = dependency.hetzner.outputs.k3s_cluster_cidr
-  kubeconfig          = dependency.hetzner.outputs.kubeconfig
+  argocd_oidc_tls_skip_verify = true
+  domain                      = "dev.simonemms.com"
+  hcloud_network_name         = dependency.hetzner.outputs.hcloud_network_name
+  infisical_environment_slug  = "dev"
+  k3s_cluster_cidr            = dependency.hetzner.outputs.k3s_cluster_cidr
+  kubeconfig                  = dependency.hetzner.outputs.kubeconfig
 }
