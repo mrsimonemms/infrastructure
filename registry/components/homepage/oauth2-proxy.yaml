@@ -1,0 +1,81 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homepage-oidc
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    chart: oauth2-proxy
+    repoURL: https://oauth2-proxy.github.io/manifests
+    targetRevision: 7.8.1
+    helm:
+      valuesObject:
+        deploymentAnnotations:
+          secret.reloader.stakater.com/reload: oauth
+        extraEnv:
+          - name: OAUTH2_PROXY_COOKIE_SECURE
+            value: "true"
+          - name: OAUTH2_PROXY_OIDC_ISSUER_URL
+            value: https://oidc.simonemms.com
+          - name: OAUTH2_PROXY_REDIRECT_URL
+            value: https://homepage.simonemms.com/oauth2/callback
+        config:
+          existingSecret: oauth
+          configFile: |-
+            email_domains = [ "*" ]
+            provider = "oidc"
+            ssl_insecure_skip_verify = true
+            upstreams = [ "file:///dev/null" ]
+        ingress:
+          enabled: true
+          className: nginx
+          path: /oauth2
+          annotations:
+            kubernetes.io/tls-acme: "true"
+            cert-manager.io/cluster-issuer: letsencrypt
+          hosts:
+            - homepage.simonemms.com
+          tls:
+            - hosts:
+                - homepage.simonemms.com
+              secretName: oauth-tls
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: homepage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: oauth
+  namespace: homepage
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  refreshInterval: 10s
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: infisical
+  target:
+    name: oauth
+  data:
+    - secretKey: client-id
+      remoteRef:
+        key: OIDC_CLIENT_ID
+    - secretKey: client-secret
+      remoteRef:
+        key: OIDC_CLIENT_SECRET
+    - secretKey: cookie-secret
+      remoteRef:
+        key: OAUTH_PROXY_COOKIE_SECRET
