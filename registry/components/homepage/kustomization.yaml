@@ -4,3 +4,4 @@ resources:
   - application.yaml
   - configmap.yaml
   - namespace.yaml
+  - oauth2-proxy.yaml
