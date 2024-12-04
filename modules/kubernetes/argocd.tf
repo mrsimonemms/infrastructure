@@ -24,6 +24,7 @@ data "infisical_secrets" "common_secrets" {
   folder_path  = "/"
 }
 
+# An external-secret exists to manage drift
 resource "kubernetes_secret_v1" "oidc_secret" {
   metadata {
     name      = "oidc"
