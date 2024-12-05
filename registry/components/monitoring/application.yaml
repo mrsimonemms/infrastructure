@@ -27,8 +27,6 @@ spec:
                   - targets:
                       - greenhouse:3000
         grafana:
-          admin:
-            existingSecret: credentials
           dashboardProviders:
             dashboardproviders.yaml:
               apiVersion: 1
@@ -43,15 +41,42 @@ spec:
                     path: /var/lib/grafana/dashboards/default
           dashboardsConfigMaps:
             default: grafana-dashboards
+          extraSecretMounts:
+            - name: credentials
+              secretName: credentials
+              defaultMode: 0440
+              mountPath: /etc/secrets/credentials
+              readOnly: true
           grafana.ini:
+            auth:
+              disable_login_form: true
+              oauth_auto_login: false
+            auth.generic_oauth:
+              enabled: true
+              name: OIDC
+              allow_assign_grafana_admin: true
+              client_id: $__file{/etc/secrets/credentials/client_id}
+              client_secret: $__file{//etc/secrets/credentials/client_secret}
+              api_url: https://oidc.simonemms.com/userinfo
+              auth_url: https://oidc.simonemms.com/auth
+              token_url: https://oidc.simonemms.com/token
+              role_attribute_path: GrafanaAdmin
+              # role_attribute_path: |-
+              #   role_attribute_path = contains(info.groups[*], 'admin') && 'Admin' || contains(info.groups[*], 'editor') && 'Editor' || 'Viewer'
+              scopes: openid email profile groups offline_access
+              skip_org_role_sync: true
+              tls_skip_verify_insecure: false
+            security:
+              disable_initial_admin_creation: true
             server:
               domain: grafana.simonemms.com
               root_url: "https://%(domain)s"
           persistence:
-            enabled: true
+            enabled: false
             type: statefulset
           podAnnotations:
             configmap.reloader.stakater.com/reload: grafana-dashboards
+            secret.reloader.stakater.com/reload: credentials
           ingress:
             enabled: true
             annotations:
