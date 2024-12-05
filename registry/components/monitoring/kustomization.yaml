@@ -6,3 +6,35 @@ resources:
   - external-services.yaml
   - namespace.yaml
   - secret.yaml
+
+patches:
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: Application
+      name: monitoring
+    patch: |-
+      - op: replace
+        path: /spec/source/helm/valuesObject/grafana/ingress/hosts/0
+        value: grafana.dev.simonemms.com
+      - op: replace
+        path: /spec/source/helm/valuesObject/grafana/ingress/tls/0/hosts/0
+        value: grafana.dev.simonemms.com
+      - op: replace
+        path: /spec/source/helm/valuesObject/grafana/grafana.ini/server/domain
+        value: grafana.dev.simonemms.com
+      - op: replace
+        path: /spec/source/helm/valuesObject/grafana/grafana.ini/auth.generic_oauth/api_url
+        value: https://oidc.dev.simonemms.com/userinfo
+      - op: replace
+        path: /spec/source/helm/valuesObject/grafana/grafana.ini/auth.generic_oauth/auth_url
+        value: https://oidc.dev.simonemms.com/auth
+      - op: replace
+        path: /spec/source/helm/valuesObject/grafana/grafana.ini/auth.generic_oauth/token_url
+        value: https://oidc.dev.simonemms.com/token
+      - op: replace
+        path: /spec/source/helm/valuesObject/grafana/grafana.ini/auth.generic_oauth/tls_skip_verify_insecure
+        value: true
+      - op: replace
+        path: /spec/source/helm/valuesObject/grafana/ingress/annotations/cert-manager.io~1cluster-issuer
+        value: letsencrypt-staging
