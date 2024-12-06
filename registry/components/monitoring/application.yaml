@@ -53,14 +53,16 @@ spec:
               oauth_auto_login: false
             auth.generic_oauth:
               enabled: true
-              name: OIDC
               allow_assign_grafana_admin: true
               client_id: $__file{/etc/secrets/credentials/client_id}
               client_secret: $__file{//etc/secrets/credentials/client_secret}
               api_url: https://oidc.simonemms.com/userinfo
               auth_url: https://oidc.simonemms.com/auth
               token_url: https://oidc.simonemms.com/token
-              role_attribute_path: GrafanaAdmin
+              # role_attribute_path: "'Editor'"
+              auto_assign_org_role: Admin
+              auto_assign_org_id: 2
+              auto_assign_org: true
               # role_attribute_path: |-
               #   role_attribute_path = contains(info.groups[*], 'admin') && 'Admin' || contains(info.groups[*], 'editor') && 'Editor' || 'Viewer'
               scopes: openid email profile groups offline_access
