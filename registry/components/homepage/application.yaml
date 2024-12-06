@@ -20,9 +20,14 @@ spec:
         controller:
           annotations:
             configmap.reloader.stakater.com/reload: homepage
+            secret.reloader.stakater.com/reload: homepage-secrets
+          replicas: 2
         config:
           useExistingConfigMap: homepage
         enableRbac: true
+        envFrom:
+          - secretRef:
+              name: homepage-secrets
         ingress:
           main:
             enabled: true
@@ -31,6 +36,10 @@ spec:
               cert-manager.io/cluster-issuer: letsencrypt
               nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
               nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"
+              nginx.ingress.kubernetes.io/affinity: cookie
+              nginx.ingress.kubernetes.io/affinity-mode: persistent
+              nginx.ingress.kubernetes.io/session-cookie-secure: "true"
+              nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
             ingressClassName: nginx
             hosts:
               - host: homepage.simonemms.com

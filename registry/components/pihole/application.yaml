@@ -43,7 +43,7 @@ spec:
             cert-manager.io/cluster-issuer: letsencrypt
             gethomepage.dev/description: Network-wide ad blocking
             gethomepage.dev/enabled: "true"
-            gethomepage.dev/group: Cluster Management
+            gethomepage.dev/group: Cluster
             gethomepage.dev/icon: pi-hole
             gethomepage.dev/name: Pi-hole
             # Pod selector required because names don't match

@@ -11,11 +11,93 @@ data:
   kubernetes.yaml: |
     mode: cluster
   services.yaml: |
-    - Infrastructure:
+    - Cluster:
+      - Pi-hole:
+          icon: pi-hole
+          href: https://pihole.simonemms.com
+          description: Network-wide ad blocking
+          widget:
+            type: pihole
+            url: http://pihole.pihole.svc.cluster.local
+            key: "{{HOMEPAGE_VAR_PIHOLE_API_KEY}}"
       - Repository:
           icon: github-light
           href: https://github.com/mrsimonemms/infrastructure
           description: My infrastructure
+    - Home:
+      - Weather:
+          icon: mdi-white-balance-sunny-#ffcc00
+          description: Home weather monitor
+          href: https://grafana.simonemms.com/d/YpAJUW3mk/garden?from=now-24h&to=now&refresh=30s
+          widget:
+            type: prometheusmetric
+            url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+            refreshInterval: 10000
+            metrics:
+              - label: Garden
+                query: garden
+                format:
+                  type: number
+                  suffix: °C
+                  options:
+                    maximumFractionDigits: 1
+              - label: Greenhouse
+                query: greenhouse
+                format:
+                  type: number
+                  suffix: °C
+                  options:
+                    maximumFractionDigits: 1
+      - Calendar:
+          widget:
+            type: calendar
+            firstDayInWeek: monday
+            view: monthly
+            maxEvents: 10
+            showTime: true
+            timezone: Europe/London
+            integrations:
+              - type: ical
+                url: "{{HOMEPAGE_VAR_CALENDAR_SIMONEMMS_GMAIL_COM}}"
+                name: Home
+                color: rose
+                params:
+                  showName: true
+              - type: ical
+                url: https://ics.ecal.com/ecal-sub/6401de54c77a22000d08a525/Formula%201.ics
+                name: F1
+                color: blue
+                params:
+                  showName: true
+              - type: ical
+                url: https://calendar.google.com/calendar/ical/en-gb.uk%23holiday%40group.v.calendar.google.com/public/basic.ics
+                name: Public holidays
+                color: green
+                params:
+                  showName: true
+              - type: ical
+                url: "{{HOMEPAGE_VAR_CALENDAR_SIMON_SIMONEMMS_COM}}"
+                name: Work
+                color: yellow
+                params:
+                  showName: true
+              - type: ical
+                url: "{{HOMEPAGE_VAR_CALENDAR_SIMON_KUBEFIRST_IO}}"
+                name: Kubefirst
+                color: purple
+                params:
+                  showName: true
+              - type: ical
+                url: "{{HOMEPAGE_VAR_CALENDAR_SIMON_KONSTRUCT_IO}}"
+                name: Konstruct
+                color: purple
+                params:
+                  showName: true
+      - Logout:
+          icon: mdi-logout-#ffffff
+          description: Logout from the homepage
+          href: /oauth2/sign_out
+          target: _self
   settings.yaml: |
     background:
       image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
@@ -24,10 +106,13 @@ data:
       brightness: 50
       opacity: 50
     headerStyle: boxed
-    # useEqualHeights: true
+    useEqualHeights: true
+    language: en-GB
+    showStats: true
+    statusStyle: dot
     layout:
-      - Cluster Management:
-      - Infrastructure:
+      - Home:
+      - Cluster:
   widgets.yaml: |
     - kubernetes:
         cluster:
@@ -48,12 +133,3 @@ data:
         focus: true
         showSearchSuggestions: true
         target: _self
-    - openmeteo:
-        label: Telford, UK
-        latitude: 52.68
-        longitude: -2.47
-        timezone: Europe/London
-        units: metric
-        cache: 15
-        format:
-          maximumFractionDigits: 1

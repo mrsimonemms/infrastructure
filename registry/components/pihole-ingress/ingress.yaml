@@ -7,14 +7,6 @@ metadata:
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: letsencrypt
     nginx.ingress.kubernetes.io/app-root: /admin
-    gethomepage.dev/description: Network-wide ad blocking
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/group: Cluster Management
-    gethomepage.dev/icon: pi-hole
-    gethomepage.dev/name: Pi-hole
-    gethomepage.dev/external: "true"
-    # Pod selector required because names don't match
-    # gethomepage.dev/pod-selector: app.kubernetes.io/name=grafana
 spec:
   ingressClassName: nginx
   rules:

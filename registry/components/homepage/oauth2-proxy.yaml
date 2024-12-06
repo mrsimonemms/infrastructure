@@ -39,13 +39,6 @@ spec:
           annotations:
             kubernetes.io/tls-acme: "true"
             cert-manager.io/cluster-issuer: letsencrypt
-            gethomepage.dev/description: Logout from the homepage
-            gethomepage.dev/enabled: "true"
-            gethomepage.dev/group: Cluster Management
-            gethomepage.dev/icon: mdi-logout-#ffffff
-            gethomepage.dev/name: Logout
-            gethomepage.dev/href: "/oauth2/sign_out"
-            gethomepage.dev/pod-selector: app.kubernetes.io/name=oauth2-proxy
           hosts:
             - homepage.simonemms.com
           tls:

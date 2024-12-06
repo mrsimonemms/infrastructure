@@ -28,7 +28,7 @@ server:
       cert-manager.io/cluster-issuer: ${cluster_issuer}
       gethomepage.dev/description: Get stuff done with Kubernetes!
       gethomepage.dev/enabled: "true"
-      gethomepage.dev/group: Cluster Management
+      gethomepage.dev/group: Cluster
       gethomepage.dev/icon: argocd
       gethomepage.dev/name: ArgoCD
     tls: true

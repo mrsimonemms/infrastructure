@@ -5,3 +5,4 @@ resources:
   - configmap.yaml
   - namespace.yaml
   - oauth2-proxy.yaml
+  - secrets.yaml

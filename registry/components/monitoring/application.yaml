@@ -59,7 +59,7 @@ spec:
               cert-manager.io/cluster-issuer: letsencrypt
               gethomepage.dev/description: Grafana dashboards
               gethomepage.dev/enabled: "true"
-              gethomepage.dev/group: Cluster Management
+              gethomepage.dev/group: Cluster
               gethomepage.dev/icon: grafana
               gethomepage.dev/name: Grafana
               # Pod selector required because names don't match

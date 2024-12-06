@@ -47,9 +47,13 @@ spec:
               cert-manager.io/cluster-issuer: letsencrypt
               gethomepage.dev/description: Unifi network control panel
               gethomepage.dev/enabled: "true"
-              gethomepage.dev/group: Cluster Management
+              gethomepage.dev/group: Cluster
               gethomepage.dev/icon: unifi
               gethomepage.dev/name: Unifi
+              gethomepage.dev/widget.type: unifi
+              gethomepage.dev/widget.url: https://unifi.simonemms.com
+              gethomepage.dev/widget.username: "{{HOMEPAGE_VAR_UNIFI_USERNAME}}"
+              gethomepage.dev/widget.password: "{{HOMEPAGE_VAR_UNIFI_PASSWORD}}"
             ingressClassName: nginx
             hosts:
               - host: unifi.simonemms.com
