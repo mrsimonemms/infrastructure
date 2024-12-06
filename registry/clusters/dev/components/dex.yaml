@@ -43,6 +43,9 @@ spec:
               path: /spec/data/argocd_url
               value: https://argocd.dev.simonemms.com
             - op: replace
+              path: /spec/data/grafana_url
+              value: https://grafana.dev.simonemms.com
+            - op: replace
               path: /spec/data/homepage_url
               value: https://homepage.dev.simonemms.com
   destination:
