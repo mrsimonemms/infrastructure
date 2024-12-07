@@ -31,6 +31,9 @@ server:
       gethomepage.dev/group: Cluster
       gethomepage.dev/icon: argocd
       gethomepage.dev/name: ArgoCD
+      gethomepage.dev/widget.type: argocd
+      gethomepage.dev/widget.url: http://argocd-server.argocd.svc.cluster.local
+      gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_ARGOCD_KEY}}"
     tls: true
     extraTLS:
       - hosts:
@@ -44,6 +47,7 @@ configs:
     oidc.tls.insecure.skip.verify: ${oidc_tls_skip_verify}
     statusbadge.enabled: true
     url: https://${domain}
+    ${indent(4, additional_users)}
   params:
     server.insecure: true
   rbac:
