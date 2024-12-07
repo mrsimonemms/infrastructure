@@ -12,6 +12,7 @@ repos:
           - --no-sort-keys
       - id: check-json
       - id: check-yaml
+        exclude: ^modules
         args:
           - --allow-multiple-documents
       - id: end-of-file-fixer

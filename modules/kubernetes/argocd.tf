@@ -12,6 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+locals {
+  additional_users = {
+    "homepage" = {
+      cap  = "apiKey"
+      role = "readonly"
+    }
+  }
+}
+
 resource "kubernetes_namespace_v1" "argocd" {
   metadata {
     name = "argocd"
@@ -56,6 +65,9 @@ resource "helm_release" "argocd" {
 
   values = [
     templatefile("${path.module}/files/argocd.yaml", {
+      additional_users = yamlencode({
+        for group, user in local.additional_users : "accounts.${group}" => user.cap
+      })
       cluster_issuer = var.cluster_issuer
       domain         = "argocd.${var.domain}"
       oidc_config = {
@@ -83,11 +95,16 @@ resource "helm_release" "argocd" {
           ] : "p, role:org-admin, ${resource}, *, *, allow"
         ],
         # Assign GitHub org
-        flatten([
-          for role, teams in var.argocd_github_teams : [
-            for team in teams : "g, ${var.argocd_github_org}:${team}, role:${role}"
-          ]
-        ])
+        flatten(
+          concat(
+            [
+              for role, teams in var.argocd_github_teams : [
+                for team in teams : "g, ${var.argocd_github_org}:${team}, role:${role}"
+              ]
+            ],
+            [for group, user in local.additional_users : "g, ${group}, role:${user.role}"]
+          )
+        )
       ))
     })
   ]
