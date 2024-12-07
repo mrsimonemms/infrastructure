@@ -64,6 +64,10 @@ spec:
               gethomepage.dev/name: Grafana
               # Pod selector required because names don't match
               gethomepage.dev/pod-selector: app.kubernetes.io/name=grafana
+              gethomepage.dev/widget.type: grafana
+              gethomepage.dev/widget.url: http://monitoring-grafana.monitoring.svc.cluster.local
+              gethomepage.dev/widget.username: admin
+              gethomepage.dev/widget.password: "{{ `{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}` }}" # Annotations are apparently parsed through Helm
             ingressClassName: nginx
             hosts:
               - grafana.simonemms.com
