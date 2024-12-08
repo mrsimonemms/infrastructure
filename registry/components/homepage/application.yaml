@@ -21,6 +21,13 @@ spec:
           annotations:
             configmap.reloader.stakater.com/reload: homepage
             secret.reloader.stakater.com/reload: homepage-secrets
+        resources:
+          requests:
+            cpu: 1
+            memory: 512Mi
+          limits:
+            cpu: 2
+            memory: 1Gi
         config:
           useExistingConfigMap: homepage
         enableRbac: true

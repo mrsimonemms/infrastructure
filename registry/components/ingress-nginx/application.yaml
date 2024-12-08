@@ -25,6 +25,20 @@ spec:
           service:
             annotations:
               metallb.universe.tf/allow-shared-ip: primary
+          resources:
+            requests:
+              cpu: 100m
+              memory: 90Mi
+            limits:
+              cpu: 200m
+              memory: 180Mi
+          admissionWebhooks:
+            requests:
+              cpu: 10m
+              memory: 20Mi
+            limits:
+              cpu: 10m
+              memory: 20Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-nginx

@@ -35,7 +35,6 @@ resource "helm_release" "hcloud_ccm" {
   version         = var.hetzner_cloud_config_manager_version
   wait            = true
 
-
   values = [
     templatefile("${path.module}/files/cloud-controller-manager.yaml", {})
   ]
