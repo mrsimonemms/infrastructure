@@ -16,6 +16,18 @@ spec:
         image:
           repository: jacobalberty/unifi
           tag: v8.6.9
+        env:
+          JVM_INIT_HEAP_SIZE: 512M
+          JVM_MAX_HEAP_SIZE: 512M
+          JVM_MAX_THREAD_STACK_SIZE: 512M
+          UNIFI_STDOUT: "true"
+        resources:
+          requests:
+            cpu: 2
+            memory: 512Mi
+          limits:
+            cpu: 3
+            memory: 1024Mi
         service:
           main:
             annotations:
@@ -71,6 +83,14 @@ spec:
             size: 10Gi
         mongodb:
           enabled: true
+          useStatefulSet: true
+          resources:
+            requests:
+              cpu: 2
+              memory: 512Mi
+            limits:
+              cpu: 3
+              memory: 1024Mi
           persistence:
             enabled: true
             size: 10Gi

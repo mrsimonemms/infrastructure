@@ -12,7 +12,7 @@ spec:
   source:
     chart: external-dns
     repoURL: registry-1.docker.io/bitnamicharts
-    targetRevision: 8.5.1
+    targetRevision: 8.6.1
     helm:
       valuesObject:
         commonAnnotations:
@@ -21,6 +21,13 @@ spec:
         cloudflare:
           secretName: cloudflare
           proxied: false
+        resources:
+          requests:
+            cpu: 25m
+            memory: 32Mi
+          limits:
+            cpu: 100m
+            memory: 64Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: external-dns
