@@ -20,6 +20,12 @@ data:
             type: pihole
             url: http://pihole.pihole.svc.cluster.local
             key: "{{HOMEPAGE_VAR_PIHOLE_API_KEY}}"
+    - Bookmarks:
+      - Logout:
+          icon: mdi-logout-#ffffff
+          description: Logout from the homepage
+          href: /oauth2/sign_out
+          target: _self
       - Repository:
           icon: github-light
           href: https://github.com/mrsimonemms/infrastructure
@@ -93,11 +99,6 @@ data:
                 color: purple
                 params:
                   showName: true
-      - Logout:
-          icon: mdi-logout-#ffffff
-          description: Logout from the homepage
-          href: /oauth2/sign_out
-          target: _self
   settings.yaml: |
     background:
       image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
@@ -112,7 +113,10 @@ data:
     statusStyle: dot
     layout:
       - Home:
+      - Bookmarks:
       - Cluster:
+          style: row
+          columns: 4
   widgets.yaml: |
     - kubernetes:
         cluster:
