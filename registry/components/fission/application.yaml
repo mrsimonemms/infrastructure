@@ -17,6 +17,8 @@ spec:
       valuesObject:
         analytics: false
         routerServiceType: ClusterIP
+        persistence:
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: fission
