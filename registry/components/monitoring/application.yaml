@@ -15,8 +15,48 @@ spec:
     targetRevision: 66.1.1
     helm:
       valuesObject:
+        alertmanager:
+          alertmanagerSpec:
+            resources:
+              requests:
+                cpu: 25m
+                memory: 50Mi
+              limits:
+                cpu: 50m
+                memory: 100Mi
+        prometheusOperator:
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 200Mi
+        prometheus-node-exporter:
+          resources:
+            requests:
+              cpu: 100m
+              memory: 30Mi
+            limits:
+              cpu: 200m
+              memory: 50Mi
+        kube-state-metrics:
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
         prometheus:
           prometheusSpec:
+            resources:
+              requests:
+                cpu: 250m
+                memory: 400Mi
+              limits:
+                cpu: 500m
+                memory: 600Mi
             additionalScrapeConfigs:
               - job_name: garden
                 static_configs:
@@ -78,6 +118,13 @@ spec:
           sidecar:
             dashboards:
               enabled: true
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                cpu: 200m
+                memory: 256Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

@@ -17,6 +17,14 @@ spec:
       valuesObject:
         reloader:
           watchGlobally: true
+          deployment:
+            resources:
+              requests:
+                cpu: 25m
+                memory: 50Mi
+              limits:
+                cpu: 50m
+                memory: 100Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: reloader

@@ -3,21 +3,77 @@ global:
   deploymentAnnotations:
     secret.reloader.stakater.com/reload: oidc
   domain: ${domain}
+applicationSet:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
 controller:
   emptyDir:
     sizeLimit: 500Mi
+  replicas: 2
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+notifications:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+redis:
+  enabled: false
 redis-ha:
   enabled: true
+  haproxy:
+    resources:
+      limits:
+        memory: 500Mi
+        cpu: 500m
+      requests:
+        cpu: 250m
+        memory: 256Mi
+  redis:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 700Mi
+      requests:
+        memory: 200Mi
+        cpu: 100m
 repoServer:
   autoscaling:
     enabled: true
     minReplicas: 2
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
 dex:
   enabled: false
 server:
   autoscaling:
     enabled: true
     minReplicas: 2
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 50m
+      memory: 128Mi
   ingress:
     enabled: true
     ingressClassName: nginx

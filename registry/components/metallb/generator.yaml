@@ -68,5 +68,12 @@ spec:
             - |
               kubectl get configmap -n metallb-system nodes -o jsonpath='{.data.resource}' | kubectl apply -f -
               kubectl rollout restart -n metallb-system -l app.kubernetes.io/name=metallb deployment
+          resources:
+            requests:
+              cpu: 50m
+              memory: 160Mi
+            limits:
+              cpu: 100m
+              memory: 256Mi
       restartPolicy: OnFailure
       serviceAccountName: kubectl-metallb-system

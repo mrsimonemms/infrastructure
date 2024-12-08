@@ -18,6 +18,13 @@ spec:
           name: config
         deploymentAnnotations:
           secret.reloader.stakater.com/reload: config
+        resources:
+          requests:
+            cpu: 25m
+            memory: 32Mi
+          limits:
+            cpu: 50m
+            memory: 64Mi
         ingress:
           enabled: true
           className: nginx
