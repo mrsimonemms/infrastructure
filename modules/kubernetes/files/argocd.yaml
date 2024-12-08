@@ -59,8 +59,8 @@ repoServer:
       cpu: 100m
       memory: 128Mi
     limits:
-      cpu: 500m
-      memory: 256Mi
+      cpu: 1000m
+      memory: 512Mi
 dex:
   enabled: false
 server:
