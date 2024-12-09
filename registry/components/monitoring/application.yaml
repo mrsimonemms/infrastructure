@@ -53,10 +53,10 @@ spec:
             resources:
               requests:
                 cpu: 250m
-                memory: 400Mi
+                memory: 800Mi
               limits:
                 cpu: 500m
-                memory: 600Mi
+                memory: 1200Mi
             additionalScrapeConfigs:
               - job_name: garden
                 static_configs:
@@ -121,10 +121,10 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 128Mi
+                memory: 256Mi
               limits:
                 cpu: 200m
-                memory: 256Mi
+                memory: 512Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
