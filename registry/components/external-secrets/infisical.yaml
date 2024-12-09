@@ -6,6 +6,9 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
     argocd.argoproj.io/sync-wave: "20"
 spec:
+  retrySettings:
+    maxRetries: 5
+    retryInterval: 10s
   provider:
     infisical:
       auth:
