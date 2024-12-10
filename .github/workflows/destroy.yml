@@ -9,6 +9,7 @@ env:
   TF_VAR_hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
   TF_VAR_infisical_client_id: ${{ secrets.INFISICAL_CLIENT_ID }}
   TF_VAR_infisical_client_secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
+  TF_VAR_infisical_project_id: ${{ secrets.INFISICAL_PROJECT_ID }}
   TF_VAR_ssh_key: ${{ secrets.SSH_KEY_PRIVATE }}
   TF_VAR_ssh_key_public: ${{ secrets.SSH_KEY_PUBLIC }}
   TF_VAR_argocd_github_client_id: ${{ secrets.GH_CLIENT_ID }}
