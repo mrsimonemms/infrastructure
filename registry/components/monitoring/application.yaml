@@ -57,6 +57,13 @@ spec:
               limits:
                 cpu: 500m
                 memory: 1200Mi
+            podMonitorSelectorNilUsesHelmValues: true
+            podMonitorSelector:
+              matchLabels:
+                prometheus: enabled
+            podMonitorNamespaceSelector:
+              matchLabels:
+                prometheus: enabled
             additionalScrapeConfigs:
               - job_name: garden
                 static_configs:
