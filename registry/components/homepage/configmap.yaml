@@ -88,12 +88,6 @@ data:
                 params:
                   showName: true
               - type: ical
-                url: "{{HOMEPAGE_VAR_CALENDAR_SIMON_KUBEFIRST_IO}}"
-                name: Kubefirst
-                color: purple
-                params:
-                  showName: true
-              - type: ical
                 url: "{{HOMEPAGE_VAR_CALENDAR_SIMON_KONSTRUCT_IO}}"
                 name: Konstruct
                 color: purple
