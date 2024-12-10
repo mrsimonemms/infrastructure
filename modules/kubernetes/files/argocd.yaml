@@ -101,6 +101,10 @@ configs:
     oidc.config: |-
       ${indent(6, yamlencode(oidc_config))}
     oidc.tls.insecure.skip.verify: ${oidc_tls_skip_verify}
+    resource.customizations.ignoreDifferences.all: |
+        jqPathExpressions:
+          - .spec.template.spec.containers[].env[] | select(.name | startswith("STAKATER_"))
+          - '.spec.template.metadata.annotations."reloader.stakater.com/last-reloaded-from"'
     statusbadge.enabled: true
     url: https://${domain}
     ${indent(4, additional_users)}
