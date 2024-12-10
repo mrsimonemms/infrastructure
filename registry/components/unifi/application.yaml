@@ -23,10 +23,10 @@ spec:
           UNIFI_STDOUT: "true"
         resources:
           requests:
-            cpu: 2
+            cpu: 1
             memory: 512Mi
           limits:
-            cpu: 3
+            cpu: 2
             memory: 1024Mi
         service:
           main:
@@ -86,10 +86,10 @@ spec:
           useStatefulSet: true
           resources:
             requests:
-              cpu: 2
+              cpu: 1
               memory: 512Mi
             limits:
-              cpu: 3
+              cpu: 2
               memory: 1024Mi
           persistence:
             enabled: true
