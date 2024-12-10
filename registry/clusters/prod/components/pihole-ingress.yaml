@@ -15,7 +15,7 @@ spec:
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: pihole-ingress
+    namespace: pihole
   syncPolicy:
     automated:
       prune: true
