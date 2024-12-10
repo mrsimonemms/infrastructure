@@ -16,6 +16,10 @@ spec:
     helm:
       valuesObject:
         reloader:
+          podMonitor:
+            enabled: true
+            labels:
+              prometheus: enabled
           watchGlobally: true
           deployment:
             resources:
