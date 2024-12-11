@@ -22,6 +22,8 @@ spec:
             configmap.reloader.stakater.com/reload: homepage
             secret.reloader.stakater.com/reload: homepage-secrets
           replicas: 2
+        podAnnotations:
+          reloader.argo: dummy
         resources:
           requests:
             cpu: 500m
