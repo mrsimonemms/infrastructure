@@ -10,13 +10,11 @@ spec:
   source:
     chart: tailscale-operator
     repoURL: https://pkgs.tailscale.com/helmcharts
-    targetRevision: 1.76.1
+    targetRevision: 1.78.1
     helm:
       valuesObject:
         operatorConfig:
           hostname: kubernetes-cluster
-          image:
-            tag: v1.76.6
           resources:
             requests:
               cpu: 25m
