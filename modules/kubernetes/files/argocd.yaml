@@ -110,6 +110,7 @@ configs:
     ${indent(4, additional_users)}
   params:
     server.insecure: true
+    controller.diff.server.side: "true"
   rbac:
     create: true
     policy.csv: |
