@@ -18,6 +18,8 @@ spec:
       valuesObject:
         deploymentAnnotations:
           secret.reloader.stakater.com/reload: oauth
+        podAnnotations:
+          reloader.argo: dummy
         extraEnv:
           - name: OAUTH2_PROXY_COOKIE_SECURE
             value: "true"

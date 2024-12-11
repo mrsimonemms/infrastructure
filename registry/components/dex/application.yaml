@@ -18,6 +18,8 @@ spec:
           name: config
         deploymentAnnotations:
           secret.reloader.stakater.com/reload: config
+        podAnnotations:
+          reloader.argo: dummy
         autoscaling:
           enabled: true
           minReplicas: 2

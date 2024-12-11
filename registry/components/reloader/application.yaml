@@ -16,6 +16,8 @@ spec:
     helm:
       valuesObject:
         reloader:
+          # @link https://github.com/argoproj/argo-cd/discussions/14183
+          reloadStrategy: annotations
           podMonitor:
             enabled: true
             labels:
