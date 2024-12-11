@@ -63,6 +63,7 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
