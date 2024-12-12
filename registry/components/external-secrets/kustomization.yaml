@@ -3,3 +3,5 @@ kind: Kustomization
 resources:
   - application.yaml
   - infisical.yaml
+  - grafana.yaml
+  - namespace.yaml
