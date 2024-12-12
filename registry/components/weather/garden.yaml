@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: garden
+  namespace: weather
+  labels:
+    weather: garden
+  annotations:
+    tailscale.com/tailnet-fqdn: garden.tail30e9d2.ts.net
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  externalName: garden
+  type: ExternalName
+  ports:
+    - port: 3000
+      name: metrics
+      protocol: TCP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: garden
+  namespace: weather
+  labels:
+    prometheus: enabled
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  jobLabel: name
+  selector:
+    matchLabels:
+      weather: garden
+  endpoints:
+    - port: metrics
+      interval: 15s
