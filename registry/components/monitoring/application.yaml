@@ -15,6 +15,8 @@ spec:
     targetRevision: 66.1.1
     helm:
       valuesObject:
+        commonLabels:
+          prometheus: enabled
         alertmanager:
           alertmanagerSpec:
             resources:
@@ -33,6 +35,8 @@ spec:
               cpu: 200m
               memory: 200Mi
         prometheus-node-exporter:
+          commonLabels:
+            prometheus: enabled
           resources:
             requests:
               cpu: 100m
@@ -41,6 +45,8 @@ spec:
               cpu: 200m
               memory: 50Mi
         kube-state-metrics:
+          customLabels:
+            prometheus: enabled
           resources:
             requests:
               cpu: 10m
@@ -62,6 +68,13 @@ spec:
               matchLabels:
                 prometheus: enabled
             podMonitorNamespaceSelector:
+              matchLabels:
+                prometheus: enabled
+            serviceMonitorSelectorNilUsesHelmValues: true
+            serviceMonitorSelector:
+              matchLabels:
+                prometheus: enabled
+            serviceMonitorNamespaceSelector:
               matchLabels:
                 prometheus: enabled
             additionalScrapeConfigs:
@@ -99,6 +112,9 @@ spec:
             type: statefulset
           podAnnotations:
             configmap.reloader.stakater.com/reload: grafana-dashboards
+          serviceMonitor:
+            labels:
+              prometheus: enabled
           ingress:
             enabled: true
             annotations:
