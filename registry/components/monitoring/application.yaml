@@ -77,15 +77,15 @@ spec:
             serviceMonitorNamespaceSelector:
               matchLabels:
                 prometheus: enabled
-            additionalScrapeConfigs:
-              - job_name: garden
-                static_configs:
-                  - targets:
-                      - garden:3000
-              - job_name: greenhouse
-                static_configs:
-                  - targets:
-                      - greenhouse:3000
+            # additionalScrapeConfigs:
+            #   - job_name: garden
+            #     static_configs:
+            #       - targets:
+            #           - garden:3000
+            #   - job_name: greenhouse
+            #     static_configs:
+            #       - targets:
+            #           - greenhouse:3000
         grafana:
           admin:
             existingSecret: credentials
