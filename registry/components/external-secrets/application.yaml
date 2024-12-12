@@ -30,6 +30,10 @@ spec:
             limits:
               cpu: 50m
               memory: 64Mi
+        serviceMonitor:
+          enabled: true
+          additionalLabels:
+            prometheus: enabled
         webhook:
           resources:
             requests:
