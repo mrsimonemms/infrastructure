@@ -1,0 +1,41 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterSecretStore
+metadata:
+  name: bitwarden
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  provider:
+    bitwardensecretsmanager:
+      auth:
+        secretRef:
+          credentials:
+            key: token
+            name: bitwarden
+            namespace: external-secrets
+      caProvider:
+        type: Secret
+        name: root-secret
+        namespace: cert-manager
+        key: ca.crt
+      bitwardenServerSDKURL: https://bitwarden-sdk-server:9998
+      organizationID: 72d9af79-8159-4ad7-940e-aff90140c0e6
+      projectID: 31bb6484-26bd-44f4-b43d-b24601384c3d
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: bitwarden-sdk
+  namespace: external-secrets
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  secretName: bitwarden-tls-certs
+  dnsNames:
+    - bitwarden-sdk-server.external-secrets.svc.cluster.local
+    - bitwarden-sdk-server
+  issuerRef:
+    name: internal
+    kind: ClusterIssuer
+    group: cert-manager.io
