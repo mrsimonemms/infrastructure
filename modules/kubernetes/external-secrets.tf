@@ -18,6 +18,20 @@ resource "kubernetes_namespace_v1" "external_secrets" {
   }
 }
 
+resource "kubernetes_secret_v1" "bitwarden" {
+  metadata {
+    name      = "bitwarden"
+    namespace = kubernetes_namespace_v1.external_secrets.metadata[0].name
+  }
+
+  data = {
+    token = var.bitwarden_token
+  }
+
+  type = "opaque"
+}
+
+
 resource "kubernetes_secret_v1" "infisical" {
   metadata {
     name      = "infisical"
