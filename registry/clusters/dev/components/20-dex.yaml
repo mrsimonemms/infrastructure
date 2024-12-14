@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
     path: registry/components/dex
-    targetRevision: HEAD
+    targetRevision: sje/debug
     kustomize:
       patches:
         - target:
