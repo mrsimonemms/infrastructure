@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homepage-components
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "40"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mrsimonemms/infrastructure
+    path: registry/components/homepage
+    targetRevision: sje/debug
+    kustomize:
+      patches:
+        - target:
+            group: argoproj.io
+            version: v1alpha1
+            kind: Application
+            name: homepage
+          patch: |-
+            - op: replace
+              path: /spec/source/helm/valuesObject/ingress/main/hosts/0/host
+              value: homepage.dev.simonemms.com
+            - op: replace
+              path: /spec/source/helm/valuesObject/ingress/main/tls/0/hosts/0
+              value: homepage.dev.simonemms.com
+            - op: replace
+              path: /spec/source/helm/valuesObject/ingress/main/annotations/cert-manager.io~1cluster-issuer
+              value: letsencrypt-staging
+        - target:
+            group: argoproj.io
+            version: v1alpha1
+            kind: Application
+            name: homepage-oidc
+          patch: |-
+            - op: replace
+              path: /spec/source/helm/valuesObject/ingress/hosts/0
+              value: homepage.dev.simonemms.com
+            - op: replace
+              path: /spec/source/helm/valuesObject/ingress/tls/0/hosts/0
+              value: homepage.dev.simonemms.com
+            - op: replace
+              path: /spec/source/helm/valuesObject/ingress/annotations/cert-manager.io~1cluster-issuer
+              value: letsencrypt-staging
+            - op: replace
+              path: /spec/source/helm/valuesObject/extraEnv/0/value
+              value: "false"
+            - op: replace
+              path: /spec/source/helm/valuesObject/extraEnv/1/value
+              value: https://oidc.dev.simonemms.com
+            - op: replace
+              path: /spec/source/helm/valuesObject/extraEnv/2/value
+              value: https://homepage.dev.simonemms.com/oauth2/callback
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: homepage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
