@@ -16,6 +16,7 @@ env:
   TF_TOKEN_app_terraform_io: ${{ secrets.TERRAFORM_CLOUD_SECRET }}
   TF_VAR_hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
   TF_VAR_kubeconfig_output_path: ${{ github.workspace }}/.kubeconfig
+  TF_VAR_bitwarden_token: ${{ secrets.BITWARDEN_TOKEN }}
   TF_VAR_infisical_client_id: ${{ secrets.INFISICAL_CLIENT_ID }}
   TF_VAR_infisical_client_secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
   TF_VAR_infisical_project_id: ${{ secrets.INFISICAL_PROJECT_ID }}
