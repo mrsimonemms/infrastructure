@@ -36,6 +36,12 @@ variable "argocd_oidc_tls_skip_verify" {
   default     = false
 }
 
+variable "bitwarden_token" {
+  type        = string
+  description = "Bitwarden Secret Manager token"
+  sensitive   = true
+}
+
 variable "cluster_issuer" {
   type        = string
   description = "Cluster issuer to use for certificate"

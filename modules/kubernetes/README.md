@@ -33,6 +33,7 @@ No modules.
 | [kubernetes_namespace_v1.argocd](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1) | resource |
 | [kubernetes_namespace_v1.external_secrets](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1) | resource |
 | [kubernetes_namespace_v1.metallb](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1) | resource |
+| [kubernetes_secret_v1.bitwarden](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [kubernetes_secret_v1.hcloud](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [kubernetes_secret_v1.infisical](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [kubernetes_secret_v1.oidc_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
@@ -47,6 +48,7 @@ No modules.
 | <a name="input_argocd_github_teams"></a> [argocd\_github\_teams](#input\_argocd\_github\_teams) | GitHub teams to use for Dex OIDC | <pre>object({<br>    org-admin = list(string)<br>  })</pre> | n/a | yes |
 | <a name="input_argocd_oidc_tls_skip_verify"></a> [argocd\_oidc\_tls\_skip\_verify](#input\_argocd\_oidc\_tls\_skip\_verify) | Skip TLS verification for Argo OIDC provider | `bool` | `false` | no |
 | <a name="input_argocd_version"></a> [argocd\_version](#input\_argocd\_version) | Version of ArgoCD to use - defaults to latest | `string` | `null` | no |
+| <a name="input_bitwarden_token"></a> [bitwarden\_token](#input\_bitwarden\_token) | Bitwarden Secret Manager token | `string` | n/a | yes |
 | <a name="input_cluster_issuer"></a> [cluster\_issuer](#input\_cluster\_issuer) | Cluster issuer to use for certificate | `string` | `"letsencrypt-staging"` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | Domain to use - this may be a top-level or subdomain | `string` | n/a | yes |
 | <a name="input_hcloud_network_name"></a> [hcloud\_network\_name](#input\_hcloud\_network\_name) | Name of the network | `string` | n/a | yes |
