@@ -75,7 +75,7 @@ spec:
   refreshInterval: 10s
   secretStoreRef:
     kind: ClusterSecretStore
-    name: infisical
+    name: bitwarden
   target:
     name: oauth
   data:
