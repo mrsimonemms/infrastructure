@@ -56,13 +56,14 @@ spec:
               memory: 64Mi
         prometheus:
           prometheusSpec:
+            replicas: 2
             resources:
               requests:
                 cpu: 250m
                 memory: 1200Mi
               limits:
                 cpu: 500m
-                memory: 1200Mi
+                memory: 1600Mi
             podMonitorSelectorNilUsesHelmValues: true
             podMonitorSelector:
               matchLabels:
