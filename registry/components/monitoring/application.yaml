@@ -104,7 +104,29 @@ spec:
                     path: /var/lib/grafana/dashboards/default
           dashboardsConfigMaps:
             default: grafana-dashboards
+          extraSecretMounts:
+            - name: credentials
+              secretName: credentials
+              mountPath: /etc/secrets/credentials
+              readOnly: true
+              defaultMode: 0440
           grafana.ini:
+            auth:
+              disable_login_form: true
+              oauth_auto_login: false
+            auth.generic_oauth:
+              name: OIDC
+              enabled: true
+              client_id: $__file{/etc/secrets/credentials/client_id}
+              client_secret: $__file{/etc/secrets/credentials/client_secret}
+              scopes: openid email profile groups offline_access
+              auth_url: https://oidc.simonemms.com/auth
+              token_url: https://oidc.simonemms.com/token
+              api_url: https://oidc.simonemms.com/userinfo
+              tls_skip_verify_insecure: false
+              allow_sign_up: true
+              allow_assign_grafana_admin: true
+              role_attribute_path: contains(groups[*], 'mrsimonemmsorg:home-admin') && 'Admin' || 'Viewer'
             server:
               domain: grafana.simonemms.com
               root_url: "https://%(domain)s"
@@ -113,6 +135,7 @@ spec:
             type: statefulset
           podAnnotations:
             configmap.reloader.stakater.com/reload: grafana-dashboards
+            secrets.reloader.stakater.com/reload: credentials
           serviceMonitor:
             labels:
               prometheus: enabled
