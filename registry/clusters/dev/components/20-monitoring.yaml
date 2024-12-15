@@ -33,6 +33,15 @@ spec:
             - op: replace
               path: /spec/source/helm/valuesObject/grafana/ingress/annotations/cert-manager.io~1cluster-issuer
               value: letsencrypt-staging
+            - op: replace
+              path: /spec/source/helm/valuesObject/grafana/grafana.ini/auth.generic_oauth/auth_url
+              value: https://oidc.dev.simonemms.com/auth
+            - op: replace
+              path: /spec/source/helm/valuesObject/grafana/grafana.ini/auth.generic_oauth/token_url
+              value: https://oidc.dev.simonemms.com/token
+            - op: replace
+              path: /spec/source/helm/valuesObject/grafana/grafana.ini/auth.generic_oauth/api_url
+              value: https://oidc.dev.simonemms.com/userinfo
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
