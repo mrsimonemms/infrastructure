@@ -77,15 +77,6 @@ spec:
             serviceMonitorNamespaceSelector:
               matchLabels:
                 prometheus: enabled
-            additionalScrapeConfigs:
-              - job_name: garden
-                static_configs:
-                  - targets:
-                      - garden:3000
-              - job_name: greenhouse
-                static_configs:
-                  - targets:
-                      - greenhouse:3000
         grafana:
           admin:
             existingSecret: credentials
@@ -101,8 +92,6 @@ spec:
                   editable: true
                   options:
                     path: /var/lib/grafana/dashboards/default
-          dashboardsConfigMaps:
-            default: grafana-dashboards
           grafana.ini:
             server:
               domain: grafana.simonemms.com
@@ -110,8 +99,6 @@ spec:
           persistence:
             enabled: true
             type: statefulset
-          podAnnotations:
-            configmap.reloader.stakater.com/reload: grafana-dashboards
           serviceMonitor:
             labels:
               prometheus: enabled

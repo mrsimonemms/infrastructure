@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: greenhouse
+  namespace: weather
+  labels:
+    weather: greenhouse
+  annotations:
+    tailscale.com/tailnet-fqdn: greenhouse.tail30e9d2.ts.net
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  externalName: greenhouse
+  type: ExternalName
+  ports:
+    - port: 3000
+      targetPort: 3000
+      name: metrics
+      protocol: TCP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: greenhouse
+  namespace: monitoring
+  labels:
+    prometheus: enabled
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  # jobLabel: weather
+  selector:
+    matchLabels:
+      weather: greenhouse
+  endpoints:
+    - port: metrics
+      interval: 15s
+      honorLabels: true
+  namespaceSelector:
+    matchNames:
+      - weather
