@@ -12,29 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-locals {
-  tfc_hostname     = "app.terraform.io"
-  tfc_organization = "mrsimonemms"
-  project          = reverse(split("/", get_terragrunt_dir()))[0]
-  workspace        = basename(dirname(get_terragrunt_dir()))
-}
-
-generate "remote_state" {
-  path      = "backend.tf"
-  if_exists = "overwrite_terragrunt"
-  contents  = <<EOF
-terraform {
-  backend "remote" {
-    hostname = "${local.tfc_hostname}"
-    organization = "${local.tfc_organization}"
-    workspaces {
-      name = "infra-${local.workspace}-${local.project}"
-    }
-  }
-}
-EOF
-}
-
-inputs = {
-  workspace = local.workspace
-}
+argocd_oidc_tls_skip_verify = true
+cluster_name                = "dev"
+domain                      = "dev.simonemms.com"
+infisical_environment_slug  = "dev"
+kubeconfig_path             = "~/.kube/config"
