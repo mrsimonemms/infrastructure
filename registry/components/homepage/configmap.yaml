@@ -38,7 +38,7 @@ data:
           widget:
             type: prometheusmetric
             url: http://prometheus-operated.monitoring.svc.cluster.local:9090
-            refreshInterval: 10000
+            refreshInterval: 60000
             metrics:
               - label: Garden
                 query: garden
