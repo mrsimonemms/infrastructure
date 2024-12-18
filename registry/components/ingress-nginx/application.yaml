@@ -24,7 +24,8 @@ spec:
             enable-ssl-passthrough: true
           service:
             annotations:
-              metallb.universe.tf/allow-shared-ip: primary
+              load-balancer.hetzner.cloud/location: nbg1
+              load-balancer.hetzner.cloud/use-private-ip: "true"
           resources:
             requests:
               cpu: 100m
