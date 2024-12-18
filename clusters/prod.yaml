@@ -1,0 +1,11 @@
+cluster_name: prod
+
+worker_node_pools:
+  - name: pool1
+    instance_type: cx32
+    instance_count: 0
+    location: nbg1
+    autoscaling:
+      enabled: true
+      min_instances: 0
+      max_instances: 3

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-secrets-components
+  name: metrics-components
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "10"
@@ -11,11 +11,11 @@ spec:
   project: default
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
-    path: registry/components/external-secrets
+    path: registry/components/metrics
     targetRevision: sje/hetzner-k3s
   destination:
     server: https://kubernetes.default.svc
-    namespace: external-secrets
+    namespace: metrics
   syncPolicy:
     automated:
       prune: true

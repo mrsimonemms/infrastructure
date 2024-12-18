@@ -14,10 +14,20 @@
 
 terraform {
   required_version = ">= 1.0.0"
+
+  backend "kubernetes" {
+    secret_suffix = "state"
+    namespace     = "kube-system"
+  }
+
   required_providers {
     helm = {
       source  = "hashicorp/helm"
       version = ">= 2.14.0, < 3.0.0"
+    }
+    hcloud = {
+      source  = "hetznercloud/hcloud"
+      version = ">= 1.49.1, < 2.0.0"
     }
     infisical = {
       source  = "infisical/infisical"
@@ -32,10 +42,7 @@ terraform {
 
 provider "helm" {
   kubernetes {
-    host                   = try(local.kubeconfig_by_context[var.kube_context].server, null)
-    client_certificate     = try(base64decode(local.kubeconfig_by_context[var.kube_context].client-certificate-data), null)
-    client_key             = try(base64decode(local.kubeconfig_by_context[var.kube_context].client-key-data), null)
-    cluster_ca_certificate = try(base64decode(local.kubeconfig_by_context[var.kube_context].certificate-authority-data), null)
+    config_path = var.kubeconfig_path
   }
 }
 
@@ -45,8 +52,5 @@ provider "infisical" {
 }
 
 provider "kubernetes" {
-  host                   = try(local.kubeconfig_by_context[var.kube_context].server, null)
-  client_certificate     = try(base64decode(local.kubeconfig_by_context[var.kube_context].client-certificate-data), null)
-  client_key             = try(base64decode(local.kubeconfig_by_context[var.kube_context].client-key-data), null)
-  cluster_ca_certificate = try(base64decode(local.kubeconfig_by_context[var.kube_context].certificate-authority-data), null)
+  config_path = var.kubeconfig_path
 }

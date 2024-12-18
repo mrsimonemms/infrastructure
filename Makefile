@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+CLUSTER ?= dev
+CLUSTER_ROOT = ./clusters
+CONFIG_FILE ?= /tmp/config.yaml
+
 cruft-update:
 ifeq (,$(wildcard .cruft.json))
 	@echo "Cruft not configured"
@@ -19,3 +23,19 @@ else
 	@cruft check || cruft update --skip-apply-ask --refresh-private-variables
 endif
 .PHONY: cruft-update
+
+create:
+	$(MAKE) generate-config
+
+	hetzner-k3s create --config ${CONFIG_FILE}
+.PHONY: create
+
+delete:
+	$(MAKE) generate-config
+
+	hetzner-k3s delete --config ${CONFIG_FILE}
+.PHONY: delete
+
+generate-config:
+	@yq '. *= load("${CLUSTER_ROOT}/${CLUSTER}.yaml")' ${CLUSTER_ROOT}/common.yaml > ${CONFIG_FILE}
+.PHONY: generate-config

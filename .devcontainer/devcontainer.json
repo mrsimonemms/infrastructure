@@ -7,7 +7,11 @@
       "installTerraformDocs": true
     },
     "ghcr.io/dhoeric/features/trivy:1": {},
-    "ghcr.io/devcontainers-contrib/features/argo-cd:1": {}
+    "ghcr.io/devcontainers-contrib/features/argo-cd:1": {},
+    "ghcr.io/devcontainers-extra/features/gh-release:1": {
+      "repo": "vitobotta/hetzner-k3s",
+      "binaryNames": "hetzner-k3s"
+    }
   },
   "customizations": {
     "vscode": {
@@ -31,5 +35,8 @@
   },
   "postAttachCommand": {
     "ensureKubeDir": "mkdir -p /home/vscode/.kube"
+  },
+  "containerEnv": {
+    "KUBE_CONFIG_PATH": "~/.kube/config"
   }
 }

@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "kubernetes_nodes" "cluster" {
-  depends_on = [
-    helm_release.hcloud_ccm,
-    helm_release.hcloud_csi,
-  ]
+
+# Only use managers as ingress IP
+data "hcloud_servers" "manager_nodes" {
+  with_selector = "cluster=${var.cluster_name},role=master"
 }
 
 resource "kubernetes_namespace_v1" "metallb" {
@@ -47,10 +46,7 @@ resource "kubernetes_config_map_v1" "metallb" {
         namespace = kubernetes_namespace_v1.metallb.metadata[0].name
       }
       spec = {
-        addresses = [
-          # Only use managers as ingress IP
-          for n in flatten(local.manager_nodes[*].status[*].addresses) : "${n.address}/32" if n.type == "ExternalIP"
-        ]
+        addresses = [for s in data.hcloud_servers.manager_nodes.servers : s.ipv4_address]
       }
     })
   }
