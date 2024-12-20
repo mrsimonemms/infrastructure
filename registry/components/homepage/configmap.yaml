@@ -33,8 +33,7 @@ data:
     - Home:
       - Weather:
           icon: mdi-white-balance-sunny-#ffcc00
-          description: Home weather monitor
-          href: https://grafana.simonemms.com/d/YpAJUW3mk/garden?from=now-24h&to=now&refresh=30s
+          href: https://grafana.simonemms.com/d/YpAJUW3mk/garden?from=now-24h&to=now&refresh=60s
           widget:
             type: prometheusmetric
             url: http://prometheus-operated.monitoring.svc.cluster.local:9090
@@ -54,6 +53,21 @@ data:
                   suffix: °C
                   options:
                     maximumFractionDigits: 1
+      - Sunrise/Sunset:
+          widget:
+            type: customapi
+            url: https://api.sunrise-sunset.org/json?lat=52.67659&lng=-2.44926&tzid=Europe/London
+            method: GET
+            refreshInterval: 600000 # Set to 10 minutes
+            mappings:
+              - field:
+                  results: sunrise
+                label: Sunrise
+                format: text
+              - field:
+                  results: sunset
+                label: Sunset
+                format: text
       - Calendar:
           widget:
             type: calendar
