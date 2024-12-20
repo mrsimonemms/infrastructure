@@ -4,5 +4,4 @@ resources:
   - application.yaml
   - l2-advertisement.yaml
   - generator.yaml
-  - monitor.yaml
   - namespace.yaml
