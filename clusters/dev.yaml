@@ -1,0 +1,4 @@
+cluster_name: dev
+networking:
+  private_network:
+    subnet: 10.2.0.0/16

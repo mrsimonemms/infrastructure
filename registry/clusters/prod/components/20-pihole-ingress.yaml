@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://github.com/mrsimonemms/infrastructure
     path: registry/components/pihole-ingress
-    targetRevision: HEAD
+    targetRevision: sje/hetzner-k3s
   destination:
     server: https://kubernetes.default.svc
     namespace: pihole

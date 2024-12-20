@@ -1,0 +1,41 @@
+kubeconfig_path: "~/.kube/config"
+k3s_version: v1.31.3+k3s1
+
+networking:
+  ssh:
+    port: 2244
+    use_agent: false
+    public_key_path: "~/.ssh/homelab.pub"
+    private_key_path: "~/.ssh/homelab"
+  allowed_networks:
+    ssh:
+      - 0.0.0.0/0
+    api:
+      - 0.0.0.0/0
+  public_network:
+    ipv4: true
+    ipv6: true
+  private_network:
+    enabled: true
+    subnet: 10.0.0.0/16
+  cni:
+    enabled: true
+    encryption: true
+    mode: cilium
+
+datastore:
+  mode: etcd
+
+embedded_registry_mirror:
+  enabled: true
+
+schedule_workloads_on_masters: true
+
+image: ubuntu-24.04
+
+masters_pool:
+  instance_type: cx32
+  instance_count: 3
+  location: nbg1
+
+worker_node_pools: []
