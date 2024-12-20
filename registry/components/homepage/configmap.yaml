@@ -20,16 +20,6 @@ data:
             type: pihole
             url: http://pihole.pihole.svc.cluster.local
             key: "{{HOMEPAGE_VAR_PIHOLE_API_KEY}}"
-    - Bookmarks:
-      - Logout:
-          icon: mdi-logout-#ffffff
-          description: Logout from the homepage
-          href: /oauth2/sign_out
-          target: _self
-      - Repository:
-          icon: github-light
-          href: https://github.com/mrsimonemms/infrastructure
-          description: My infrastructure
     - Home:
       - Weather:
           icon: mdi-white-balance-sunny-#ffcc00
@@ -68,6 +58,17 @@ data:
                   results: sunset
                 label: Sunset
                 format: text
+      - Bookmarks:
+        - Logout:
+            icon: mdi-logout-#ffffff
+            description: Logout from the homepage
+            href: /oauth2/sign_out
+            target: _self
+        - Repository:
+            icon: github-light
+            href: https://github.com/mrsimonemms/infrastructure
+            description: My infrastructure
+    - Organisation:
       - Calendar:
           widget:
             type: calendar
@@ -120,8 +121,8 @@ data:
     showStats: true
     statusStyle: dot
     layout:
+      - Organisation:
       - Home:
-      - Bookmarks:
       - Cluster:
           style: row
           columns: 4
