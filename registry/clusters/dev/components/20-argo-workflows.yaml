@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-workflows-components
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mrsimonemms/infrastructure
+    path: registry/components/argo-workflows
+    targetRevision: HEAD
+    kustomize:
+      patches:
+        - target:
+            group: argoproj.io
+            version: v1alpha1
+            kind: Application
+            name: argo-workflows
+          patch: |-
+            - op: replace
+              path: /spec/source/helm/valuesObject/server/sso/issuer
+              value: https://oidc.dev.simonemms.com
+            - op: replace
+              path: /spec/source/helm/valuesObject/server/sso/insecureSkipVerify
+              value: true
+            - op: replace
+              path: /spec/source/helm/valuesObject/server/ingress/hosts/0
+              value: workflows.dev.simonemms.com
+            - op: replace
+              path: /spec/source/helm/valuesObject/server/ingress/tls/0/hosts/0
+              value: workflows.dev.simonemms.com
+            - op: replace
+              path: /spec/source/helm/valuesObject/server/ingress/annotations/cert-manager.io~1cluster-issuer
+              value: letsencrypt-staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo-workflows
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
