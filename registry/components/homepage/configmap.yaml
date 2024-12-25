@@ -20,44 +20,45 @@ data:
             type: pihole
             url: http://pihole.pihole.svc.cluster.local
             key: "{{HOMEPAGE_VAR_PIHOLE_API_KEY}}"
-    - Home:
-      - Weather:
-          icon: mdi-white-balance-sunny-#ffcc00
-          href: https://grafana.simonemms.com/d/YpAJUW3mk/garden?from=now-24h&to=now&refresh=60s
-          widget:
-            type: prometheusmetric
-            url: http://prometheus-operated.monitoring.svc.cluster.local:9090
-            refreshInterval: 60000
-            metrics:
-              - label: Garden
-                query: garden
-                format:
-                  type: number
-                  suffix: °C
-                  options:
-                    maximumFractionDigits: 1
-              - label: Greenhouse
-                query: greenhouse
-                format:
-                  type: number
-                  suffix: °C
-                  options:
-                    maximumFractionDigits: 1
-      - Sunrise/Sunset:
-          widget:
-            type: customapi
-            url: https://api.sunrise-sunset.org/json?lat=52.67659&lng=-2.44926&tzid=Europe/London
-            method: GET
-            refreshInterval: 600000 # Set to 10 minutes
-            mappings:
-              - field:
-                  results: sunrise
-                label: Sunrise
-                format: text
-              - field:
-                  results: sunset
-                label: Sunset
-                format: text
+    - Home Group:
+      - Home:
+        - Weather:
+            icon: mdi-white-balance-sunny-#ffcc00
+            href: https://grafana.simonemms.com/d/YpAJUW3mk/garden?from=now-24h&to=now&refresh=60s
+            widget:
+              type: prometheusmetric
+              url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+              refreshInterval: 60000
+              metrics:
+                - label: Garden
+                  query: garden
+                  format:
+                    type: number
+                    suffix: °C
+                    options:
+                      maximumFractionDigits: 1
+                - label: Greenhouse
+                  query: greenhouse
+                  format:
+                    type: number
+                    suffix: °C
+                    options:
+                      maximumFractionDigits: 1
+        - Sunrise/Sunset:
+            widget:
+              type: customapi
+              url: https://api.sunrise-sunset.org/json?lat=52.67659&lng=-2.44926&tzid=Europe/London
+              method: GET
+              refreshInterval: 600000 # Set to 10 minutes
+              mappings:
+                - field:
+                    results: sunrise
+                  label: Sunrise
+                  format: text
+                - field:
+                    results: sunset
+                  label: Sunset
+                  format: text
       - Bookmarks:
         - Logout:
             icon: mdi-logout-#ffffff
@@ -68,46 +69,47 @@ data:
             icon: github-light
             href: https://github.com/mrsimonemms/infrastructure
             description: My infrastructure
-    - Organisation:
-      - Calendar:
-          widget:
-            type: calendar
-            firstDayInWeek: monday
-            view: monthly
-            maxEvents: 10
-            showTime: true
-            timezone: Europe/London
-            integrations:
-              - type: ical
-                url: "{{HOMEPAGE_VAR_CALENDAR_SIMONEMMS_GMAIL_COM}}"
-                name: Home
-                color: rose
-                params:
-                  showName: true
-              - type: ical
-                url: https://ics.ecal.com/ecal-sub/6401de54c77a22000d08a525/Formula%201.ics
-                name: F1
-                color: blue
-                params:
-                  showName: true
-              - type: ical
-                url: https://calendar.google.com/calendar/ical/en-gb.uk%23holiday%40group.v.calendar.google.com/public/basic.ics
-                name: Public holidays
-                color: green
-                params:
-                  showName: true
-              - type: ical
-                url: "{{HOMEPAGE_VAR_CALENDAR_SIMON_SIMONEMMS_COM}}"
-                name: Work
-                color: yellow
-                params:
-                  showName: true
-              - type: ical
-                url: "{{HOMEPAGE_VAR_CALENDAR_SIMON_KONSTRUCT_IO}}"
-                name: Konstruct
-                color: purple
-                params:
-                  showName: true
+    - Org Group:
+      - Organisation:
+        - Calendar:
+            widget:
+              type: calendar
+              firstDayInWeek: monday
+              view: monthly
+              maxEvents: 10
+              showTime: true
+              timezone: Europe/London
+              integrations:
+                - type: ical
+                  url: "{{HOMEPAGE_VAR_CALENDAR_SIMONEMMS_GMAIL_COM}}"
+                  name: Home
+                  color: rose
+                  params:
+                    showName: true
+                - type: ical
+                  url: https://ics.ecal.com/ecal-sub/6401de54c77a22000d08a525/Formula%201.ics
+                  name: F1
+                  color: blue
+                  params:
+                    showName: true
+                - type: ical
+                  url: https://calendar.google.com/calendar/ical/en-gb.uk%23holiday%40group.v.calendar.google.com/public/basic.ics
+                  name: Public holidays
+                  color: green
+                  params:
+                    showName: true
+                - type: ical
+                  url: "{{HOMEPAGE_VAR_CALENDAR_SIMON_SIMONEMMS_COM}}"
+                  name: Work
+                  color: yellow
+                  params:
+                    showName: true
+                - type: ical
+                  url: "{{HOMEPAGE_VAR_CALENDAR_SIMON_KONSTRUCT_IO}}"
+                  name: Konstruct
+                  color: purple
+                  params:
+                    showName: true
   settings.yaml: |
     background:
       image: https://images.unsplash.com/photo-1502790671504-542ad42d5189?auto=format&fit=crop&w=2560&q=80
@@ -121,8 +123,10 @@ data:
     showStats: true
     statusStyle: dot
     layout:
-      - Organisation:
-      - Home:
+      - Org Group:
+          header: false
+      - Home Group:
+          header: false
       - Cluster:
           style: row
           columns: 4
