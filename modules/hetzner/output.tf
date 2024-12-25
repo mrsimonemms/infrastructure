@@ -17,6 +17,12 @@ output "hcloud_network_name" {
   value       = hcloud_network.network.name
 }
 
+output "k3s_join_token" {
+  sensitive   = true
+  description = "Join token for k3s"
+  value       = module.k3s.k3s_join_token
+}
+
 output "kubeconfig" {
   sensitive   = true
   description = "Kubeconfig"
