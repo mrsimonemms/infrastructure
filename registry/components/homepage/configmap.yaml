@@ -139,10 +139,7 @@ data:
           showLabel: true
           label: Cluster
         nodes:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
+          show: false
     - search:
         provider:
           - duckduckgo
