@@ -59,6 +59,10 @@ data:
                     results: sunset
                   label: Sunset
                   format: text
+                - field:
+                    results: day_length
+                  label: Day Length
+                  format: text
       - Bookmarks:
         - Logout:
             icon: mdi-logout-#ffffff
