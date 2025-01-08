@@ -14,8 +14,8 @@ spec:
     helm:
       valuesObject:
         image:
-          repository: jacobalberty/unifi
-          tag: v8.6.9
+          repository: ghcr.io/jacobalberty/unifi-docker
+          tag: v9.0.108
         env:
           JVM_INIT_HEAP_SIZE: 512M
           JVM_MAX_HEAP_SIZE: 512M
