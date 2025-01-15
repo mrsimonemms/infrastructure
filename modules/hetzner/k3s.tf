@@ -47,6 +47,9 @@ module "k3s" {
     }...
   }
 
+  custom_manager_config = {
+    flannel-external-ip = true
+  }
   disable_addons = [
     "local-storage",
     "servicelb",
