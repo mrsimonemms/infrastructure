@@ -85,7 +85,7 @@ server:
       gethomepage.dev/description: Get stuff done with Kubernetes!
       gethomepage.dev/enabled: "true"
       gethomepage.dev/group: Cluster
-      gethomepage.dev/icon: argocd
+      gethomepage.dev/icon: argo-cd
       gethomepage.dev/name: ArgoCD
       gethomepage.dev/widget.type: argocd
       gethomepage.dev/widget.url: http://argocd-server.argocd.svc.cluster.local
