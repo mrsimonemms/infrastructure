@@ -18,6 +18,7 @@ data:
           description: Network-wide ad blocking
           widget:
             type: pihole
+            version: 6
             url: http://pihole.pihole.svc.cluster.local
             key: "{{HOMEPAGE_VAR_PIHOLE_API_KEY}}"
     - Home Group:
