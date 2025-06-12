@@ -12,7 +12,6 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-vscode.makefile-tools",
         "hashicorp.terraform",
         "HashiCorp.HCL"
       ],

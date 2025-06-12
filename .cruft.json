@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/mrsimonemms/new",
-  "commit": "0fcf58f86a5527bbb54409bc0e50602bf683abb0",
+  "commit": "b4fee0623066d045e1435825e48f2a77b0648d2b",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -8,7 +8,8 @@
       "description": "My home infrastructure",
       "author": "Simon Emms <simon@simonemms.com>",
       "module_name": "hetzner",
-      "_template": "https://github.com/mrsimonemms/new"
+      "_template": "https://github.com/mrsimonemms/new",
+      "_commit": "b4fee0623066d045e1435825e48f2a77b0648d2b"
     }
   },
   "directory": "terraform",
