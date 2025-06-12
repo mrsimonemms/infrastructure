@@ -7,7 +7,7 @@
       "installTerraformDocs": true
     },
     "ghcr.io/dhoeric/features/trivy:1": {},
-    "ghcr.io/devcontainers-contrib/features/argo-cd:1": {}
+    "ghcr.io/devcontainers-extra/features/argo-cd:1": {}
   },
   "customizations": {
     "vscode": {
