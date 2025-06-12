@@ -45,7 +45,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_argocd_github_org"></a> [argocd\_github\_org](#input\_argocd\_github\_org) | GitHub org to use for Dex OIDC | `string` | n/a | yes |
-| <a name="input_argocd_github_teams"></a> [argocd\_github\_teams](#input\_argocd\_github\_teams) | GitHub teams to use for Dex OIDC | <pre>object({<br>    org-admin = list(string)<br>  })</pre> | n/a | yes |
+| <a name="input_argocd_github_teams"></a> [argocd\_github\_teams](#input\_argocd\_github\_teams) | GitHub teams to use for Dex OIDC | <pre>object({<br/>    org-admin = list(string)<br/>  })</pre> | n/a | yes |
 | <a name="input_argocd_oidc_tls_skip_verify"></a> [argocd\_oidc\_tls\_skip\_verify](#input\_argocd\_oidc\_tls\_skip\_verify) | Skip TLS verification for Argo OIDC provider | `bool` | `false` | no |
 | <a name="input_argocd_version"></a> [argocd\_version](#input\_argocd\_version) | Version of ArgoCD to use - defaults to latest | `string` | `null` | no |
 | <a name="input_bitwarden_token"></a> [bitwarden\_token](#input\_bitwarden\_token) | Bitwarden Secret Manager token | `string` | n/a | yes |
