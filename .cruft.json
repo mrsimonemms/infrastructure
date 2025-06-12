@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/mrsimonemms/new",
-  "commit": "b4fee0623066d045e1435825e48f2a77b0648d2b",
+  "commit": "a98c1bcfe64c42f36ae4f6b2185cfb45d048aa32",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -9,7 +9,7 @@
       "author": "Simon Emms <simon@simonemms.com>",
       "module_name": "hetzner",
       "_template": "https://github.com/mrsimonemms/new",
-      "_commit": "b4fee0623066d045e1435825e48f2a77b0648d2b"
+      "_commit": "a98c1bcfe64c42f36ae4f6b2185cfb45d048aa32"
     }
   },
   "directory": "terraform",
