@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: temporal-codec-server
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    chart: temporal-codec-server
+    repoURL: ghcr.io/mrsimonemms
+    targetRevision: 0.1.1
+    helm:
+      valuesObject:
+        replicaCount: 2
+        ingress:
+          enabled: true
+          host: codec.temporal.simonemms.com
+          annotations:
+            kubernetes.io/tls-acme: "true"
+            cert-manager.io/cluster-issuer: letsencrypt
+        resources:
+          requests:
+            cpu: 25m
+            memory: 64Mi
+          limits:
+            cpu: 50m
+            memory: 128Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: codec
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
