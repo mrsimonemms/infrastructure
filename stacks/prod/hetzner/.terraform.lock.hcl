@@ -6,6 +6,7 @@ provider "registry.terraform.io/hashicorp/local" {
   constraints = ">= 2.5.1, < 3.0.0"
   hashes = [
     "h1:8oTPe2VUL6E2d3OcrvqyjI4Nn/Y/UEQN26WLk5O/B0g=",
+    "h1:fm2EuMlsdPTuv2tKwx3PMJzWJUh7aMtU9Eky7t4fMys=",
     "zh:0af29ce2b7b5712319bf6424cb58d13b852bf9a777011a545fac99c7fdcdf561",
     "zh:126063ea0d79dad1f68fa4e4d556793c0108ce278034f101d1dbbb2463924561",
     "zh:196bfb49086f22fd4db46033e01655b0e5e036a5582d250412cc690fa7995de5",
@@ -26,6 +27,7 @@ provider "registry.terraform.io/hetznercloud/hcloud" {
   constraints = ">= 1.47.0, < 2.0.0"
   hashes = [
     "h1:pdeMfdZHftUivK+TGABJI4fnRHvF0GFbCGWxh+uL+94=",
+    "h1:yQMfBy4LLbJZtQxCrXmaRuY8e2dFJAIMxJeJ9e0HlEU=",
     "zh:19d38d046e26153edcdd36ce8c0e16198aa9dea5186559651c4a75c455390573",
     "zh:3cb7c453067bcabed68275f812100685fc2f753f37c0e620d3358e642833b5f0",
     "zh:42cabdbb55dba02816be8d9d3fc30f51d610516cc54c3f057e6bb3ffc960b550",
@@ -47,6 +49,7 @@ provider "registry.terraform.io/loafoe/ssh" {
   version     = "2.7.0"
   constraints = ">= 2.7.0, < 3.0.0"
   hashes = [
+    "h1:KMPhYb02ggiKIr293zmM0LQokvk7WN+Na45IhLFsPRA=",
     "h1:MYcyNF/9w/O0nEeKmopbji1NqeD9kpd2a55r9E4rFXs=",
     "zh:0301be53defa9294c713fb3ce4c9925e83051b7444b6eb7262c692ad514f9c46",
     "zh:2670797441d6fefddaaac4498f31b0dc8053fe82a3744fca44da7471e6449f1f",
