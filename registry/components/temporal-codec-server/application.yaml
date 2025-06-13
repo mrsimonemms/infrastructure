@@ -10,18 +10,18 @@ spec:
   source:
     chart: temporal-codec-server
     repoURL: ghcr.io/mrsimonemms
-    targetRevision: 0.2.0
+    targetRevision: 0.2.2
     helm:
       valuesObject:
         replicaCount: 2
         keys:
-          encryptionKeys:
-            # @link https://github.com/temporal-sa/temporal-codec-server
-            - id: sa-rocks!sa-rocks!sa-rocks!yeah!
-              key: sa-rocks!sa-rocks!sa-rocks!yeah!
+          createSecret: false
+          existingSecret: keys
+        podAnnotations:
+          secret.reloader.stakater.com/reload: keys
         ingress:
           enabled: true
-          host: codec.temporal.simonemms.com
+          host: temporal-codec.simonemms.com
           annotations:
             kubernetes.io/tls-acme: "true"
             cert-manager.io/cluster-issuer: letsencrypt
