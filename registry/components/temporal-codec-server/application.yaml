@@ -10,10 +10,15 @@ spec:
   source:
     chart: temporal-codec-server
     repoURL: ghcr.io/mrsimonemms
-    targetRevision: 0.1.1
+    targetRevision: 0.2.0
     helm:
       valuesObject:
         replicaCount: 2
+        keys:
+          encryptionKeys:
+            # @link https://github.com/temporal-sa/temporal-codec-server
+            - id: sa-rocks!sa-rocks!sa-rocks!yeah!
+              key: sa-rocks!sa-rocks!sa-rocks!yeah!
         ingress:
           enabled: true
           host: codec.temporal.simonemms.com
