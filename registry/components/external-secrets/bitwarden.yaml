@@ -20,8 +20,8 @@ spec:
         namespace: cert-manager
         key: ca.crt
       bitwardenServerSDKURL: https://bitwarden-sdk-server:9998
-      organizationID: 72d9af79-8159-4ad7-940e-aff90140c0e6
-      projectID: 31bb6484-26bd-44f4-b43d-b24601384c3d
+      organizationID: ecbdd8af-5694-4019-a29a-b2c9009e2e1d
+      projectID: 0a52cfc7-3446-48fd-bfea-b2fb009cbf48
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
