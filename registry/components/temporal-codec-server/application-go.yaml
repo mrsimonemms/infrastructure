@@ -14,6 +14,10 @@ spec:
     helm:
       valuesObject:
         replicaCount: 2
+        config:
+          corsOrigins:
+            - https://cloud.temporal.io
+            - http://localhost:8233
         keys:
           createSecret: false
           existingSecret: keys
