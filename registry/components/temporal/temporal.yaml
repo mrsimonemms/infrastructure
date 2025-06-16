@@ -17,6 +17,18 @@ spec:
           enabled: false
         elasticsearch:
           enabled: false
+        frontend:
+          ingress:
+            enabled: true
+            annotations:
+              cert-manager.io/cluster-issuer: letsencrypt-staging
+              kubernetes.io/tls-acme: "true"
+            hosts:
+              - temporal2.simonemms.com
+            tls:
+              - secretName: temporal-frontend-tls
+                hosts:
+                  - temporal2.simonemms.com
         grafana:
           enabled: false
         prometheus:
@@ -61,11 +73,32 @@ spec:
                   maxConns: 20
                   maxIdleConns: 20
                   maxConnLifetime: 1h
+          frontend:
+            ingress:
+              enabled: true
+              className: nginx
+              annotations:
+                cert-manager.io/cluster-issuer: letsencrypt-staging
+                kubernetes.io/tls-acme: "true"
+              hosts:
+                - temporal2.simonemms.com
+              tls:
+                - secretName: temporal-frontend-tls
+                  hosts:
+                    - temporal2.simonemms.com
         web:
           ingress:
             enabled: true
+            className: nginx
             annotations:
               cert-manager.io/cluster-issuer: letsencrypt-staging
+              kubernetes.io/tls-acme: "true"
+              # nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
+              # nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"
+              # nginx.ingress.kubernetes.io/affinity: cookie
+              # nginx.ingress.kubernetes.io/affinity-mode: persistent
+              # nginx.ingress.kubernetes.io/session-cookie-secure: "true"
+              # nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
             hosts:
               - temporal.simonemms.com
             tls:
