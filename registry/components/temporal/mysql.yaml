@@ -19,6 +19,9 @@ spec:
           createDatabase: false
           database: temporal
           existingSecret: mysql
+        primary:
+          persistence:
+            enabled: false # @todo(sje): delete
   destination:
     server: https://kubernetes.default.svc
     namespace: temporal
