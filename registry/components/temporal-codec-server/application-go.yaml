@@ -10,7 +10,7 @@ spec:
   source:
     chart: temporal-codec-server
     repoURL: ghcr.io/mrsimonemms
-    targetRevision: 0.3.2
+    targetRevision: 0.3.3
     helm:
       valuesObject:
         replicaCount: 2
