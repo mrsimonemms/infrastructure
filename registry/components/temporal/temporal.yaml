@@ -48,6 +48,8 @@ spec:
               namespace:
                 - name: default
                   retention: 1d
+                - name: default2
+                  retention: 1d
             persistence:
               default:
                 driver: sql
@@ -73,38 +75,6 @@ spec:
                   maxConns: 20
                   maxIdleConns: 20
                   maxConnLifetime: 1h
-          frontend:
-            ingress:
-              enabled: true
-              className: nginx
-              annotations:
-                cert-manager.io/cluster-issuer: letsencrypt-staging
-                kubernetes.io/tls-acme: "true"
-              hosts:
-                - temporal2.simonemms.com
-              tls:
-                - secretName: temporal-frontend-tls
-                  hosts:
-                    - temporal2.simonemms.com
-        web:
-          ingress:
-            enabled: true
-            className: nginx
-            annotations:
-              cert-manager.io/cluster-issuer: letsencrypt-staging
-              kubernetes.io/tls-acme: "true"
-              # nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
-              # nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"
-              # nginx.ingress.kubernetes.io/affinity: cookie
-              # nginx.ingress.kubernetes.io/affinity-mode: persistent
-              # nginx.ingress.kubernetes.io/session-cookie-secure: "true"
-              # nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
-            hosts:
-              - temporal.simonemms.com
-            tls:
-              - secretName: temporal-tls
-                hosts:
-                  - temporal.simonemms.com
   destination:
     server: https://kubernetes.default.svc
     namespace: temporal

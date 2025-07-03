@@ -4,5 +4,4 @@ resources:
   - mysql-secret.yaml
   - mysql.yaml
   - namespace.yaml
-  - oauth2-proxy.yaml
   - temporal.yaml
