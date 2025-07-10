@@ -15,7 +15,7 @@ spec:
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: codec
+    namespace: temporal-codec-server
   syncPolicy:
     automated:
       prune: true
