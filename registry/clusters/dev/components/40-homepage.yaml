@@ -30,6 +30,9 @@ spec:
             - op: replace
               path: /spec/source/helm/valuesObject/ingress/main/annotations/cert-manager.io~1cluster-issuer
               value: letsencrypt-staging
+            - op: replace
+              path: /spec/source/helm/valuesObject/env/HOMEPAGE_ALLOWED_HOSTS
+              value: homepage.dev.simonemms.com
         - target:
             group: argoproj.io
             version: v1alpha1

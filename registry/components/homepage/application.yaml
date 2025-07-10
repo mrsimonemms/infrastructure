@@ -12,11 +12,11 @@ spec:
   source:
     chart: homepage
     repoURL: https://jameswynn.github.io/helm-charts
-    targetRevision: 2.0.1
+    targetRevision: 2.1.0
     helm:
       valuesObject:
         image:
-          tag: v0.10.9
+          tag: v1.3.2
         controller:
           annotations:
             configmap.reloader.stakater.com/reload: homepage
@@ -34,6 +34,8 @@ spec:
         config:
           useExistingConfigMap: homepage
         enableRbac: true
+        env:
+          HOMEPAGE_ALLOWED_HOSTS: homepage.simonemms.com
         envFrom:
           - secretRef:
               name: homepage-secrets
