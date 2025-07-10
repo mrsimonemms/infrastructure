@@ -14,7 +14,19 @@ spec:
     path: registry/components/temporal-codec-server
     targetRevision: HEAD
     kustomize:
-      patches: []
+      patches:
+        - target:
+            group: argoproj.io
+            version: v1alpha1
+            kind: Application
+            name: temporal-codec-server-golang
+          patch: |-
+            - op: replace
+              path: /spec/source/helm/valuesObject/ingress/host
+              value: golang.codec.temporal.dev.simonemms.com
+            - op: replace
+              path: /spec/source/helm/valuesObject/ingress/annotations/cert-manager.io~1cluster-issuer
+              value: letsencrypt-staging
   destination:
     server: https://kubernetes.default.svc
     namespace: temporal-codec-server
