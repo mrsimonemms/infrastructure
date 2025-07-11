@@ -19,7 +19,7 @@ spec:
             group: argoproj.io
             version: v1alpha1
             kind: Application
-            name: temporal-codec-server-golang
+            name: temporal-codec-server
           patch: |-
             - op: replace
               path: /spec/source/helm/valuesObject/ingress/host
