@@ -10,19 +10,31 @@ spec:
   source:
     chart: temporal-codec-server
     repoURL: ghcr.io/mrsimonemms
-    targetRevision: 0.3.4
+    targetRevision: 0.4.3
     helm:
       valuesObject:
         replicaCount: 2
         config:
+          logLevel: info
           corsOrigins:
             - https://cloud.temporal.io
             - http://localhost:8233
+        env:
+          - name: BASIC_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: config
+                key: basic_username
+          - name: BASIC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: config
+                key: basic_password
         keys:
           createSecret: false
           existingSecret: keys
         podAnnotations:
-          secret.reloader.stakater.com/reload: keys
+          secret.reloader.stakater.com/reload: keys,config
         ingress:
           enabled: true
           host: codec.temporal.simonemms.com
