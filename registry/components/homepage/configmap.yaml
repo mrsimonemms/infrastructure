@@ -142,8 +142,8 @@ data:
           show: false
     - search:
         provider:
-          - duckduckgo
           - google
+          - duckduckgo
         focus: true
         showSearchSuggestions: true
         target: _self
