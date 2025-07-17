@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mealie
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    chart: mealie
+    repoURL: tccr.io/truecharts
+    targetRevision: 26.0.1
+    helm:
+      valuesObject:
+        image:
+          tag: v3.0.1
+        mealie:
+          api:
+            general:
+              allow_signup: false
+        persistence:
+          data:
+            enabled: false
+        cnpg:
+          main:
+            enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mealie
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
