@@ -1,0 +1,10 @@
+apiVersion: tailscale.com/v1alpha1
+kind: Connector
+metadata:
+  name: exit-node
+  namespace: tailscale
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  hostname: cluster-prod
+  exitNode: true
