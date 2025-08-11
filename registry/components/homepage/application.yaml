@@ -16,7 +16,7 @@ spec:
     helm:
       valuesObject:
         image:
-          tag: v1.4.3
+          tag: v1.4.4
         controller:
           annotations:
             configmap.reloader.stakater.com/reload: homepage
