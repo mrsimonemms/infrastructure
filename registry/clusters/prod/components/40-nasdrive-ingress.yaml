@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nasdrive-ingress-components
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "40"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mrsimonemms/infrastructure
+    path: registry/components/nasdrive-ingress
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nasdrive
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+    - kind: Service
+      namespace: nasdrive
+      jsonPointers:
+        - /spec/externalName
