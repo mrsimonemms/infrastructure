@@ -1,0 +1,20 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: en_GB.UTF-8
+  timezone: Etc/UTC
+  identity:
+    hostname: homeserver
+    password: "$y$j9T$MWjJ8JUiGiT/FskfsJ1/z.$0nuDXuR5BVQhvdadtz62EM0hPEbcbSwv7b/mawLpoK6"
+    username: homeserver
+  keyboard:
+    layout: gb
+  refresh-installer:
+    update: true
+  source:
+    id: ubuntu-server-minimal
+  ssh:
+    install-server: true
+    authorized-keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOFuK1cZ/y6wgfWFdNTCtaOxbUUd7DCyd9oBtfoT+3GK simon@simonemms.com
+    allow-pw: false
