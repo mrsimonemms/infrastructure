@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nasdrive-ingress
+  namespace: nasdrive
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: nasdrive.simonemms.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nasdrive
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - nasdrive.simonemms.com
+      secretName: nasdrive-tls
