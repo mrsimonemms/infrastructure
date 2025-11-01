@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - ingress.yaml
   - namespace.yaml
+  - oauth2-proxy.yaml
   - service.yaml
