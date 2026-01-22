@@ -16,6 +16,7 @@ spec:
         replicaCount: 2
         config:
           logLevel: info
+          disableAuth: true
           corsOrigins:
             - https://cloud.temporal.io
             - http://localhost:8233
