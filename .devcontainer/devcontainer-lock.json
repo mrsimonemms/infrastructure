@@ -1,0 +1,9 @@
+{
+  "features": {
+    "ghcr.io/devcontainers-extra/features/opentofu:1": {
+      "version": "1.0.0",
+      "resolved": "ghcr.io/devcontainers-extra/features/opentofu@sha256:893ba9242583e18cc0b91b0882f736029f0ba7617164b99ca1c6b34871d12e32",
+      "integrity": "sha256:893ba9242583e18cc0b91b0882f736029f0ba7617164b99ca1c6b34871d12e32"
+    }
+  }
+}

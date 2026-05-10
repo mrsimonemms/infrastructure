@@ -1,0 +1,13 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Cluster infrastructure - things the cluster itself needs to function.
+# Deliberately empty at bootstrap; entries land here via Flux-reconciled PRs.
+#
+# Future homes:
+#   - MetalLB              (LoadBalancer for on-prem / RPi workers)
+#   - cert-manager         (TLS for ingress)
+#   - External Secrets     (pull secrets from a backend)
+#   - Tailscale operator   (mesh between cloud + home nodes)
+#   - HelmRepository CRs feeding any of the above
+resources: []

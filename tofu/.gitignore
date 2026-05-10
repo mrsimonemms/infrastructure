@@ -1,0 +1,26 @@
+# OpenTofu / Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Variable files - never commit live secrets. The committed templates
+# (`*.tfvars.example` at the root, and `examples/*.tfvars`) are whitelisted.
+*.tfvars
+!*.tfvars.example
+!examples/*.tfvars
+
+# Live backend config at the tofu root only. The committed reference copies
+# (`backend.tf.example` at the root, `examples/backend.tf` in the subdir)
+# are not affected by the anchored pattern.
+/backend.tf
+
+# Generated SSH key + fetched kubeconfig
+.ssh/
+.kube/

@@ -1,0 +1,10 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# End-user applications. Deliberately empty at bootstrap.
+#
+# Future homes:
+#   - Homepage             (homelab dashboard)
+#   - UniFi controller
+#   - Anything else that is "an app" rather than platform/infra
+resources: []

@@ -1,0 +1,68 @@
+#cloud-config
+hostname: ${hostname}
+fqdn: ${hostname}
+manage_etc_hosts: true
+
+users:
+  - name: root
+    ssh_authorized_keys:
+%{ for key in ssh_authorized_keys ~}
+      - ${key}
+%{ endfor ~}
+
+package_update: true
+package_upgrade: false
+packages:
+  - curl
+  - ca-certificates
+  - jq
+  - netcat-openbsd
+
+write_files:
+  - path: /etc/rancher/k3s/config.yaml
+    permissions: '0600'
+    owner: root:root
+    content: |
+      node-ip: "${node_private_ip}"
+      advertise-address: "${node_private_ip}"
+      write-kubeconfig-mode: "0644"
+      token: "${k3s_token}"
+      disable-cloud-controller: false
+      node-label:
+%{ for label_key, label_value in node_labels ~}
+        - "${label_key}=${label_value}"
+%{ endfor ~}
+%{ if length(tls_sans) > 0 ~}
+      tls-san:
+%{ for san in tls_sans ~}
+        - "${san}"
+%{ endfor ~}
+%{ endif ~}
+%{ if is_first_node ~}
+      cluster-init: true
+%{ else ~}
+      server: "https://${first_node_private_ip}:6443"
+%{ endif ~}
+
+  - path: /usr/local/bin/install-k3s.sh
+    permissions: '0755'
+    owner: root:root
+    content: |
+      #!/usr/bin/env bash
+      set -euo pipefail
+
+%{ if !is_first_node ~}
+      # Wait for the first control-plane to expose the API on the private
+      # network before joining. k3s itself retries, but failing fast here
+      # keeps the cloud-init log readable.
+      until nc -z ${first_node_private_ip} 6443; do
+        echo "[install-k3s] waiting for ${first_node_private_ip}:6443..."
+        sleep 5
+      done
+%{ endif ~}
+
+      export INSTALL_K3S_VERSION="${k3s_version}"
+      curl -sfL https://get.k3s.io | sh -s - server
+
+runcmd:
+  - /usr/local/bin/install-k3s.sh

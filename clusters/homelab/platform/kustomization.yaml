@@ -1,0 +1,12 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Platform-level services - the things every app depends on but that are
+# not strictly cluster infrastructure. Deliberately empty at bootstrap.
+#
+# Future homes:
+#   - Dex                  (OIDC provider)
+#   - Prometheus / Grafana (observability stack)
+#   - Loki                 (logs)
+#   - Backup tooling
+resources: []
