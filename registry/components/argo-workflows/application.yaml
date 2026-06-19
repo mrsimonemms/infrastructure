@@ -1,0 +1,70 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-workflows
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    chart: argo-workflows
+    repoURL: https://argoproj.github.io/argo-helm
+    targetRevision: 0.45.2
+    helm:
+      valuesObject:
+        artifactRepository:
+          s3:
+            accessKeySecret:
+              name: bum
+              key: accesskey
+            secretKeySecret:
+              name: bum
+              key: secretkey
+            insecure: false
+            bucket: sje-data
+            endpoint: your-objectstorage.com
+            region: nbg1
+            useSDKCreds: false
+            encryptionOptions:
+              enableEncryption: true
+        controller:
+          deploymentAnnotations:
+            configmap.reloader.stakater.com/reload: argo-workflows-workflow-controller-configmap
+            secret.reloader.stakater.com/reload: argo-server-sso
+        server:
+          deploymentAnnotations:
+            configmap.reloader.stakater.com/reload: argo-workflows-workflow-controller-configmap
+            secret.reloader.stakater.com/reload: argo-server-sso
+          authModes:
+            - sso
+          sso:
+            enabled: true
+            issuer: https://oidc.simonemms.com
+            insecureSkipVerify: false
+            userInfoPath: /userinfo
+            rbac:
+              enabled: false
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            annotations:
+              kubernetes.io/tls-acme: "true"
+              cert-manager.io/cluster-issuer: letsencrypt
+            hosts:
+              - workflows.simonemms.com
+            tls:
+              - hosts:
+                  - workflows.simonemms.com
+                secretName: workflows-tls
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo-workflows
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
